@@ -6,8 +6,12 @@
 
 console.log('🔐 Inicializando auth-api.js FINAL');
 
+const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://gigante-viajero.onrender.com';
+
 const AUTH_CONFIG = {
-    baseURL: 'http://localhost:5000/api/auth',
+    baseURL: `${BACKEND_URL}/api/auth`,
     timeout: 10000,
     storage: {
         tokenKey: 'techstore-auth-token',
@@ -231,7 +235,7 @@ class AuthAPI {
         const token = this.getToken();
         if (!token) return [];
         try {
-            const response = await fetch(`http://localhost:5000/api/users`, {
+            const response = await fetch(`${BACKEND_URL}/api/users`, {
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
             });
             if (!response.ok) throw new Error('Error al obtener usuarios');
