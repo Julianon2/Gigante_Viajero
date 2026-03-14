@@ -191,7 +191,7 @@ router.post('/send-reset-code', async (req, res) => {
     codesStore.set(email, { code, expiresAt, attempts: 0, verified: false });
 
     const mailOptions = {
-        from: `"Gigante Viagero 🌎" <${process.env.MAIL_USER}>`,
+        from: `"Gigante Viagero" <${process.env.EMAIL_FROM}>`,
         to:   email,
         subject: '🔐 Tu código de recuperación — Gigante Viagero',
         html: `
