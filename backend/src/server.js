@@ -31,7 +31,7 @@ app.use('/api/chat',     require('./routes/chatRoutes'));
 app.use('/api/sitios',   require('./routes/Sitios'));
 app.use('/api/Bookings', require('./routes/Bookings'));
 app.use('/api/reviews',  require('./routes/reviews'));
-app.use('/api/users/photo', require('./routes/photo'));
+app.use('/api/users/photo', require('./routes/Photo'));
 app.use('/api/users',    require('./routes/users')); 
 app.use('/api/settings', require('./routes/settings'));
 // ── Health check ──────────────────────────────────────────────────────────────
