@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña - Gigante Viagero</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f9fafb; }
+
+        /* ==================== HEADER ==================== */
+        header { background: linear-gradient(135deg, #195C33 0%, #0d3d20 100%); box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 1000; }
+        .header-container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        .header-content { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; gap: 32px; }
+        .logo-section { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .logo-img { width: 56px; height: 56px; object-fit: contain; }
+        .logo-text { color: white; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+        .nav-menu { display: flex; align-items: center; gap: 32px; list-style: none; }
+        .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 16px; padding: 8px 0; position: relative; transition: color 0.3s ease; }
+        .nav-link:hover { color: #FFDD00; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #FFDD00; transition: width 0.3s ease; }
+        .nav-link:hover::after { width: 100%; }
+        .dropdown { position: relative; }
+        .dropdown-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .dropdown-menu { position: absolute; top: calc(100% + 12px); left: 0; background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); min-width: 220px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; overflow: hidden; }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-menu a { display: block; padding: 14px 20px; color: #195C33; text-decoration: none; font-weight: 500; transition: all 0.2s ease; border-left: 3px solid transparent; }
+        .dropdown-menu a:hover { background: #f3f4f6; color: #FFDD00; border-left-color: #FFDD00; padding-left: 24px; }
+        .auth-section { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+        .btn { padding: 10px 28px; border-radius: 30px; font-weight: 600; font-size: 15px; text-decoration: none; transition: all 0.3s ease; cursor: pointer; border: none; display: inline-block; }
+        .btn-login { background: transparent; color: white; border: 2px solid white; }
+        .btn-login:hover { background: white; color: #195C33; transform: translateY(-2px); }
+        .btn-register { background: linear-gradient(135deg, #F4C400 0%, #FFE347 100%); color: #195C33; box-shadow: 0 4px 15px rgba(244,196,0,0.3); }
+        .btn-register:hover { background: linear-gradient(135deg, #FFE347 0%, #F4C400 100%); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244,196,0,0.5); }
+        #user-menu-container { display: none; position: relative; }
+        #user-menu-button { display: flex; align-items: center; gap: 10px; padding: 8px 16px; background: rgba(255,255,255,0.1); border-radius: 50px; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; }
+        #user-menu-button:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); }
+        #user-initials { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #F4C400 0%, #FFE347 100%); display: flex; align-items: center; justify-content: center; color: #195C33; font-weight: 700; font-size: 16px; }
+        #user-name { color: white; font-weight: 600; font-size: 15px; }
+        .user-chevron { color: white; font-size: 12px; }
+        #user-dropdown { position: absolute; top: calc(100% + 12px); right: 0; width: 280px; background: white; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); border: 1px solid rgba(0,0,0,0.1); z-index: 9999; opacity: 1; visibility: visible; transform: translateY(0); transition: all 0.3s ease; }
+        #user-dropdown.hidden { opacity: 0; visibility: hidden; transform: translateY(-10px); pointer-events: none; }
+        .user-dropdown-header { padding: 20px; background: linear-gradient(135deg, #195C33 0%, #0d3d20 100%); border-radius: 16px 16px 0 0; }
+        #dropdown-user-name { color: white; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        #dropdown-user-email { color: rgba(255,255,255,0.8); font-size: 13px; }
+        #dropdown-user-role { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+        .user-dropdown-item { display: flex; align-items: center; padding: 14px 20px; color: #1f2937; text-decoration: none; transition: all 0.2s ease; font-size: 14px; font-weight: 500; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
+        .user-dropdown-item:hover { background: #f3f4f6; color: #195C33; }
+        .user-dropdown-item i { width: 20px; margin-right: 12px; color: #6b7280; }
+        .user-dropdown-item:hover i { color: #195C33; }
+        .user-dropdown-divider { height: 1px; background: #e5e7eb; margin: 8px 0; }
+        .user-dropdown-item.logout { color: #dc2626; }
+        .user-dropdown-item.logout:hover { background: #fee2e2; }
+        .user-dropdown-item.logout i { color: #dc2626; }
+        .mobile-toggle { display: none; flex-direction: column; gap: 6px; cursor: pointer; padding: 8px; }
+        .mobile-toggle span { width: 28px; height: 3px; background: white; border-radius: 3px; }
+
+        /* ==================== PASOS / ANIMACIONES ==================== */
+        .panel-step { animation: fadeSlide 0.4s ease; }
+        @keyframes fadeSlide { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+        .animate-shake { animation: shake 0.35s ease-in-out; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner { display: inline-block; width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+
+        /* ==================== INGRESO DE CÓDIGO ==================== */
+        .code-inputs { display: flex; gap: 10px; justify-content: center; margin: 8px 0; }
+        .code-box {
+            width: 52px; height: 64px;
+            border: 2px solid #d1d5db;
+            border-radius: 12px;
+            font-size: 28px; font-weight: 700;
+            text-align: center; color: #195C33;
+            background: #f9fafb;
+            transition: all 0.2s ease;
+            outline: none;
+            caret-color: #195C33;
+        }
+        .code-box:focus {
+            border-color: #195C33;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(25,92,51,0.15);
+            transform: scale(1.05);
+        }
+        .code-box.filled { border-color: #195C33; background: #f0fdf4; }
+        .code-box.error  { border-color: #ef4444; background: #fef2f2; }
+
+        /* ==================== COUNTDOWN / REENVÍO ==================== */
+        .countdown-text { font-size: 13px; color: #6b7280; text-align: center; margin-top: 12px; }
+        .countdown-text span { font-weight: 700; color: #195C33; }
+        #btn-resend { display: none; background: none; border: none; color: #195C33; font-weight: 600; font-size: 14px; cursor: pointer; text-decoration: underline; margin-top: 8px; }
+        #btn-resend:hover { color: #0d3d20; }
+
+        /* ==================== FORTALEZA DE CONTRASEÑA ==================== */
+        .strength-bar-wrap { width: 100%; background: #e5e7eb; border-radius: 4px; height: 6px; overflow: hidden; margin-top: 8px; }
+        .strength-bar { height: 100%; border-radius: 4px; transition: width 0.3s ease, background 0.3s ease; width: 0%; }
+        .req-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6b7280; margin-top: 4px; transition: color 0.2s; }
+        .req-item.ok { color: #16a34a; }
+        .req-item .dot { font-size: 14px; line-height: 1; }
+
+        /* ==================== PROGRESS STEPS ==================== */
+        .progress-steps { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 28px; }
+        .step-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 2px solid #d1d5db; color: #9ca3af; background: white; transition: all 0.3s ease; position: relative; z-index: 1; }
+        .step-circle.active { border-color: #195C33; color: #195C33; background: #f0fdf4; }
+        .step-circle.done { border-color: #195C33; color: white; background: #195C33; }
+        .step-line { flex: 1; height: 2px; background: #d1d5db; max-width: 60px; transition: background 0.3s ease; }
+        .step-line.done { background: #195C33; }
+
+        /* ==================== FOOTER ==================== */
+        footer { background: linear-gradient(135deg, #195C33 0%, #0d3d20 100%); color: white; padding: 3rem 1.5rem 1rem; position: relative; overflow: hidden; }
+        footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #F4C400 0%, #ffd700 50%, #F4C400 100%); }
+        .footer-container { max-width: 1200px; margin: 0 auto; }
+        .footer-main { text-align: center; margin-bottom: 2rem; }
+        .footer-main h2 { color: #F4C400; font-size: 32px; font-weight: 700; margin-bottom: 1rem; }
+        .footer-main p { color: #e5e7eb; font-size: 16px; line-height: 1.7; max-width: 600px; margin: 0 auto 2rem; }
+        .social-icons { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.5rem; }
+        .social-icons a { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.4s ease; font-size: 24px; border: 3px solid rgba(255,255,255,0.2); text-decoration: none; color: white; }
+        .social-icons a:hover { transform: translateY(-8px) scale(1.1); border-color: #F4C400; }
+        .social-facebook { background: linear-gradient(135deg, #1877F2, #0d5dbf); }
+        .social-instagram { background: linear-gradient(135deg, #E1306C, #C13584 50%, #833AB4); }
+        .social-tiktok { background: linear-gradient(135deg, #000, #333); }
+        .social-x { background: linear-gradient(135deg, #000, #1a1a1a); }
+        .footer-divider { height: 2px; margin: 2.5rem 0; background: linear-gradient(90deg, transparent, rgba(244,196,0,0.8), transparent); }
+        .footer-info { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 2rem; }
+        .info-item { display: flex; align-items: center; gap: 0.75rem; color: #e5e7eb; font-size: 15px; }
+        .info-item i { color: #F4C400; font-size: 20px; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1.5rem; text-align: center; }
+        .footer-bottom p { color: #d1d5db; font-size: 14px; margin: 0; }
+
+        @media (max-width: 968px) {
+            .mobile-toggle { display: flex; }
+            .nav-menu { position: absolute; top: 100%; left: 0; right: 0; background: linear-gradient(135deg, #195C33, #0d3d20); flex-direction: column; gap: 0; padding: 20px 24px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+            .nav-menu.active { max-height: 600px; }
+            .nav-menu li { width: 100%; }
+            .nav-link { display: block; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            #user-name { display: none; }
+            .footer-info { flex-direction: column; gap: 1rem; align-items: center; }
+            .code-box { width: 44px; height: 56px; font-size: 22px; }
+            .code-inputs { gap: 7px; }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+
+<!-- ========== HEADER ========== -->
+<header>
+    <div class="header-container">
+        <div class="header-content">
+            <div class="logo-section">
+                <img src="../assets/img/logo.png" alt="Logo Gigante Viajero" class="logo-img">
+                <h1 class="logo-text">Gigante Viagero</h1>
+            </div>
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" class="nav-link">Inicio</a></li>
+                    <li><a href="sitio.html" class="nav-link">Explora</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">Descubre ▾</a>
+                        <div class="dropdown-menu">
+                            <a href="naturaleza.html">Naturaleza</a>
+                            <a href="historia.html">Historia</a>
+                            <a href="gastronomia.html">Gastronomía</a>
+                            <a href="turismo religioso.html">Turismo Religioso</a>
+                        </div>
+                    </li>
+                    <li><a href="mapa.html" class="nav-link">Mapa</a></li>
+                    <li><a href="contactos.html" class="nav-link">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="auth-section">
+                <div id="user-menu-container">
+                    <button id="user-menu-button">
+                        <div id="user-initials">U</div>
+                        <span id="user-name">Usuario</span>
+                        <i class="fas fa-chevron-down user-chevron"></i>
+                    </button>
+                    <div id="user-dropdown" class="hidden">
+                        <div class="user-dropdown-header">
+                            <div id="dropdown-user-name">Nombre Usuario</div>
+                            <div id="dropdown-user-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d7b2bab6bebb97b2bdb2baa7bbb8f9b4b8ba">[email&#160;protected]</a></div>
+                            <span id="dropdown-user-role">👤 Cliente</span>
+                        </div>
+                        <div id="admin-options" style="display:none;">
+                            <a href="admin_dashboard.html" class="user-dropdown-item"><i class="fas fa-chart-line"></i> Dashboard</a>
+                            <div class="user-dropdown-divider"></div>
+                        </div>
+                        <a href="perfil.html" class="user-dropdown-item"><i class="fas fa-user"></i> Mi Perfil</a>
+                        <a href="mis_reservas.html" class="user-dropdown-item"><i class="fas fa-shopping-bag"></i> Mis reservas</a>
+                        <div class="user-dropdown-divider"></div>
+                        <button id="logout-button" class="user-dropdown-item logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+                    </div>
+                </div>
+                <div id="authButtons">
+                    <a href="login.html" class="btn btn-login">Iniciar Sesión</a>
+                    <a href="register.html" class="btn btn-register">Registrarse</a>
+                </div>
+                <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ========== MAIN ========== -->
+<main class="flex-1 flex items-center justify-center px-4 py-12 bg-gradient-to-br from-green-50 via-white to-blue-50">
+    <div class="w-full max-w-md">
+
+        <!-- ===== PASO 1: Ingresar correo ===== -->
+        <div id="step-email" class="panel-step rounded-2xl shadow-2xl p-8 border border-gray-100 bg-white">
+
+            <!-- Indicador de progreso -->
+            <div class="progress-steps mb-6">
+                <div class="step-circle active" id="prog-1">1</div>
+                <div class="step-line" id="line-1"></div>
+                <div class="step-circle" id="prog-2">2</div>
+                <div class="step-line" id="line-2"></div>
+                <div class="step-circle" id="prog-3">3</div>
+            </div>
+
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-green-800 rounded-full mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">¿Olvidaste tu contraseña?</h1>
+                <p class="text-gray-500 text-sm">Te enviaremos un código de 6 dígitos a tu correo</p>
+            </div>
+
+            <form id="form-email" class="space-y-5" novalidate>
+                <div>
+                    <label for="input-email" class="block text-sm font-semibold text-gray-700 mb-2">Correo electrónico</label>
+                    <input type="email" id="input-email" autocomplete="email" placeholder="tu@email.com"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition text-gray-900 text-base">
+                    <p id="email-err" class="text-red-500 text-sm mt-1.5 hidden flex items-center gap-1">
+                        <i class="fas fa-exclamation-circle"></i> <span id="email-err-text"></span>
+                    </p>
+                </div>
+
+                <!-- Alerta cuenta Google -->
+                <div id="google-alert" class="hidden p-4 rounded-xl bg-blue-50 border border-blue-200">
+                    <div class="flex items-start gap-3">
+                        <svg viewBox="0 0 48 48" class="w-6 h-6 flex-shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                        <div>
+                            <p class="text-blue-800 font-semibold text-sm">Esta cuenta usa Google</p>
+                            <p class="text-blue-700 text-sm mt-1">Tu cuenta fue creada con Google. Inicia sesión directamente con el botón de Google, sin necesidad de contraseña.</p>
+                            <a href="login.html" class="inline-block mt-3 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition">
+                                Ir a Iniciar Sesión
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-send-code"
+                    class="w-full bg-green-800 hover:bg-green-900 text-white py-3.5 px-6 rounded-xl font-semibold transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-lg">
+                    <i class="fas fa-paper-plane mr-2"></i>Enviar código de verificación
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <a href="login.html" class="text-sm text-green-700 hover:text-green-900 font-medium transition">
+                    ← Volver al inicio de sesión
+                </a>
+            </div>
+        </div>
+
+        <!-- ===== PASO 2: Ingresar código ===== -->
+        <div id="step-code" class="hidden panel-step rounded-2xl shadow-2xl p-8 border border-gray-100 bg-white">
+
+            <div class="progress-steps mb-6">
+                <div class="step-circle done">✓</div>
+                <div class="step-line done"></div>
+                <div class="step-circle active">2</div>
+                <div class="step-line"></div>
+                <div class="step-circle">3</div>
+            </div>
+
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-green-800 rounded-full mb-4">
+                    <i class="fas fa-shield-alt text-white text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Revisa tu correo</h2>
+                <p class="text-gray-500 text-sm">Ingresa el código de 6 dígitos que enviamos a</p>
+                <p id="display-email" class="mt-1 text-green-700 font-semibold text-base bg-green-50 px-3 py-1 rounded-full inline-block"></p>
+            </div>
+
+            <div id="code-error-msg" class="hidden mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm text-center font-medium"></div>
+            <div id="code-success-msg" class="hidden mb-4 p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm text-center font-medium"></div>
+
+            <!-- Cajas del código -->
+            <div class="code-inputs" id="code-inputs">
+                <input class="code-box" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="0">
+                <input class="code-box" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="1">
+                <input class="code-box" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="2">
+                <input class="code-box" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="3">
+                <input class="code-box" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="4">
+                <input class="code-box" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" data-index="5">
+            </div>
+
+            <!-- Intentos restantes -->
+            <p id="attempts-msg" class="text-center text-xs text-gray-400 mt-3"></p>
+
+            <!-- Countdown reenvío -->
+            <div class="text-center mt-4">
+                <p class="countdown-text" id="countdown-text">¿No llegó? Reenviar en <span id="countdown-sec">60</span>s</p>
+                <button id="btn-resend"><i class="fas fa-redo-alt mr-1"></i>Reenviar código</button>
+            </div>
+
+            <button id="btn-verify-code"
+                class="w-full mt-6 bg-green-800 hover:bg-green-900 text-white py-3.5 px-6 rounded-xl font-semibold transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-lg">
+                <i class="fas fa-check-circle mr-2"></i>Verificar código
+            </button>
+
+            <div class="mt-5 text-center">
+                <button onclick="goBackToEmail()" class="text-sm text-gray-500 hover:text-gray-700 transition">
+                    ← Cambiar correo
+                </button>
+            </div>
+        </div>
+
+        <!-- ===== PASO 3: Nueva contraseña ===== -->
+        <div id="step-reset" class="hidden panel-step rounded-2xl shadow-2xl p-8 border border-gray-100 bg-white">
+
+            <div class="progress-steps mb-6">
+                <div class="step-circle done">✓</div>
+                <div class="step-line done"></div>
+                <div class="step-circle done">✓</div>
+                <div class="step-line done"></div>
+                <div class="step-circle active">3</div>
+            </div>
+
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-green-800 rounded-full mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Nueva contraseña</h2>
+                <p class="text-gray-500 text-sm">Elige una contraseña segura para tu cuenta</p>
+            </div>
+
+            <form id="form-reset" class="space-y-5" novalidate>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nueva contraseña</label>
+                    <div class="relative">
+                        <input type="password" id="new-password" placeholder="Mínimo 8 caracteres"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition text-gray-900 pr-12">
+                        <button type="button" onclick="togglePwd('new-password','eye1a','eye1b')"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <svg id="eye1a" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <svg id="eye1b" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                        </button>
+                    </div>
+                    <div class="strength-bar-wrap"><div class="strength-bar" id="strength-bar"></div></div>
+                    <div class="mt-2 space-y-0.5">
+                        <div class="req-item" id="req-len"><span class="dot">○</span> Mínimo 8 caracteres</div>
+                        <div class="req-item" id="req-up"><span class="dot">○</span> Al menos una mayúscula</div>
+                        <div class="req-item" id="req-num"><span class="dot">○</span> Al menos un número</div>
+                        <div class="req-item" id="req-sym"><span class="dot">○</span> Al menos un símbolo (!@#$...)</div>
+                    </div>
+                    <p id="new-pwd-err" class="text-red-500 text-sm mt-1 hidden"></p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Confirmar contraseña</label>
+                    <div class="relative">
+                        <input type="password" id="confirm-password" placeholder="Repite tu contraseña"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition text-gray-900 pr-12">
+                        <button type="button" onclick="togglePwd('confirm-password','eye2a','eye2b')"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <svg id="eye2a" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <svg id="eye2b" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                        </button>
+                    </div>
+                    <p id="conf-pwd-err" class="text-red-500 text-sm mt-1 hidden"></p>
+                </div>
+
+                <div id="reset-err" class="hidden bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl text-sm"></div>
+
+                <button type="submit" id="btn-reset"
+                    class="w-full bg-green-800 hover:bg-green-900 text-white py-3.5 px-6 rounded-xl font-semibold transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-lg">
+                    <i class="fas fa-lock mr-2"></i>Guardar nueva contraseña
+                </button>
+            </form>
+        </div>
+
+        <!-- ===== PASO 4: Éxito ===== -->
+        <div id="step-done" class="hidden panel-step rounded-2xl shadow-2xl p-10 border border-gray-100 bg-white text-center">
+            <div class="inline-flex items-center justify-center w-24 h-24 bg-green-100 rounded-full mb-6">
+                <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-3">¡Contraseña actualizada!</h2>
+            <p class="text-gray-500 mb-8">Tu contraseña ha sido cambiada exitosamente. Ya puedes iniciar sesión con tu nueva contraseña.</p>
+            <a href="login.html" class="inline-block w-full bg-green-800 hover:bg-green-900 text-white py-3.5 px-6 rounded-xl font-semibold transition shadow-lg">
+                <i class="fas fa-sign-in-alt mr-2"></i>Ir a Iniciar Sesión
+            </a>
+        </div>
+
+    </div>
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-main">
+            <h2>Gigante Viagero</h2>
+            <p>Tu compañero ideal para descubrir nuevos destinos, vivir experiencias únicas y viajar con confianza.</p>
+            <div class="social-icons">
+                <a href="https://facebook.com/santiagovelasco" target="_blank" class="social-facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://tiktok.com" target="_blank" class="social-tiktok"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://instagram.com" target="_blank" class="social-instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://x.com" target="_blank" class="social-x"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-info">
+            <div class="info-item"><i class="fas fa-envelope"></i><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="771e19111837101e1016190312011e161d1205185914181a">[email&#160;protected]</a></span></div>
+            <div class="info-item"><i class="fas fa-phone"></i><span>+57 123 456 7890</span></div>
+            <div class="info-item"><i class="fas fa-map-marker-alt"></i><span>Bogotá, Colombia</span></div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2025 Gigante Viagero — Todos los derechos reservados</p>
+    </div>
+</footer>
+
+<!-- ========== FIREBASE ========== -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+        getAuth,
+        fetchSignInMethodsForEmail,
+        signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDsVWDgEJVw72CYjGcsXYTC_GuJfJ62Ch4",
+        authDomain: "gigante-viajero-55fef.firebaseapp.com",
+        projectId: "gigante-viajero-55fef",
+        storageBucket: "gigante-viajero-55fef.firebasestorage.app",
+        messagingSenderId: "254006563702",
+        appId: "1:254006563702:web:fc769a78e4ee576ef4e057"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    auth.languageCode = 'es';
+
+    // ─── API base ───────────────────────────────────────────────
+    // ⚠️ Cambia esta URL si tu backend corre en otro puerto/host
+    const API = 'http://localhost:5000/api/auth';
+
+    // ─── Estado de la sesión de recuperación ───────────────────
+    let currentEmail = '';
+    let attemptsLeft = 5;
+    let countdownInterval = null;
+
+    // ─── Helpers UI ────────────────────────────────────────────
+    function showStep(id) {
+        ['step-email','step-code','step-reset','step-done'].forEach(s => {
+            const el = document.getElementById(s);
+            if (el) el.classList.add('hidden');
+        });
+        const target = document.getElementById(id);
+        if (target) target.classList.remove('hidden');
+    }
+
+    function setButtonLoading(id, loading, originalHTML) {
+        const btn = document.getElementById(id);
+        if (!btn) return;
+        btn.disabled = loading;
+        btn.innerHTML = loading ? '<span class="spinner"></span> Procesando...' : originalHTML;
+    }
+
+    function showEmailErr(msg) {
+        const err = document.getElementById('email-err');
+        const txt = document.getElementById('email-err-text');
+        if (txt) txt.textContent = msg;
+        if (err) err.classList.remove('hidden');
+    }
+    function hideEmailErr() {
+        document.getElementById('email-err')?.classList.add('hidden');
+    }
+
+    // ─── PASO 1: Validar correo y enviar código ─────────────────
+    document.getElementById('form-email')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideEmailErr();
+        document.getElementById('google-alert')?.classList.add('hidden');
+
+        const email = document.getElementById('input-email').value.trim().toLowerCase();
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showEmailErr('Ingresa un correo con formato válido.');
+            return;
+        }
+
+        const originalHTML = document.getElementById('btn-send-code').innerHTML;
+        setButtonLoading('btn-send-code', true, originalHTML);
+
+        try {
+            // 1️⃣ Solo detectar cuentas exclusivamente de Google (sin contraseña)
+            try {
+                const methods = await fetchSignInMethodsForEmail(auth, email);
+                if (methods.includes('google.com') && !methods.includes('password')) {
+                    document.getElementById('google-alert')?.classList.remove('hidden');
+                    setButtonLoading('btn-send-code', false, originalHTML);
+                    return;
+                }
+            } catch (firebaseErr) {
+                // Si Firebase falla, continuamos de todas formas
+                console.warn('Verificación Firebase omitida:', firebaseErr.message);
+            }
+
+            // 2️⃣ Enviar código al correo via backend
+            const res = await fetch(`${API}/send-reset-code`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                showEmailErr(data.message || 'Error al enviar el código. Intenta más tarde.');
+                setButtonLoading('btn-send-code', false, originalHTML);
+                return;
+            }
+
+            // 3️⃣ Ir al paso 2
+            currentEmail = email;
+            attemptsLeft = 5;
+            document.getElementById('display-email').textContent = email;
+            showStep('step-code');
+            clearCodeBoxes();
+            startCountdown(60);
+            document.querySelector('.code-box[data-index="0"]')?.focus();
+
+        } catch (err) {
+            console.error(err);
+            showEmailErr('Error de conexión. Verifica tu internet e intenta de nuevo.');
+        } finally {
+            setButtonLoading('btn-send-code', false, originalHTML);
+        }
+    });
+
+    // ─── Cajas del código: navegación automática ───────────────
+    document.querySelectorAll('.code-box').forEach(box => {
+        box.addEventListener('input', (e) => {
+            const val = e.target.value.replace(/[^0-9]/g,'');
+            e.target.value = val;
+            if (val && e.target.dataset.index < 5) {
+                document.querySelector(`.code-box[data-index="${+e.target.dataset.index + 1}"]`)?.focus();
+            }
+            e.target.classList.toggle('filled', val !== '');
+            e.target.classList.remove('error');
+            document.getElementById('code-error-msg')?.classList.add('hidden');
+        });
+
+        box.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && !e.target.value && e.target.dataset.index > 0) {
+                document.querySelector(`.code-box[data-index="${+e.target.dataset.index - 1}"]`)?.focus();
+            }
+            if (e.key === 'Enter') verifyCode();
+        });
+
+        box.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g,'');
+            if (pasted.length === 6) {
+                document.querySelectorAll('.code-box').forEach((b, i) => {
+                    b.value = pasted[i] || '';
+                    b.classList.toggle('filled', b.value !== '');
+                });
+                document.querySelector('.code-box[data-index="5"]')?.focus();
+            }
+        });
+    });
+
+    // ─── PASO 2: Verificar código ──────────────────────────────
+    async function verifyCode() {
+        const boxes = document.querySelectorAll('.code-box');
+        const code  = Array.from(boxes).map(b => b.value).join('');
+
+        const errMsg = document.getElementById('code-error-msg');
+        const sucMsg = document.getElementById('code-success-msg');
+        errMsg?.classList.add('hidden');
+        sucMsg?.classList.add('hidden');
+
+        if (code.length < 6) {
+            errMsg.textContent = 'Por favor completa los 6 dígitos del código.';
+            errMsg?.classList.remove('hidden');
+            boxes.forEach(b => b.classList.add('error'));
+            return;
+        }
+
+        const btn = document.getElementById('btn-verify-code');
+        const origHTML = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Verificando...';
+
+        try {
+            const res = await fetch(`${API}/verify-reset-code`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: currentEmail, code })
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.valid) {
+                // Código correcto → paso 3
+                sucMsg.textContent = '✅ Código correcto. Ahora elige tu nueva contraseña.';
+                sucMsg?.classList.remove('hidden');
+                setTimeout(() => showStep('step-reset'), 900);
+                if (countdownInterval) clearInterval(countdownInterval);
+            } else {
+                attemptsLeft--;
+                boxes.forEach(b => { b.value = ''; b.classList.remove('filled'); b.classList.add('error'); });
+                document.querySelector('.code-box[data-index="0"]')?.focus();
+
+                if (attemptsLeft <= 0) {
+                    errMsg.textContent = 'Demasiados intentos fallidos. Solicita un nuevo código.';
+                    errMsg?.classList.remove('hidden');
+                    document.getElementById('attempts-msg').textContent = '';
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-ban mr-2"></i>Bloqueado';
+                } else {
+                    errMsg.textContent = data.message || 'Código incorrecto. Verifica e intenta de nuevo.';
+                    errMsg?.classList.remove('hidden');
+                    document.getElementById('attempts-msg').textContent =
+                        `Intentos restantes: ${attemptsLeft}`;
+                    // Shake animado
+                    const ci = document.getElementById('code-inputs');
+                    ci.classList.add('animate-shake');
+                    setTimeout(() => ci.classList.remove('animate-shake'), 400);
+                    btn.disabled = false;
+                    btn.innerHTML = origHTML;
+                }
+            }
+        } catch (err) {
+            errMsg.textContent = 'Error de conexión. Verifica tu internet.';
+            errMsg?.classList.remove('hidden');
+            btn.disabled = false;
+            btn.innerHTML = origHTML;
+        }
+    }
+    document.getElementById('btn-verify-code')?.addEventListener('click', verifyCode);
+
+    // ─── Reenvío con countdown ─────────────────────────────────
+    function startCountdown(seconds) {
+        const countText = document.getElementById('countdown-text');
+        const countSec  = document.getElementById('countdown-sec');
+        const btnResend = document.getElementById('btn-resend');
+
+        if (countdownInterval) clearInterval(countdownInterval);
+        countText.style.display = 'block';
+        btnResend.style.display = 'none';
+        let s = seconds;
+        countSec.textContent = s;
+
+        countdownInterval = setInterval(() => {
+            s--;
+            countSec.textContent = s;
+            if (s <= 0) {
+                clearInterval(countdownInterval);
+                countText.style.display = 'none';
+                btnResend.style.display = 'inline-block';
+            }
+        }, 1000);
+    }
+
+    document.getElementById('btn-resend')?.addEventListener('click', async () => {
+        const btnResend = document.getElementById('btn-resend');
+        btnResend.disabled = true;
+        btnResend.textContent = 'Enviando...';
+
+        try {
+            const res = await fetch(`${API}/send-reset-code`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: currentEmail })
+            });
+            attemptsLeft = 5;
+            document.getElementById('attempts-msg').textContent = '';
+            clearCodeBoxes();
+            document.getElementById('code-error-msg')?.classList.add('hidden');
+
+            const sucMsg = document.getElementById('code-success-msg');
+            sucMsg.textContent = '📨 Nuevo código enviado. Revisa tu bandeja.';
+            sucMsg?.classList.remove('hidden');
+            setTimeout(() => sucMsg?.classList.add('hidden'), 4000);
+
+            // Re-activar el botón de verificar si estaba bloqueado
+            const btnV = document.getElementById('btn-verify-code');
+            btnV.disabled = false;
+            btnV.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Verificar código';
+
+            startCountdown(60);
+        } catch {
+            btnResend.textContent = 'Error al reenviar';
+        }
+        btnResend.disabled = false;
+    });
+
+    // ─── PASO 3: Guardar nueva contraseña ──────────────────────
+    document.getElementById('form-reset')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const newPwd  = document.getElementById('new-password').value;
+        const confPwd = document.getElementById('confirm-password').value;
+        const newErr  = document.getElementById('new-pwd-err');
+        const confErr = document.getElementById('conf-pwd-err');
+        const resetErr = document.getElementById('reset-err');
+
+        [newErr, confErr, resetErr].forEach(el => { el?.classList.add('hidden'); if(el) el.textContent = ''; });
+
+        let hasError = false;
+        if (newPwd.length < 8) {
+            newErr.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+            newErr?.classList.remove('hidden'); hasError = true;
+        }
+        if (newPwd !== confPwd) {
+            confErr.textContent = 'Las contraseñas no coinciden.';
+            confErr?.classList.remove('hidden'); hasError = true;
+        }
+        if (hasError) return;
+
+        const btn = document.getElementById('btn-reset');
+        const origHTML = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Guardando...';
+
+        try {
+            const res = await fetch(`${API}/reset-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: currentEmail, newPassword: newPwd })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                showStep('step-done');
+            } else {
+                resetErr.textContent = data.message || 'Error al cambiar la contraseña. Intenta de nuevo.';
+                resetErr?.classList.remove('hidden');
+                btn.disabled = false;
+                btn.innerHTML = origHTML;
+            }
+        } catch {
+            resetErr.textContent = 'Error de conexión. Verifica tu internet.';
+            resetErr?.classList.remove('hidden');
+            btn.disabled = false;
+            btn.innerHTML = origHTML;
+        }
+    });
+
+    // ─── Fortaleza de contraseña ───────────────────────────────
+    document.getElementById('new-password')?.addEventListener('input', function () {
+        const v = this.value;
+        const hasLen = v.length >= 8, hasUp = /[A-Z]/.test(v);
+        const hasNum = /[0-9]/.test(v), hasSym = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(v);
+        const score = [hasLen, hasUp, hasNum, hasSym].filter(Boolean).length;
+        const colors = ['#ef4444','#f97316','#eab308','#22c55e'];
+        const bar = document.getElementById('strength-bar');
+        if (bar) { bar.style.width = (score*25)+'%'; bar.style.background = colors[score-1] || '#e5e7eb'; }
+        [['req-len',hasLen],['req-up',hasUp],['req-num',hasNum],['req-sym',hasSym]].forEach(([id,ok]) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.querySelector('.dot').textContent = ok ? '✓' : '○';
+            el.classList.toggle('ok', ok);
+        });
+    });
+
+    // ─── Helpers globales ──────────────────────────────────────
+    window.goBackToEmail = () => showStep('step-email');
+    window.togglePwd = (inputId, eyeA, eyeB) => {
+        const inp = document.getElementById(inputId);
+        const ea  = document.getElementById(eyeA);
+        const eb  = document.getElementById(eyeB);
+        if (!inp) return;
+        const show = inp.type === 'password';
+        inp.type = show ? 'text' : 'password';
+        ea?.classList.toggle('hidden', show);
+        eb?.classList.toggle('hidden', !show);
+    };
+
+    function clearCodeBoxes() {
+        document.querySelectorAll('.code-box').forEach(b => {
+            b.value = ''; b.classList.remove('filled','error');
+        });
+    }
+
+    // ─── Firebase Logout ───────────────────────────────────────
+    window.firebaseLogout = async () => {
+        await signOut(auth);
+        ["gigante_user","gigante_token","gigante_auth"].forEach(k => localStorage.removeItem(k));
+    };
+</script>
+
+<script src="../scripts/auth-api.js"></script>
+<script>
+    // Mobile toggle
+    document.getElementById('mobileToggle')?.addEventListener('click', () => {
+        document.getElementById('navMenu')?.classList.toggle('active');
+    });
+
+    // Header dinámico
+    function getActiveUser() {
+        if (typeof authAPI !== 'undefined' && authAPI.isAuthenticated()) { const u = authAPI.getUser(); if (u) return u; }
+        try { const ga = localStorage.getItem("gigante_auth"); const gu = localStorage.getItem("gigante_user"); if (ga==="true" && gu) { const u = JSON.parse(gu); if (u && u.email) return u; } } catch(e){}
+        return null;
+    }
+    function updateHeader() {
+        const user = getActiveUser();
+        const umc = document.getElementById('user-menu-container');
+        const ab  = document.getElementById('authButtons');
+        if (user) {
+            if (ab) ab.style.display='none';
+            if (umc) umc.style.display='block';
+            const fn=user.firstName||'U'; const ln=user.lastName||'';
+            const initials=(fn.charAt(0)+ln.charAt(0)).toUpperCase();
+            const ie=document.getElementById('user-initials');
+            if (ie) { if(user.photoURL){ie.style.overflow='hidden';ie.innerHTML=`<img src="${user.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.parentElement.innerHTML='${initials}';">`;}else{ie.textContent=initials;} }
+            const ne=document.getElementById('user-name'); if(ne)ne.textContent=fn;
+            const dne=document.getElementById('dropdown-user-name'); if(dne)dne.textContent=(fn+' '+ln).trim();
+            const dee=document.getElementById('dropdown-user-email'); if(dee)dee.textContent=user.email||'';
+            const re=document.getElementById('dropdown-user-role'); const ao=document.getElementById('admin-options');
+            if(re){if(user.role==='admin'){re.textContent='🔧 Administrador';re.style.background='rgba(244,196,0,0.3)';re.style.color='#F4C400';if(ao)ao.style.display='block';}else{re.textContent=user.provider==='google'?'🔥 Google':'👤 Cliente';re.style.background='rgba(59,130,246,0.2)';re.style.color='#3B82F6';if(ao)ao.style.display='none';}}
+        } else { if(umc)umc.style.display='none'; if(ab)ab.style.display='flex'; }
+    }
+
+    const umb=document.getElementById('user-menu-button');
+    const ud=document.getElementById('user-dropdown');
+    const umc=document.getElementById('user-menu-container');
+    if(umb && ud){
+        umb.addEventListener('click', e => { e.stopPropagation(); ud.classList.toggle('hidden'); });
+        document.addEventListener('click', e => { if(umc && !umc.contains(e.target)) ud.classList.add('hidden'); });
+    }
+    const lb=document.getElementById('logout-button');
+    if(lb){ lb.addEventListener('click', async e => { e.preventDefault(); if(typeof window.firebaseLogout==='function') await window.firebaseLogout(); if(typeof authAPI!=='undefined') authAPI.logout(); ["gigante_user","gigante_token","gigante_auth","token","authToken","user","currentUser","userData"].forEach(k=>localStorage.removeItem(k)); window.location.href='index.html'; }); }
+    document.addEventListener('DOMContentLoaded', () => setTimeout(updateHeader, 150));
+    window.addEventListener('storage', e => { if(['authData','gigante_auth','gigante_user'].includes(e.key)) updateHeader(); });
+</script>
+<!-- BOTÓN VOLVER -->
+<style>
+  .btn-volver {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #195C33, #2e7d32);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border: none;
+    z-index: 9999;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .btn-volver:hover {
+    transform: scale(1.1) translateX(-3px);
+    box-shadow: 0 6px 20px rgba(25, 92, 51, 0.4);
+    background: linear-gradient(135deg, #0d3d20, #195C33);
+  }
+
+  .btn-volver svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: white;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+</style>
+
+<a class="btn-volver" onclick="history.back()" href="#">
+  <svg viewBox="0 0 24 24">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+</a>
+</body>
+</html>

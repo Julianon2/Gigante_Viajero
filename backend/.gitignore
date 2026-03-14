@@ -1,0 +1,9 @@
+# Archivos y carpetas a ignorar para Gigante Viajero
+
+.env
+.env.example
+serviceAccountKey.json
+logs/
+uploads/
+node_modules/
+package-lock.json

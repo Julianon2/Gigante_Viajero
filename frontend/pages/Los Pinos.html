@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sitio Turístico - Gigante Viajero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* ====== RESET & BASE ====== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #1f2937;
+    }
+
+    /* ====== HEADER ====== */
+    header {
+      background: linear-gradient(135deg, #195C33 0%, #0d3d20 100%);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .header-container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      gap: 32px;
+    }
+    .logo-section { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .logo-img { width: 56px; height: 56px; object-fit: contain; }
+    .logo-text { color: white; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+    .nav-menu { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-link {
+      color: white; text-decoration: none; font-weight: 600; font-size: 16px;
+      padding: 8px 0; position: relative; transition: color 0.3s ease;
+    }
+    .nav-link:hover { color: #FFDD00; }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background: #FFDD00; transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    .dropdown { position: relative; }
+    .dropdown-menu {
+      position: absolute; top: calc(100% + 12px); left: 0;
+      background: white; border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      min-width: 220px; opacity: 0; visibility: hidden;
+      transform: translateY(-10px); transition: all 0.3s ease; overflow: hidden;
+    }
+    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-menu a {
+      display: block; padding: 14px 20px; color: #195C33;
+      text-decoration: none; font-weight: 500; transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+    }
+    .dropdown-menu a:hover { background: #f3f4f6; color: #195C33; border-left-color: #FFDD00; padding-left: 24px; }
+    .auth-section { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+    .btn { padding: 10px 28px; border-radius: 30px; font-weight: 600; font-size: 15px; text-decoration: none; transition: all 0.3s ease; cursor: pointer; border: none; display: inline-block; }
+    .btn-login { background: transparent; color: white; border: 2px solid white; }
+    .btn-login:hover { background: white; color: #195C33; transform: translateY(-2px); }
+    .btn-register { background: linear-gradient(135deg, #F4C400 0%, #FFE347 100%); color: #195C33; box-shadow: 0 4px 15px rgba(244,196,0,0.3); }
+    .btn-register:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244,196,0,0.5); }
+
+    /* User menu */
+    #user-menu-container { display: none; position: relative; }
+    #user-menu-button {
+      display: flex; align-items: center; gap: 10px; padding: 8px 16px;
+      background: rgba(255,255,255,0.1); border-radius: 50px; cursor: pointer;
+      transition: all 0.3s ease; border: 2px solid transparent;
+    }
+    #user-menu-button:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); }
+    #user-initials {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg,#F4C400 0%,#FFE347 100%);
+      display: flex; align-items: center; justify-content: center;
+      color: #195C33; font-weight: 700; font-size: 16px;
+    }
+    #user-name { color: white; font-weight: 600; font-size: 15px; }
+    .user-chevron { color: white; font-size: 12px; }
+    #user-dropdown {
+      position: absolute; top: calc(100% + 12px); right: 0; width: 280px;
+      background: white; border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+      border: 1px solid rgba(0,0,0,0.1); z-index: 9999;
+      transition: all 0.3s ease;
+    }
+    #user-dropdown.hidden { opacity: 0; visibility: hidden; transform: translateY(-10px); pointer-events: none; }
+    .user-dropdown-header {
+      padding: 20px;
+      background: linear-gradient(135deg,#195C33 0%,#0d3d20 100%);
+      border-radius: 16px 16px 0 0;
+    }
+    #dropdown-user-name { color: white; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    #dropdown-user-email { color: rgba(255,255,255,0.8); font-size: 13px; }
+    #dropdown-user-role { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+    .user-dropdown-item {
+      display: flex; align-items: center; padding: 14px 20px; color: #1f2937;
+      text-decoration: none; transition: all 0.2s ease; font-size: 14px;
+      font-weight: 500; cursor: pointer; border: none; background: none; width: 100%; text-align: left;
+    }
+    .user-dropdown-item:hover { background: #f3f4f6; color: #195C33; }
+    .user-dropdown-item i { width: 20px; margin-right: 12px; color: #6b7280; }
+    .user-dropdown-item:hover i { color: #195C33; }
+    .user-dropdown-divider { height: 1px; background: #e5e7eb; margin: 8px 0; }
+    .user-dropdown-item.logout { color: #dc2626; }
+    .user-dropdown-item.logout:hover { background: #fee2e2; }
+    .user-dropdown-item.logout i { color: #dc2626; }
+    .mobile-toggle { display: none; flex-direction: column; gap: 6px; cursor: pointer; padding: 8px; }
+    .mobile-toggle span { width: 28px; height: 3px; background: white; border-radius: 3px; }
+
+    /* ====== HERO ====== */
+    .hero {
+      position: relative; width: 100%; height: 380px;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+      background-color: #1d5f2d;
+    }
+    .hero-background {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center; z-index: 0;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 1;
+    }
+    .hero h1 {
+      position: relative; z-index: 3; font-size: 3.2rem; font-weight: 900;
+      text-align: center; color: #ffffff !important;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.9); padding: 0 20px; max-width: 90%;
+    }
+
+    /* ====== MAIN ====== */
+    main {
+      max-width: 1200px; margin: 50px auto 0;
+      background: white; box-shadow: 0 0 10px rgba(0,0,0,0.08);
+      padding: 50px; border-radius: 8px;
+    }
+    main h1 { color: #1d5f2d; font-size: 2.4rem; margin-bottom: 16px; text-align: center; }
+    main h2 {
+      color: #2f3e1e; font-size: 2rem; margin: 40px 0 20px;
+      border-left: 5px solid #fdd835; padding-left: 15px;
+    }
+    main h3 { color: #1d5f2d; font-size: 1.5rem; margin: 30px 0 15px; }
+    main p { text-align: justify; line-height: 1.8; color: #333; margin-bottom: 20px; font-size: 1.1rem; }
+
+    /* Badges */
+    .badge-cat {
+      display: inline-block; padding: 4px 14px; border-radius: 20px;
+      background: #e8f5e9; color: #1d5f2d; font-size: 0.85rem;
+      font-weight: 600; margin: 0 4px 8px 0; text-transform: capitalize;
+    }
+    .tag {
+      display: inline-block; padding: 3px 12px; border-radius: 20px;
+      background: #f3f4f6; color: #6b7280; font-size: 0.82rem; margin: 3px;
+    }
+
+    /* ====== DATOS GRID ====== */
+    .datos-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px; margin: 30px 0 40px;
+    }
+    .dato-card {
+      background: #f8fdf5; border: 2px solid #cdd8c4; border-radius: 10px;
+      padding: 25px; text-align: center; transition: all 0.3s ease;
+    }
+    .dato-card:hover { background: #1d5f2d; transform: scale(1.05); }
+    .dato-card:hover .dato-icon, .dato-card:hover .dato-label { color: #fdd835; }
+    .dato-card:hover .dato-value { color: white; }
+    .dato-icon { font-size: 2.5rem; color: #1d5f2d; margin-bottom: 10px; transition: color 0.3s; }
+    .dato-label { font-size: 0.85rem; color: #666; margin-bottom: 8px; transition: color 0.3s; }
+    .dato-value { font-size: 1.1rem; font-weight: 700; color: #1d5f2d; }
+
+    /* ====== HISTORIA ====== */
+    .historia-section {
+      background: linear-gradient(135deg, #f8fdf5, #e8f5e9);
+      padding: 40px; border-radius: 15px; margin: 40px 0;
+      border-left: 5px solid #1d5f2d;
+    }
+    .historia-section h2 { border: none; padding: 0; margin-top: 0; }
+
+    /* ====== ELEMENTOS (Xhimanut) ====== */
+    .elementos-section {
+      background: linear-gradient(135deg, #1d5f2d 0%, #2f3e1e 100%);
+      color: white; padding: 60px 50px; margin: 60px 0; border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(29,95,45,0.3);
+    }
+    .elementos-section h2 {
+      color: #fdd835; text-align: center; border: none; padding: 0;
+      margin-bottom: 15px; font-size: 2.2rem;
+    }
+    .elementos-section > p { text-align: center; color: rgba(255,255,255,0.9); }
+    .elementos-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;
+      margin-top: 40px; max-width: 900px; margin-left: auto; margin-right: auto;
+    }
+    .elemento-card {
+      background: rgba(255,255,255,0.1); border: 2px solid #fdd835;
+      border-radius: 20px; padding: 40px 30px; text-align: center;
+      transition: all 0.4s ease;
+    }
+    .elemento-card:hover { background: rgba(253,216,53,0.25); transform: translateY(-10px) scale(1.03); box-shadow: 0 15px 40px rgba(253,216,53,0.4); }
+    .elemento-icon { font-size: 4rem; margin-bottom: 15px; }
+    .elemento-card h3 { color: #fdd835; font-size: 1.8rem; margin-bottom: 12px; }
+    .elemento-card p { color: rgba(255,255,255,0.95); text-align: center; }
+
+    /* ====== ATRACCIONES ====== */
+    .atracciones-section {
+      background: linear-gradient(135deg, #f8fdf5, #e8f5e9);
+      padding: 50px; border-radius: 15px; margin: 50px 0; border: 3px solid #cdd8c4;
+    }
+    .atracciones-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px; margin-top: 30px;
+    }
+    .atraccion-card {
+      background: white; border-radius: 15px; padding: 30px; text-align: center;
+      border: 2px solid #cdd8c4; transition: all 0.3s ease;
+    }
+    .atraccion-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+    .atraccion-icon { font-size: 3.5rem; margin-bottom: 16px; }
+    .atraccion-card h3 { color: #1d5f2d; margin-bottom: 12px; font-size: 1.2rem; }
+    .atraccion-card p { color: #666; text-align: center; font-size: 0.97rem; }
+
+    /* ====== SERVICIOS ====== */
+    .servicios-section {
+      background: linear-gradient(135deg, #f8fdf5, #e8f5e9);
+      padding: 50px; border-radius: 15px; margin: 40px 0; border: 3px solid #cdd8c4;
+    }
+    .servicios-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px; margin-top: 28px;
+    }
+    .servicio-item {
+      display: flex; align-items: center; gap: 14px; background: white;
+      padding: 22px; border-radius: 12px; border: 2px solid #cdd8c4; transition: all 0.3s ease;
+    }
+    .servicio-item:hover { border-color: #1d5f2d; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(29,95,45,0.15); }
+    .servicio-item i { font-size: 2rem; color: #1d5f2d; min-width: 40px; text-align: center; transition: all 0.3s ease; }
+    .servicio-item:hover i { color: #fdd835; transform: scale(1.1); }
+    .servicio-item span { color: #333; font-size: 1rem; font-weight: 600; }
+
+    /* ====== ALOJAMIENTOS ====== */
+    .alojamientos-section { margin: 50px 0; }
+    .alojamientos-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px; margin-top: 30px;
+    }
+    .alojamiento-card {
+      background: white; border-radius: 16px; padding: 30px;
+      border: 2px solid #cdd8c4; transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .alojamiento-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(29,95,45,0.15); border-color: #1d5f2d; }
+    .alojamiento-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .alojamiento-header h3 { color: #1d5f2d; font-size: 1.3rem; }
+    .alojamiento-tipo {
+      background: #e8f5e9; color: #1d5f2d; padding: 4px 12px;
+      border-radius: 20px; font-size: 0.82rem; font-weight: 600; text-transform: capitalize;
+    }
+    .alojamiento-desc { color: #555; font-size: 0.97rem; line-height: 1.6; margin-bottom: 14px; text-align: left; }
+    .desayuno-tag {
+      display: inline-block; background: #fff8e1; color: #f57f17;
+      padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; margin-bottom: 12px;
+    }
+    .alojamiento-amenidades { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .amenidad-tag {
+      background: #f3f4f6; color: #555; padding: 4px 10px;
+      border-radius: 20px; font-size: 0.8rem;
+    }
+    .alojamiento-precios { border-top: 1px solid #e5e7eb; padding-top: 14px; margin-bottom: 18px; }
+    .alojamiento-precio {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0; border-bottom: 1px dashed #e5e7eb;
+    }
+    .alojamiento-precio:last-child { border-bottom: none; }
+    .precio-desc { color: #777; font-size: 0.9rem; }
+    .precio-val { color: #1d5f2d; font-weight: 700; font-size: 1.05rem; }
+    .btn-reservar {
+      display: block; text-align: center; background: linear-gradient(135deg,#1d5f2d,#2e7d32);
+      color: white; padding: 13px 20px; border-radius: 30px; text-decoration: none;
+      font-weight: 700; font-size: 0.97rem; transition: all 0.3s ease;
+    }
+    .btn-reservar:hover { background: linear-gradient(135deg,#2e7d32,#388e3c); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(29,95,45,0.35); }
+
+    /* ====== CTA ====== */
+    .cta-section {
+      background: linear-gradient(135deg,#1d5f2d,#2f3e1e); color: white;
+      text-align: center; padding: 50px 40px; margin: 40px auto;
+      border-radius: 15px; max-width: 950px;
+    }
+    .cta-section h2 { color: #fdd835; font-size: 2.2rem; margin-bottom: 15px; border: none; padding: 0; font-weight: 700; }
+    .cta-section p { font-size: 1.1rem; margin: 0 auto 25px; text-align: center; max-width: 750px; color: rgba(255,255,255,0.9); }
+    .cta-button {
+      display: inline-block; background-color: #fdd835; color: #1d5f2d;
+      padding: 14px 40px; border-radius: 30px; text-decoration: none;
+      font-weight: 700; font-size: 1.05rem; transition: all 0.3s ease;
+    }
+    .cta-button:hover { background-color: #fff176; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+
+    /* ====== FOOTER ====== */
+    footer {
+      background: linear-gradient(135deg,#195C33 0%,#0d3d20 100%);
+      color: white; padding: 3rem 1.5rem 1rem; position: relative; overflow: hidden;
+    }
+    footer::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg,#F4C400 0%,#ffd700 50%,#F4C400 100%);
+    }
+    .footer-container { max-width: 1200px; margin: 0 auto; }
+    .footer-main { text-align: center; margin-bottom: 2rem; }
+    .footer-main h2 { color: #F4C400; font-size: 32px; font-weight: 700; margin-bottom: 1rem; }
+    .footer-main p { color: #e5e7eb; font-size: 16px; line-height: 1.7; max-width: 600px; margin: 0 auto 2rem; }
+    .social-icons { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.5rem; }
+    .social-icons a {
+      width: 55px; height: 55px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; transition: all 0.4s ease;
+      font-size: 24px; border: 3px solid rgba(255,255,255,0.2);
+      text-decoration: none; color: white;
+    }
+    .social-icons a:hover { transform: translateY(-8px) scale(1.1); border-color: #F4C400; }
+    .social-facebook { background: linear-gradient(135deg,#1877F2,#0d5dbf); }
+    .social-instagram { background: linear-gradient(135deg,#E1306C,#833AB4); }
+    .social-tiktok { background: linear-gradient(135deg,#000,#333); }
+    .social-x { background: linear-gradient(135deg,#000,#1a1a1a); }
+    .footer-divider { height: 2px; background: linear-gradient(90deg,transparent,rgba(244,196,0,0.8),transparent); margin: 2.5rem 0; }
+    .footer-info { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .info-item { display: flex; align-items: center; gap: 0.75rem; color: #e5e7eb; font-size: 15px; transition: all 0.3s ease; }
+    .info-item:hover { color: #F4C400; }
+    .info-item i { color: #F4C400; font-size: 20px; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1.5rem; text-align: center; }
+    .footer-bottom p { color: #d1d5db; font-size: 14px; margin: 0; }
+
+    /* ====== BTN VOLVER ====== */
+    .btn-volver {
+      position: fixed; top: 100px; left: 20px; width: 44px; height: 44px;
+      background: linear-gradient(135deg,#195C33,#2e7d32); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: none; z-index: 9999;
+      transition: all 0.3s ease; text-decoration: none;
+    }
+    .btn-volver:hover { transform: scale(1.1) translateX(-3px); box-shadow: 0 6px 20px rgba(25,92,51,0.4); }
+    .btn-volver svg { width: 20px; height: 20px; fill: none; stroke: white; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ====== TURIBOT ====== */
+    :root { --mountain:#1b5e20; --leaf:#2e7d32; --soft:#66bb6a; --light:#f4f9f4; --gray:#e5e7eb; --text:#1f2937; }
+  
+    .loader { width:45px; height:12px; display:flex; justify-content:space-between; }
+    .loader span { width:9px; height:9px; background:var(--leaf); border-radius:50%; animation:bounce 1s infinite ease-in-out; }
+    .loader span:nth-child(2) { animation-delay:.2s; }
+    .loader span:nth-child(3) { animation-delay:.4s; }
+    @keyframes bounce { 0%,80%,100%{transform:scale(0)} 40%{transform:scale(1)} }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 968px) {
+      .mobile-toggle { display: flex; }
+      .nav-menu { position: absolute; top: 100%; left: 0; right: 0; background: linear-gradient(135deg,#195C33,#0d3d20); flex-direction: column; gap: 0; padding: 20px 24px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+      .nav-menu.active { max-height: 600px; }
+      .nav-link { display: block; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      #user-name { display: none; }
+    }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.2rem; }
+      main { padding: 30px 20px; }
+      .datos-grid, .atracciones-grid, .servicios-grid, .alojamientos-grid, .elementos-grid { grid-template-columns: 1fr; }
+      .elementos-section { padding: 40px 20px; }
+      .atracciones-section, .servicios-section { padding: 30px 20px; }
+    }
+    .reviews-section > h2 {
+  color: #1d5f2d; font-size: 2rem; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+  border-left: 5px solid #fdd835; padding-left: 15px;
+}
+.reviews-summary {
+  display: flex; align-items: center; gap: 40px;
+  background: linear-gradient(135deg, #f8fdf5, #e8f5e9);
+  border-radius: 20px; padding: 36px 40px; margin: 30px 0;
+  border: 2px solid #cdd8c4; flex-wrap: wrap;
+}
+.summary-score { text-align: center; min-width: 130px; }
+.summary-score .big-number {
+  font-size: 5rem; font-weight: 900; color: #1d5f2d; line-height: 1;
+}
+.summary-stars { display: flex; justify-content: center; gap: 4px; margin: 6px 0; font-size: 1.5rem; }
+.summary-score .total-label { color: #6b7280; font-size: 0.9rem; font-weight: 500; }
+.summary-bars { flex: 1; min-width: 200px; }
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.bar-label { font-size: 0.85rem; color: #555; width: 50px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 10px; background: #dde8d8; border-radius: 10px; overflow: hidden; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, #fdd835, #f9a825); border-radius: 10px; transition: width 0.8s ease; }
+.bar-count { font-size: 0.82rem; color: #777; width: 20px; text-align: right; }
+
+.review-form-wrapper {
+  background: white; border: 2px solid #cdd8c4; border-radius: 18px;
+  padding: 36px; margin: 30px 0; box-shadow: 0 4px 20px rgba(29,95,45,0.07);
+}
+.review-form-wrapper h3 { color: #1d5f2d; font-size: 1.4rem; margin-bottom: 6px; }
+.review-form-wrapper .form-subtitle { color: #6b7280; font-size: 0.95rem; margin-bottom: 24px; }
+
+.star-selector { display: flex; gap: 8px; margin-bottom: 20px; flex-direction: row-reverse; justify-content: flex-end; }
+.star-selector input { display: none; }
+.star-selector label { font-size: 2.4rem; cursor: pointer; color: #ddd; transition: color 0.2s ease, transform 0.15s ease; }
+.star-selector label:hover,
+.star-selector label:hover ~ label,
+.star-selector input:checked ~ label { color: #fdd835; }
+.star-selector label:hover { transform: scale(1.2); }
+
+.review-textarea {
+  width: 100%; border: 2px solid #e5e7eb; border-radius: 12px;
+  padding: 16px; font-size: 1rem; font-family: 'Inter', sans-serif;
+  resize: vertical; min-height: 120px;
+  transition: border-color 0.3s, box-shadow 0.3s; color: #1f2937;
+}
+.review-textarea:focus { outline: none; border-color: #1d5f2d; box-shadow: 0 0 0 4px rgba(29,95,45,0.1); }
+.review-char-count { text-align: right; font-size: 0.82rem; color: #9ca3af; margin-top: 4px; margin-bottom: 18px; }
+.btn-submit-review {
+  background: linear-gradient(135deg, #1d5f2d, #2e7d32); color: white;
+  border: none; padding: 14px 36px; border-radius: 30px;
+  font-size: 1rem; font-weight: 700; cursor: pointer;
+  transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,95,45,0.25);
+}
+.btn-submit-review:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(29,95,45,0.35); }
+.btn-submit-review:disabled { opacity: 0.6; cursor: not-allowed; }
+.review-msg { margin-top: 14px; padding: 12px 18px; border-radius: 10px; font-size: 0.95rem; font-weight: 500; display: none; }
+.review-msg.success { background: #dcfce7; color: #15803d; border: 1px solid #86efac; display: block; }
+.review-msg.error   { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; display: block; }
+
+.review-login-prompt {
+  background: linear-gradient(135deg, #f8fdf5, #e8f5e9);
+  border: 2px dashed #a7c4a0; border-radius: 16px; padding: 32px;
+  text-align: center; margin: 30px 0;
+}
+.review-login-prompt p { color: #4b5563; font-size: 1rem; margin-bottom: 16px; }
+.review-login-prompt a {
+  background: linear-gradient(135deg, #1d5f2d, #2e7d32); color: white;
+  padding: 12px 30px; border-radius: 30px; text-decoration: none;
+  font-weight: 700; transition: all 0.3s;
+}
+.review-login-prompt a:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(29,95,45,0.3); }
+
+.reviews-list { margin-top: 20px; display: flex; flex-direction: column; gap: 20px; }
+.review-card {
+  background: white; border: 1.5px solid #e8f0e4; border-radius: 16px;
+  padding: 24px 28px; transition: box-shadow 0.3s ease; position: relative;
+}
+.review-card:hover { box-shadow: 0 8px 25px rgba(29,95,45,0.1); }
+.review-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.review-avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: linear-gradient(135deg, #1d5f2d, #4caf50);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; overflow: hidden;
+}
+.review-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.review-meta { flex: 1; }
+.review-author { font-weight: 700; color: #1f2937; font-size: 1rem; }
+.review-date   { color: #9ca3af; font-size: 0.82rem; margin-top: 2px; }
+.review-stars  { display: flex; gap: 3px; font-size: 1.1rem; }
+.review-text   { color: #4b5563; font-size: 0.97rem; line-height: 1.7; }
+.btn-delete-review {
+  position: absolute; top: 18px; right: 18px; background: none;
+  border: none; cursor: pointer; color: #d1d5db; font-size: 1rem;
+  transition: color 0.2s; padding: 4px;
+}
+.btn-delete-review:hover { color: #dc2626; }
+.reviews-empty { text-align: center; padding: 50px 20px; color: #9ca3af; }
+.reviews-empty .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+.reviews-loading { text-align: center; padding: 40px; color: #6b7280; }
+
+@media (max-width: 768px) {
+  .reviews-summary { flex-direction: column; gap: 24px; padding: 24px; }
+  .review-form-wrapper { padding: 24px 20px; }
+  .star-selector label { font-size: 2rem; }
+}
+  </style>
+</head>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  PARA CADA SITIO: cambia SOLO el data-slug del <body>       ║
+  ║  Slugs disponibles:                                          ║
+  ║    brisas-de-mirthayu    xhimanut        los-pinos          ║
+  ║    mano-del-gigante      loma-de-la-cruz  la-morra          ║
+  ║    la-casita-del-arbol   la-perla                           ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<body data-slug="los-pinos">
+
+  <!-- ── HEADER ─────────────────────────────────────────────── -->
+  <header>
+    <div class="header-container">
+      <div class="header-content">
+        <div class="logo-section">
+          <img src="../assets/img/logo.png" alt="Logo Gigante Viajero" class="logo-img">
+          <h1 class="logo-text">Gigante Viajero</h1>
+        </div>
+        <nav>
+          <ul class="nav-menu" id="navMenu">
+            <li><a href="index.html" class="nav-link">Inicio</a></li>
+            <li><a href="sitio.html" class="nav-link">Explora</a></li>
+            <li class="dropdown">
+              <a href="#" class="nav-link dropdown-toggle">Descubre ▾</a>
+              <div class="dropdown-menu">
+                <a href="naturaleza.html">Naturaleza</a>
+                <a href="historia.html">Historia</a>
+                <a href="gastronomia.html">Gastronomía</a>
+                <a href="turismo religioso.html">Turismo Religioso</a>
+              </div>
+            </li>
+            <li><a href="mapa.html" class="nav-link">Mapa</a></li>
+            <li><a href="contactos.html" class="nav-link">Contacto</a></li>
+          </ul>
+        </nav>
+        <div class="auth-section">
+          <div id="user-menu-container">
+            <button id="user-menu-button">
+              <div id="user-initials">U</div>
+              <span id="user-name">Usuario</span>
+              <i class="fas fa-chevron-down user-chevron"></i>
+            </button>
+            <div id="user-dropdown" class="hidden">
+              <div class="user-dropdown-header">
+                <div id="dropdown-user-name">Nombre Usuario</div>
+                <div id="dropdown-user-email">email@ejemplo.com</div>
+                <span id="dropdown-user-role">👤 Cliente</span>
+              </div>
+              <div id="admin-options" style="display:none;">
+                <a href="admin_dashboard.html" class="user-dropdown-item"><i class="fas fa-chart-line"></i>Dashboard</a>
+                <div class="user-dropdown-divider"></div>
+              </div>
+              <a href="perfil.html" class="user-dropdown-item"><i class="fas fa-user"></i>Mi Perfil</a>
+              <a href="mis_reservas.html" class="user-dropdown-item"><i class="fas fa-shopping-bag"></i>Mis reservas</a>
+              <div class="user-dropdown-divider"></div>
+              <button id="logout-button" class="user-dropdown-item logout"><i class="fas fa-sign-out-alt"></i>Cerrar Sesión</button>
+            </div>
+          </div>
+          <div id="authButtons">
+            <a href="login.html" class="btn btn-login">Iniciar Sesión</a>
+            <a href="register.html" class="btn btn-register">Registrarse</a>
+          </div>
+          <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── HERO ───────────────────────────────────────────────── -->
+  <div class="hero">
+    <img id="sitio-hero-bg" src="" alt="Imagen del sitio" class="hero-background">
+    <h1 id="sitio-hero-title">Cargando...</h1>
+  </div>
+
+  <!-- ── MAIN CONTENT ───────────────────────────────────────── -->
+  <main>
+    <!-- Título y descripción -->
+    <h1 id="sitio-nombre"></h1>
+    <div id="sitio-categorias" style="text-align:center; margin-bottom:20px;"></div>
+    <p id="sitio-descripcion"></p>
+
+    <!-- Datos rápidos -->
+    <h2>Información Esencial</h2>
+    <div id="sitio-datos-grid" class="datos-grid"></div>
+
+    <!-- Historia / Leyenda -->
+    <div class="historia-section" id="sitio-historia-section">
+      <h2>📖 Historia y Leyenda</h2>
+      <p id="sitio-historia"></p>
+    </div>
+
+    <!-- Elementos (solo Xhimanut) -->
+    <div class="elementos-section" id="sitio-elementos-section" style="display:none;">
+      <h2>🌊🔥 Agua · Fuego · Tierra · Aire 🌿🌬️</h2>
+      <p>Una experiencia mágica a través de la sinfonía de los cuatro elementos naturales.</p>
+      <div id="sitio-elementos-grid" class="elementos-grid"></div>
+    </div>
+
+    <!-- Atracciones -->
+    <h2>Atracciones y Actividades</h2>
+    <div class="atracciones-section">
+      <div id="sitio-atracciones-grid" class="atracciones-grid"></div>
+    </div>
+
+    <!-- Servicios -->
+    <h2>Servicios y Comodidades</h2>
+    <div class="servicios-section">
+      <div id="sitio-servicios-grid" class="servicios-grid"></div>
+    </div>
+
+    <!-- Alojamientos -->
+    <div id="sitio-alojamientos-section" class="alojamientos-section">
+      <h2>🏡 Opciones de Alojamiento</h2>
+      <div id="sitio-alojamientos-grid" class="alojamientos-grid"></div>
+    </div>
+
+    <!-- Tags -->
+    <div style="margin: 30px 0;" id="sitio-tags"></div>
+  </main>
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <div class="cta-section" style="margin: 0 auto 60px; max-width:1200px; padding: 0 24px;">
+    <div style="background:linear-gradient(135deg,#1d5f2d,#2f3e1e); border-radius:15px; padding:50px 40px; text-align:center;">
+      <h2 id="sitio-cta-title" style="color:#fdd835; font-size:2.2rem; margin-bottom:15px; font-weight:700;"></h2>
+      <p style="font-size:1.1rem; color:rgba(255,255,255,0.9); margin-bottom:25px;">Prepárate para una experiencia inolvidable en Gigante, Huila.</p>
+      <a id="sitio-cta-btn" href="reserva.html" class="cta-button">Reserva tu Visita</a>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-main">
+        <h2>Gigante Viajero</h2>
+        <p>Tu compañero ideal para descubrir nuevos destinos, vivir experiencias únicas y viajar con confianza.</p>
+        <div class="social-icons">
+          <a href="https://facebook.com" target="_blank" class="social-facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://tiktok.com"   target="_blank" class="social-tiktok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="https://instagram.com" target="_blank" class="social-instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://x.com"        target="_blank" class="social-x"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-info">
+        <div class="info-item"><i class="fas fa-envelope"></i><span>info@giganteviajero.com</span></div>
+        <div class="info-item"><i class="fas fa-phone"></i><span>+57 123 456 7890</span></div>
+        <div class="info-item"><i class="fas fa-map-marker-alt"></i><span>Gigante, Huila, Colombia</span></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Gigante Viajero — Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <!-- ── BOTÓN VOLVER ───────────────────────────────────────── -->
+  <a class="btn-volver" onclick="history.back()" href="#">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </a>
+
+
+
+  <!-- ── SCRIPTS ────────────────────────────────────────────── -->
+  <script src="../scripts/auth-api.js"></script>
+  <script src="../scripts/session.js"></script>
+  <script src="../scripts/main.js"></script>
+  <!-- ↓ Script principal que lee sitios.json y renderiza todo ↓ -->
+  <script src="../scripts/sitio-detail.js"></script>
+  <script src="../scripts/reviews.js"></script>
+  <script src="../scripts/photo-sync.js"></script>
+  <script src="../scripts/turibot.js"></script>
+
+  <script>
+    // ── Mobile menu ──────────────────────────────────────────
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navMenu = document.getElementById('navMenu');
+    if (mobileToggle) mobileToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+
+    // ── Auth header ──────────────────────────────────────────
+    const userMenuContainer = document.getElementById('user-menu-container');
+    const authButtons       = document.getElementById('authButtons');
+    const userMenuButton    = document.getElementById('user-menu-button');
+    const userDropdown      = document.getElementById('user-dropdown');
+    const logoutButton      = document.getElementById('logout-button');
+    const adminOptions      = document.getElementById('admin-options');
+
+    function getActiveUser() {
+      if (typeof authAPI !== 'undefined' && authAPI.isAuthenticated()) {
+        const user = authAPI.getUser(); if (user) return user;
+      }
+      try {
+        const googleAuth = localStorage.getItem("gigante_auth");
+        const googleUser = localStorage.getItem("gigante_user");
+        if (googleAuth === "true" && googleUser) {
+          const user = JSON.parse(googleUser); if (user?.email) return user;
+        }
+      } catch(e) {}
+      return null;
+    }
+
+    function updateHeader() {
+      const user = getActiveUser();
+      if (user) {
+        if (authButtons) authButtons.style.display = 'none';
+        if (userMenuContainer) userMenuContainer.style.display = 'block';
+        const firstName = user.firstName || 'Usuario';
+        const lastName  = user.lastName  || '';
+        const initials  = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+        const fullName  = (firstName + ' ' + lastName).trim();
+        const initialsEl = document.getElementById('user-initials');
+        if (initialsEl) {
+          if (user.photoURL) {
+            initialsEl.style.cssText = 'background:transparent;padding:0;overflow:hidden;';
+            initialsEl.innerHTML = `<img src="${user.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.parentElement.textContent='${initials}';this.parentElement.style.background='linear-gradient(135deg,#F4C400,#FFE347)'">`;
+          } else {
+            initialsEl.textContent = initials;
+          }
+        }
+        const nameEl = document.getElementById('user-name'); if (nameEl) nameEl.textContent = firstName;
+        const dNameEl = document.getElementById('dropdown-user-name'); if (dNameEl) dNameEl.textContent = fullName;
+        const dEmailEl = document.getElementById('dropdown-user-email'); if (dEmailEl) dEmailEl.textContent = user.email || '';
+        const roleEl = document.getElementById('dropdown-user-role');
+        if (roleEl) {
+          if (user.role === 'admin') {
+            roleEl.textContent = '🔧 Administrador';
+            roleEl.style.cssText = 'background:rgba(244,196,0,0.3);color:#F4C400;';
+            if (adminOptions) adminOptions.style.display = 'block';
+          } else {
+            roleEl.textContent = user.provider === 'google' ? '🔥 Google' : '👤 Cliente';
+            roleEl.style.cssText = 'background:rgba(59,130,246,0.2);color:#3B82F6;';
+          }
+        }
+      } else {
+        if (userMenuContainer) userMenuContainer.style.display = 'none';
+        if (authButtons) authButtons.style.display = 'flex';
+      }
+    }
+
+    if (userMenuButton && userDropdown) {
+      userMenuButton.addEventListener('click', e => { e.stopPropagation(); userDropdown.classList.toggle('hidden'); });
+      document.addEventListener('click', e => { if (userMenuContainer && !userMenuContainer.contains(e.target)) userDropdown.classList.add('hidden'); });
+    }
+
+    if (logoutButton) {
+      logoutButton.addEventListener('click', async e => {
+        e.preventDefault();
+        if (typeof window.firebaseLogout === 'function') await window.firebaseLogout();
+        if (typeof authAPI !== 'undefined') authAPI.logout();
+        ["gigante_user","gigante_token","gigante_auth","token","authToken","user","currentUser","userData"].forEach(k => localStorage.removeItem(k));
+        window.location.reload();
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => setTimeout(updateHeader, 150));
+    window.addEventListener('storage', e => { if (['authData','gigante_auth','gigante_user'].includes(e.key)) updateHeader(); });
+
+
+  </script>
+  <!-- ==================== TURIBOT STYLES ==================== -->
+
+<style>
+  /* ── Botón flotante TuriBot — estilo Kodee ─── */
+.turibot-toggle {
+  position: fixed; bottom: 28px; right: 28px;
+  height: 48px;
+  padding: 0 20px 0 16px;
+   background: linear-gradient(135deg, #059669, #047857);
+  border-radius: 999px;
+  cursor: pointer; z-index: 10000;
+  box-shadow: 0 6px 24px rgba(5, 150, 105, 0.45);
+  display: flex; align-items: center; gap: 10px;
+  transition: all 0.3s ease;
+  width: auto;
+  /* SIN background-image, SIN background-repeat, SIN background-position, SIN background-size */
+}
+
+.turibot-toggle span {
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.turibot-toggle:hover {
+  box-shadow: 0 10px 32px rgba(5, 150, 105, 0.6);
+  background: linear-gradient(135deg, #047857, #065f46);
+}
+  /* ── Ventana del chat ───────────────────────── */
+  .turibot-container {
+    display: none; flex-direction: column;
+    position: fixed; bottom: 100px; right: 28px;
+    width: 370px; height: 540px;
+    background: #ffffff; border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    z-index: 10000; overflow: hidden;
+    border: 1px solid rgba(25,92,51,0.12);
+    animation: botAppear 0.3s ease;
+  }
+  @keyframes botAppear {
+    from { opacity:0; transform: translateY(20px) scale(0.95); }
+    to   { opacity:1; transform: translateY(0)    scale(1);    }
+  }
+
+  /* ── Header ─────────────────────────────────── */
+  .turibot-header {
+    background: linear-gradient(135deg,#195C33,#0d3d20);
+    color: white; padding: 16px 20px;
+    font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; gap: 10px;
+    flex-shrink: 0;
+  }
+  .turibot-header::before { content:'🤖'; font-size:20px; }
+
+  /* ── Mensajes ───────────────────────────────── */
+  .turibot-messages {
+    flex: 1; overflow-y: auto;
+    padding: 14px; display: flex;
+    flex-direction: column; gap: 10px;
+    background: #f9fafb;
+  }
+  .turibot-messages::-webkit-scrollbar { width: 4px; }
+  .turibot-messages::-webkit-scrollbar-thumb { background:#d1d5db; border-radius:4px; }
+
+  .bot-msg {
+    background: white; color: #1f2937;
+    padding: 12px 15px;
+    border-radius: 16px 16px 16px 4px;
+    font-size: 13.5px; line-height: 1.65;
+    max-width: 90%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #e5e7eb;
+  }
+  .user-msg {
+    background: linear-gradient(135deg,#195C33,#2e7d32);
+    color: white; padding: 12px 15px;
+    border-radius: 16px 16px 4px 16px;
+    font-size: 13.5px; line-height: 1.65;
+    max-width: 80%; align-self: flex-end;
+    box-shadow: 0 2px 8px rgba(25,92,51,0.25);
+  }
+
+  /* ── Loader ─────────────────────────────────── */
+  .loader { display:flex; gap:5px; align-items:center; padding:2px 0; }
+  .loader span {
+    width:8px; height:8px; background:#195C33;
+    border-radius:50%; animation: bounce 1.2s infinite ease-in-out;
+  }
+  .loader span:nth-child(2) { animation-delay:.2s; }
+  .loader span:nth-child(3) { animation-delay:.4s; }
+  @keyframes bounce {
+    0%,80%,100% { transform:scale(0.6); opacity:.4; }
+    40%          { transform:scale(1);   opacity:1;  }
+  }
+
+  /* ── Input ──────────────────────────────────── */
+  .turibot-input {
+    display:flex; padding:11px; gap:8px;
+    background:white; border-top:1px solid #e5e7eb;
+    flex-shrink:0;
+  }
+  .turibot-input input {
+    flex:1; padding:9px 13px;
+    border:1.5px solid #e5e7eb; border-radius:30px;
+    font-size:13.5px; outline:none;
+    font-family:'Inter',sans-serif; transition:border-color .2s;
+    min-width:0;
+  }
+  .turibot-input input:focus { border-color:#195C33; }
+  .turibot-input button {
+    background: linear-gradient(135deg,#195C33,#0d3d20);
+    color:white; border:none;
+    padding:9px 16px; border-radius:30px;
+    font-weight:600; font-size:13px;
+    cursor:pointer; transition:all .3s; white-space:nowrap; flex-shrink:0;
+  }
+  .turibot-input button:hover {
+    background: linear-gradient(135deg,#F4C400,#FFE347);
+    color:#195C33; transform:translateY(-1px);
+  }
+
+  /* ── Botones rápidos ────────────────────────── */
+  .quick-buttons { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .quick-buttons button {
+    background:#f0f9f0; border:1px solid #4caf50;
+    border-radius:16px; padding:5px 11px;
+    font-size:12px; cursor:pointer; color:#2e7d32;
+    transition:background .2s; font-family:'Inter',sans-serif;
+  }
+  .quick-buttons button:hover { background:#4caf50; color:white; }
+
+  /* ── Formulario planificador ────────────────── */
+  .planificador-form { font-size:13px; }
+  .plan-campo { margin:10px 0; }
+  .plan-campo label { display:block; font-weight:600; font-size:12px; margin-bottom:5px; color:#374151; }
+  .plan-campo input[type="number"] {
+    width:100%; padding:7px 10px;
+    border:1px solid #d1d5db; border-radius:8px; font-size:13px;
+    font-family:'Inter',sans-serif; outline:none;
+  }
+  .plan-botones { display:flex; flex-wrap:wrap; gap:5px; }
+  .plan-op {
+    background:#f5f5f5; border:1px solid #ddd; border-radius:20px;
+    padding:5px 11px; font-size:12px; cursor:pointer;
+    transition:all .2s; font-family:'Inter',sans-serif;
+  }
+  .plan-op.selected, .plan-op:hover { background:#4caf50; color:white; border-color:#4caf50; }
+  .plan-generar {
+    margin-top:12px; width:100%; padding:10px;
+    background:linear-gradient(135deg,#195C33,#0d3d20);
+    color:white; border:none; border-radius:20px;
+    font-size:13px; font-weight:600; cursor:pointer;
+    font-family:'Inter',sans-serif; transition:opacity .2s;
+  }
+  .plan-generar:hover { opacity:.88; }
+
+  /* ── Botón copiar itinerario ────────────────── */
+  .itinerario-actions { margin-top:10px; }
+  .itinerario-actions button {
+    background:#fff3e0; border:1px solid #ff9800;
+    border-radius:16px; padding:5px 13px;
+    font-size:12px; cursor:pointer; color:#e65100;
+    font-family:'Inter',sans-serif;
+  }
+
+  /* ── Responsive móvil ───────────────────────── */
+  @media (max-width:480px) {
+    .turibot-container { right:8px; left:8px; width:auto; bottom:88px; height:430px; }
+    .turibot-toggle    { bottom:20px; right:20px; width:52px; height:52px; }
+  }
+</style>
+
+<!-- ==================== TURIBOT HTML ==================== -->
+<div class="turibot-toggle" onclick="toggleTuribot()">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+  <span>Preguntar a TuriBot</span>
+</div>
+
+<div class="turibot-container" id="turibot">
+    <div class="turibot-header">TuriBot • Turismo Gigante Huila</div>
+    <div class="turibot-messages" id="turibotMessages"></div>
+    <div class="turibot-input">
+        <input type="text" id="turibotInput" placeholder="Pregunta o pide un plan...">
+        <button onclick="sendTuribotMessage()">Enviar</button>
+    </div>
+</div>/* ── Botón WhatsApp ─────────────────────────── */
+<style>
+
+.whatsapp-btn {
+  position: fixed;
+  bottom: 100px;
+  right: 28px; /* al lado del TuriBot */
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10000;
+  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.45);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.whatsapp-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 32px rgba(37, 211, 102, 0.65);
+}
+
+.whatsapp-btn svg {
+  width: 30px;
+  height: 30px;
+  fill: white;
+}
+
+/* Tooltip */
+.whatsapp-btn::before {
+  content: 'Escríbenos por WhatsApp';
+  position: absolute;
+  right: 70px;
+  background: #1f2937;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.whatsapp-btn:hover::before {
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .whatsapp-btn {
+    bottom: 20px;
+    right: 82px;
+    width: 52px;
+    height: 52px;
+  }
+}
+</style>
+   <a 
+  class="whatsapp-btn" 
+  href="https://wa.me/573203867524?text=Hola!%20Me%20interesa%20conocer%20m%C3%A1s%20sobre%20los%20tours%20de%20Gigante%20Viajero%20%F0%9F%8C%8D" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  title="WhatsApp"
+>
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+</body>
+</html>

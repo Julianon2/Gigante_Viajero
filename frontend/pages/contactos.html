@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto - Gigante Viajero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --green: #195C33; --green-dark: #0d3d20; --yellow: #F4C400; --text: #1a1a1a; --gray: #6b7280; --line: #e5e7eb; }
+    body { font-family: 'Inter', sans-serif; background: #fafafa; color: var(--text); }
+
+    /* HEADER */
+    header { background: linear-gradient(135deg, #195C33 0%, #0d3d20 100%); box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 1000; }
+    .header-container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+    .header-content { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; gap: 32px; }
+    .logo-section { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .logo-img { width: 56px; height: 56px; object-fit: contain; }
+    .logo-text { color: white; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+    .nav-menu { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 16px; padding: 8px 0; position: relative; transition: color 0.3s; }
+    .nav-link:hover { color: #FFDD00; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #FFDD00; transition: width 0.3s; }
+    .nav-link:hover::after { width: 100%; }
+    .dropdown { position: relative; }
+    .dropdown-menu { position: absolute; top: calc(100% + 12px); left: 0; background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); min-width: 220px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s; overflow: hidden; z-index: 1001; }
+    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-menu a { display: block; padding: 14px 20px; color: #195C33; text-decoration: none; font-weight: 500; transition: all 0.2s; border-left: 3px solid transparent; }
+    .dropdown-menu a:hover { background: #f3f4f6; border-left-color: #FFDD00; padding-left: 24px; }
+    .auth-section { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+    .btn { padding: 10px 28px; border-radius: 30px; font-weight: 600; font-size: 15px; text-decoration: none; transition: all 0.3s; cursor: pointer; border: none; display: inline-block; }
+    .btn-login { background: transparent; color: white; border: 2px solid white; }
+    .btn-login:hover { background: white; color: #195C33; transform: translateY(-2px); }
+    .btn-register { background: linear-gradient(135deg, #F4C400, #FFE347); color: #195C33; box-shadow: 0 4px 15px rgba(244,196,0,0.3); }
+    .btn-register:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244,196,0,0.5); }
+    #user-menu-container { display: none; position: relative; }
+    #user-menu-button { display: flex; align-items: center; gap: 10px; padding: 8px 16px; background: rgba(255,255,255,0.1); border-radius: 50px; cursor: pointer; transition: all 0.3s; border: 2px solid transparent; }
+    #user-menu-button:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); }
+    #user-initials { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #F4C400, #FFE347); display: flex; align-items: center; justify-content: center; color: #195C33; font-weight: 700; font-size: 16px; }
+    #user-name { color: white; font-weight: 600; font-size: 15px; }
+    .user-chevron { color: white; font-size: 12px; }
+    #user-dropdown { position: absolute; top: calc(100% + 12px); right: 0; width: 280px; background: white; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); border: 1px solid rgba(0,0,0,0.1); z-index: 9999; transition: all 0.3s; }
+    #user-dropdown.hidden { opacity: 0; visibility: hidden; transform: translateY(-10px); pointer-events: none; }
+    .user-dropdown-header { padding: 20px; background: linear-gradient(135deg, #195C33, #0d3d20); border-radius: 16px 16px 0 0; }
+    #dropdown-user-name { color: white; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    #dropdown-user-email { color: rgba(255,255,255,0.8); font-size: 13px; }
+    #dropdown-user-role { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+    .user-dropdown-item { display: flex; align-items: center; padding: 14px 20px; color: #1f2937; text-decoration: none; transition: all 0.2s; font-size: 14px; font-weight: 500; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
+    .user-dropdown-item:hover { background: #f3f4f6; color: #195C33; }
+    .user-dropdown-item i { width: 20px; margin-right: 12px; color: #6b7280; }
+    .user-dropdown-item:hover i { color: #195C33; }
+    .user-dropdown-divider { height: 1px; background: #e5e7eb; margin: 8px 0; }
+    .user-dropdown-item.logout { color: #dc2626; }
+    .user-dropdown-item.logout:hover { background: #fee2e2; }
+    .user-dropdown-item.logout i { color: #dc2626; }
+    .mobile-toggle { display: none; flex-direction: column; gap: 6px; cursor: pointer; padding: 8px; }
+    .mobile-toggle span { width: 28px; height: 3px; background: white; border-radius: 3px; }
+
+    /* HERO */
+    .contact-hero { padding: 100px 24px 60px; max-width: 1100px; margin: 0 auto; border-bottom: 1px solid var(--line); }
+    .hero-label { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--green); margin-bottom: 24px; }
+    .hero-label::before { content: ''; display: inline-block; width: 32px; height: 2px; background: var(--yellow); }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(48px, 7vw, 96px); font-weight: 800; line-height: 1.05; color: var(--text); margin-bottom: 32px; }
+    .hero-title span { color: var(--green); }
+    .hero-desc { font-size: 18px; color: var(--gray); max-width: 500px; line-height: 1.7; }
+
+    /* LAYOUT */
+    .contact-body { max-width: 1100px; margin: 0 auto; padding: 80px 24px; display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; }
+
+    /* INFO */
+    .info-section-title { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gray); margin-bottom: 40px; }
+    .info-item { padding: 28px 0; border-bottom: 1px solid var(--line); }
+    .info-item:first-of-type { border-top: 1px solid var(--line); }
+    .info-item-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-bottom: 8px; }
+    .info-item-value { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.5; }
+    .info-item-value a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+    .info-item-value a:hover { color: var(--green); }
+    .schedule-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 15px; }
+    .schedule-row .day { color: var(--gray); }
+    .schedule-row .hours { font-weight: 600; }
+    .social-row { display: flex; gap: 16px; margin-top: 40px; }
+    .social-btn { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--gray); text-decoration: none; font-size: 16px; transition: all 0.3s; }
+    .social-btn:hover { border-color: var(--green); color: var(--green); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(25,92,51,0.15); }
+
+    /* FORMULARIO */
+    .form-section-title { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gray); margin-bottom: 40px; }
+    .form-group { border-bottom: 1px solid var(--line); padding: 24px 0; position: relative; }
+    .form-group:first-of-type { border-top: 1px solid var(--line); }
+    .form-group label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-bottom: 10px; transition: color 0.2s; }
+    .form-group:focus-within label { color: var(--green); }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; border: none; background: transparent; font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 500; color: var(--text); outline: none; padding: 0; appearance: none; resize: none; }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: #d1d5db; }
+    .form-group select { cursor: pointer; }
+    .form-group::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 0; height: 2px; background: var(--green); transition: width 0.4s; }
+    .form-group:focus-within::after { width: 100%; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+
+    /* BOTÓN SUBMIT */
+    .btn-submit { margin-top: 48px; display: inline-flex; align-items: center; gap: 14px; background: var(--green); color: white; border: none; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 20px 40px; border-radius: 60px; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 30px rgba(25,92,51,0.25); }
+    .btn-submit:hover:not(:disabled) { background: var(--green-dark); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(25,92,51,0.35); }
+    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+    .btn-submit .arrow { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 14px; transition: transform 0.3s; }
+    .btn-submit:hover:not(:disabled) .arrow { transform: rotate(-45deg); }
+
+    /* WHATSAPP BTN */
+    .whatsapp-btn { display: inline-flex; align-items: center; gap: 10px; margin-top: 12px; padding: 10px 20px; background: #25d366; color: white; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.3s; }
+    .whatsapp-btn:hover { background: #128c7e; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,211,102,0.4); }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(120px); background: white; border-radius: 16px; padding: 18px 28px; display: flex; align-items: center; gap: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); font-size: 15px; font-weight: 600; z-index: 999999; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border-left: 4px solid var(--green); min-width: 300px; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.error { border-left-color: #dc2626; }
+    .toast-icon { font-size: 22px; }
+
+    /* FOOTER */
+    footer { background: linear-gradient(135deg, #195C33 0%, #0d3d20 100%); color: white; padding: 3rem 1.5rem 1rem; position: relative; overflow: hidden; }
+    footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #F4C400, #ffd700, #F4C400); }
+    .footer-container { max-width: 1200px; margin: 0 auto; }
+    .footer-main { text-align: center; margin-bottom: 2rem; }
+    .footer-main h2 { color: #F4C400; font-size: 32px; font-weight: 700; margin-bottom: 1rem; }
+    .footer-main p { color: #e5e7eb; font-size: 16px; line-height: 1.7; max-width: 600px; margin: 0 auto 2rem; }
+    .social-icons { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.5rem; }
+    .social-icons a { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.4s; font-size: 24px; border: 3px solid rgba(255,255,255,0.2); text-decoration: none; color: white; }
+    .social-icons a:hover { transform: translateY(-8px) scale(1.1); border-color: #F4C400; box-shadow: 0 8px 25px rgba(244,196,0,0.4); }
+    .social-facebook { background: linear-gradient(135deg, #1877F2, #0d5dbf); }
+    .social-instagram { background: linear-gradient(135deg, #E1306C, #833AB4); }
+    .social-tiktok { background: linear-gradient(135deg, #000, #333); }
+    .social-x { background: linear-gradient(135deg, #000, #1a1a1a); }
+    .footer-divider { height: 2px; background: linear-gradient(90deg, transparent, rgba(244,196,0,0.8), transparent); margin: 2.5rem 0; }
+    .footer-info { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .footer-info .footer-info-item { display: flex; align-items: center; gap: 0.75rem; color: #e5e7eb; font-size: 15px; }
+    .footer-info .footer-info-item i { color: #F4C400; font-size: 20px; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1.5rem; text-align: center; }
+    .footer-bottom p { color: #d1d5db; font-size: 14px; margin: 0; }
+
+    /* BOTÓN VOLVER */
+    .btn-volver { position: fixed; top: 110px; left: 20px; width: 44px; height: 44px; background: linear-gradient(135deg, #195C33, #2e7d32); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: none; z-index: 9999; transition: all 0.3s; text-decoration: none; }
+    .btn-volver:hover { transform: scale(1.1) translateX(-3px); box-shadow: 0 6px 20px rgba(25,92,51,0.4); }
+    .btn-volver svg { width: 20px; height: 20px; fill: none; stroke: white; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  
+    .loader { width: 45px; height: 12px; display: flex; justify-content: space-between; }
+    .loader span { width: 9px; height: 9px; background: #2e7d32; border-radius: 50%; animation: bounce 1s infinite ease-in-out; }
+    .loader span:nth-child(2) { animation-delay: .2s; }
+    .loader span:nth-child(3) { animation-delay: .4s; }
+    @keyframes bounce { 0%,80%,100%{ transform:scale(0); } 40%{ transform:scale(1); } }
+
+    /* RESPONSIVE */
+    @media (max-width: 968px) {
+      .mobile-toggle { display: flex; }
+      .nav-menu { position: absolute; top: 100%; left: 0; right: 0; background: linear-gradient(135deg, #195C33, #0d3d20); flex-direction: column; gap: 0; padding: 20px 24px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); max-height: 0; overflow: hidden; transition: max-height 0.3s; }
+      .nav-menu.active { max-height: 600px; }
+      .nav-menu li { width: 100%; }
+      .nav-link { display: block; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      #user-name { display: none; }
+      .contact-body { grid-template-columns: 1fr; gap: 40px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .contact-hero { padding: 60px 24px 40px; }
+  
+    }
+    @media (max-width: 480px) {
+      .logo-text { font-size: 18px; }
+      .logo-img { width: 44px; height: 44px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BOTÓN VOLVER -->
+  <a class="btn-volver" onclick="history.back()" href="#">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </a>
+
+  <!-- TOAST NOTIFICACIÓN -->
+  <div class="toast" id="toast">
+    <span class="toast-icon" id="toast-icon">✅</span>
+    <span id="toast-msg">¡Mensaje enviado! Te contactaremos pronto.</span>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <div class="header-content">
+        <div class="logo-section">
+          <!-- Logo dinámico desde settings -->
+          <img data-biz="businessLogo" src="../assets/img/logo.png" alt="Logo Gigante Viajero" class="logo-img">
+          <h1 class="logo-text" data-biz="businessName">Gigante Viajero</h1>
+        </div>
+        <nav>
+          <ul class="nav-menu" id="navMenu">
+            <li><a href="index.html" class="nav-link">Inicio</a></li>
+            <li><a href="sitio.html" class="nav-link">Explora</a></li>
+            <li class="dropdown">
+              <a href="#" class="nav-link dropdown-toggle">Descubre ▾</a>
+              <div class="dropdown-menu">
+                <a href="naturaleza.html">Naturaleza</a>
+                <a href="historia.html">Historia</a>
+                <a href="gastronomia.html">Gastronomía</a>
+                <a href="turismo religioso.html">Turismo Religioso</a>
+              </div>
+            </li>
+            <li><a href="mapa.html" class="nav-link">Mapa</a></li>
+            <li><a href="contactos.html" class="nav-link">Contacto</a></li>
+          </ul>
+        </nav>
+        <div class="auth-section">
+          <div id="user-menu-container">
+            <button id="user-menu-button">
+              <div id="user-initials">U</div>
+              <span id="user-name">Usuario</span>
+              <i class="fas fa-chevron-down user-chevron"></i>
+            </button>
+            <div id="user-dropdown" class="hidden">
+              <div class="user-dropdown-header">
+                <div id="dropdown-user-name">Nombre Usuario</div>
+                <div id="dropdown-user-email">email@ejemplo.com</div>
+                <span id="dropdown-user-role">👤 Cliente</span>
+              </div>
+              <div id="admin-options" style="display:none;">
+                <a href="admin_dashboard.html" class="user-dropdown-item"><i class="fas fa-chart-line"></i>Dashboard</a>
+                <div class="user-dropdown-divider"></div>
+              </div>
+              <a href="perfil.html" class="user-dropdown-item"><i class="fas fa-user"></i>Mi Perfil</a>
+              <a href="mis_reservas.html" class="user-dropdown-item"><i class="fas fa-shopping-bag"></i>Mis reservas</a>
+              <div class="user-dropdown-divider"></div>
+              <button id="logout-button" class="user-dropdown-item logout"><i class="fas fa-sign-out-alt"></i>Cerrar Sesión</button>
+            </div>
+          </div>
+          <div id="authButtons">
+            <a href="login.html" class="btn btn-login">Iniciar Sesión</a>
+            <a href="register.html" class="btn btn-register">Registrarse</a>
+          </div>
+          <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="contact-hero">
+    <div class="hero-label">Contáctanos</div>
+    <h1 class="hero-title">Hablemos de<br>tu próximo<br><span>viaje.</span></h1>
+    <p class="hero-desc">Estamos listos para ayudarte a descubrir Gigante, Huila. Escríbenos y planificamos juntos la experiencia perfecta.</p>
+  </section>
+
+  <!-- CUERPO -->
+  <div class="contact-body">
+
+    <!-- INFO — todos los datos vienen de la API vía data-biz -->
+    <div class="info-col">
+      <p class="info-section-title">Información de contacto</p>
+
+      <div class="info-item">
+        <div class="info-item-label">Dirección</div>
+        <div class="info-item-value">
+          <span data-biz="businessAddress">Gigante, Huila — Colombia</span>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-item-label">Teléfono</div>
+        <div class="info-item-value">
+          <a data-biz="businessPhone" href="tel:+573203867524">+57 320 386 7524</a>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-item-label">WhatsApp</div>
+        <div class="info-item-value">
+          <!-- data-biz="businessWhatsapp" solo actualiza el href, no el innerHTML -->
+          <a data-biz="businessWhatsapp" href="https://wa.me/573203867524" target="_blank" rel="noopener noreferrer"
+             class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> Escríbenos por WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-item-label">Correo</div>
+        <div class="info-item-value">
+          <a href="mailto:viajerogigante@gmail.com">viajerogigante@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-item-label">Horarios</div>
+        <div class="info-item-value">
+          <div class="schedule-row"><span class="day">Lunes — Viernes</span><span class="hours">8:00 – 18:00</span></div>
+          <div class="schedule-row"><span class="day">Sábados</span><span class="hours">9:00 – 22:00</span></div>
+          <div class="schedule-row"><span class="day">Domingos</span><span class="hours">Cerrado</span></div>
+        </div>
+      </div>
+
+      <!-- Redes sociales dinámicas -->
+      <div class="social-row">
+        <a id="social-facebook" href="https://facebook.com" target="_blank" rel="noopener" class="social-btn">
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a id="social-instagram" href="https://instagram.com" target="_blank" rel="noopener" class="social-btn">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://tiktok.com" target="_blank" rel="noopener" class="social-btn">
+          <i class="fa-brands fa-tiktok"></i>
+        </a>
+        <a href="https://x.com" target="_blank" rel="noopener" class="social-btn">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- FORMULARIO (sin cambios) -->
+    <div class="form-col">
+      <p class="form-section-title">Envíanos un mensaje</p>
+      <form id="contact-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" name="name" placeholder="Tu nombre" required>
+          </div>
+          <div class="form-group">
+            <label>Apellido</label>
+            <input type="text" name="lastname" placeholder="Tu apellido">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" name="email" placeholder="tu@correo.com" required>
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="tel" name="phone" placeholder="+57 300 000 0000">
+        </div>
+        <div class="form-group">
+          <label>Motivo</label>
+          <select name="subject" required>
+            <option value="" disabled selected>Selecciona un motivo</option>
+            <option value="Información sobre tours">Información sobre tours</option>
+            <option value="Reservas">Reservas</option>
+            <option value="Promociones">Promociones</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Mensaje</label>
+          <textarea name="message" rows="4" placeholder="Cuéntanos sobre tu viaje soñado..." required></textarea>
+        </div>
+        <button type="submit" class="btn-submit" id="btn-submit">
+          Enviar mensaje
+          <span class="arrow">↗</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-main">
+        <h2 data-biz="businessName">Gigante Viajero</h2>
+        <p>Tu compañero ideal para descubrir nuevos destinos, vivir experiencias únicas y viajar con confianza.</p>
+        <div class="social-icons">
+          <a id="footer-facebook" href="https://facebook.com" target="_blank" class="social-facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a href="https://tiktok.com" target="_blank" class="social-tiktok">
+            <i class="fa-brands fa-tiktok"></i>
+          </a>
+          <a id="footer-instagram" href="https://instagram.com" target="_blank" class="social-instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="https://x.com" target="_blank" class="social-x">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-info">
+        <div class="footer-info-item"><i class="fas fa-envelope"></i><span>viajerogigante@gmail.com</span></div>
+        <div class="footer-info-item">
+          <i class="fas fa-phone"></i>
+          <span data-biz="businessPhone">+57 311 527 0696</span>
+        </div>
+        <div class="footer-info-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span data-biz="businessAddress">Gigante, Huila — Colombia</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <span data-biz="businessName">Gigante Viajero</span> — Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+
+  <script src="../scripts/auth-api.js"></script>
+  <script src="../scripts/session.js"></script>
+  <script src="../scripts/main.js"></script>
+  <script src="../scripts/photo-sync.js"></script>
+  <!-- Script de datos del negocio — carga info desde la API -->
+  <script src="../scripts/business-info.js"></script>
+  <script src="../scripts/turibot.js"></script>
+
+  <script>
+    // ========== EMAILJS ==========
+    emailjs.init("p_fyN3CST6Py_1Ap3");
+
+    function showToast(msg, isError = false) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      document.getElementById('toast-icon').textContent = isError ? '❌' : '✅';
+      toast.className = 'toast' + (isError ? ' error' : '');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4500);
+    }
+
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit');
+      btn.innerHTML = 'Enviando... <span class="arrow">⏳</span>';
+      btn.disabled = true;
+      emailjs.sendForm('service_2lgd44j', 'template_85zi7sr', this)
+        .then(() => {
+          showToast('¡Mensaje enviado con éxito! Te contactaremos pronto. 🎉');
+          this.reset();
+          btn.innerHTML = 'Enviar mensaje <span class="arrow">↗</span>';
+          btn.disabled = false;
+        })
+        .catch((err) => {
+          console.error('EmailJS error:', err);
+          showToast('Error al enviar. Por favor intenta de nuevo.', true);
+          btn.innerHTML = 'Enviar mensaje <span class="arrow">↗</span>';
+          btn.disabled = false;
+        });
+    });
+
+    // ========== REDES SOCIALES DINÁMICAS ==========
+    // Se actualiza cuando business-info.js termina de cargar los datos
+    document.addEventListener('businessInfoLoaded', function(e) {
+      const info = e.detail;
+
+      // Facebook — sección info + footer
+      if (info.businessFacebook) {
+        const fbUrl = info.businessFacebook.includes('facebook.com')
+          ? info.businessFacebook
+          : `https://facebook.com/${info.businessFacebook}`;
+        ['social-facebook', 'footer-facebook'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.href = fbUrl;
+        });
+      }
+
+      // Instagram — sección info + footer
+      if (info.businessInstagram) {
+        const handle = info.businessInstagram.replace('@', '');
+        const igUrl  = `https://instagram.com/${handle}`;
+        ['social-instagram', 'footer-instagram'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.href = igUrl;
+        });
+      }
+    });
+
+    // MOBILE MENU
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navMenu = document.getElementById('navMenu');
+    if (mobileToggle) mobileToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+
+    // HEADER DINÁMICO
+    const userMenuContainer = document.getElementById('user-menu-container');
+    const authButtons       = document.getElementById('authButtons');
+    const userMenuButton    = document.getElementById('user-menu-button');
+    const userDropdown      = document.getElementById('user-dropdown');
+    const logoutButton      = document.getElementById('logout-button');
+    const adminOptions      = document.getElementById('admin-options');
+
+    function getActiveUser() {
+      if (typeof authAPI !== 'undefined' && authAPI.isAuthenticated()) {
+        const user = authAPI.getUser();
+        if (user) return user;
+      }
+      try {
+        if (localStorage.getItem("gigante_auth") === "true") {
+          const u = JSON.parse(localStorage.getItem("gigante_user"));
+          if (u?.email) return u;
+        }
+      } catch(e) {}
+      return null;
+    }
+
+    function updateHeader() {
+      const user = getActiveUser();
+      if (user) {
+        if (authButtons) authButtons.style.display = 'none';
+        if (userMenuContainer) userMenuContainer.style.display = 'block';
+        const firstName = user.firstName || 'Usuario';
+        const lastName  = user.lastName  || '';
+        const initials  = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+        const initialsEl = document.getElementById('user-initials');
+        if (initialsEl) {
+          if (user.photoURL) {
+            initialsEl.style.cssText = 'background:transparent;overflow:hidden;';
+            initialsEl.innerHTML = `<img src="${user.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+          } else {
+            initialsEl.textContent = initials;
+            initialsEl.style.background = 'linear-gradient(135deg,#F4C400,#FFE347)';
+          }
+        }
+        const nameEl = document.getElementById('user-name');
+        if (nameEl) nameEl.textContent = firstName;
+        const dNameEl = document.getElementById('dropdown-user-name');
+        if (dNameEl) dNameEl.textContent = (firstName + ' ' + lastName).trim();
+        const dEmailEl = document.getElementById('dropdown-user-email');
+        if (dEmailEl) dEmailEl.textContent = user.email || '';
+        const roleEl = document.getElementById('dropdown-user-role');
+        if (roleEl) {
+          if (user.role === 'admin') {
+            roleEl.textContent = '🔧 Administrador';
+            roleEl.style.cssText = 'background:rgba(244,196,0,.3);color:#F4C400;';
+            if (adminOptions) adminOptions.style.display = 'block';
+          } else {
+            roleEl.textContent = user.provider === 'google' ? '🔥 Google' : '👤 Cliente';
+            roleEl.style.cssText = 'background:rgba(59,130,246,.2);color:#3B82F6;';
+            if (adminOptions) adminOptions.style.display = 'none';
+          }
+        }
+      } else {
+        if (userMenuContainer) userMenuContainer.style.display = 'none';
+        if (authButtons) authButtons.style.display = 'flex';
+      }
+    }
+
+    if (userMenuButton && userDropdown) {
+      userMenuButton.addEventListener('click', e => { e.stopPropagation(); userDropdown.classList.toggle('hidden'); });
+      document.addEventListener('click', e => { if (userMenuContainer && !userMenuContainer.contains(e.target)) userDropdown.classList.add('hidden'); });
+      userDropdown.addEventListener('click', e => e.stopPropagation());
+    }
+
+    if (logoutButton) {
+      logoutButton.addEventListener('click', async e => {
+        e.preventDefault();
+        if (typeof window.firebaseLogout === 'function') await window.firebaseLogout();
+        if (typeof authAPI !== 'undefined') authAPI.logout();
+        ["gigante_user","gigante_token","gigante_auth","token","authToken","user","currentUser","userData"].forEach(k => localStorage.removeItem(k));
+        window.location.reload();
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => updateHeader(), 150);
+      const input = document.getElementById("turibotInput");
+      if (input) input.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); sendTuribotMessage(); } });
+    });
+
+    window.addEventListener('storage', e => {
+      if (['authData','gigante_auth','gigante_user'].includes(e.key)) updateHeader();
+    });
+
+  </script>
+  <!-- ==================== TURIBOT STYLES ==================== -->
+
+<style>
+  /* ── Botón flotante TuriBot — estilo Kodee ─── */
+.turibot-toggle {
+  position: fixed; bottom: 28px; right: 28px;
+  height: 48px;
+  padding: 0 20px 0 16px;
+   background: linear-gradient(135deg, #059669, #047857);
+  border-radius: 999px;
+  cursor: pointer; z-index: 10000;
+  box-shadow: 0 6px 24px rgba(5, 150, 105, 0.45);
+  display: flex; align-items: center; gap: 10px;
+  transition: all 0.3s ease;
+  width: auto;
+  /* SIN background-image, SIN background-repeat, SIN background-position, SIN background-size */
+}
+
+.turibot-toggle span {
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.turibot-toggle:hover {
+  box-shadow: 0 10px 32px rgba(5, 150, 105, 0.6);
+  background: linear-gradient(135deg, #047857, #065f46);
+}
+  /* ── Ventana del chat ───────────────────────── */
+  .turibot-container {
+    display: none; flex-direction: column;
+    position: fixed; bottom: 100px; right: 28px;
+    width: 370px; height: 540px;
+    background: #ffffff; border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    z-index: 10000; overflow: hidden;
+    border: 1px solid rgba(25,92,51,0.12);
+    animation: botAppear 0.3s ease;
+  }
+  @keyframes botAppear {
+    from { opacity:0; transform: translateY(20px) scale(0.95); }
+    to   { opacity:1; transform: translateY(0)    scale(1);    }
+  }
+
+  /* ── Header ─────────────────────────────────── */
+  .turibot-header {
+    background: linear-gradient(135deg,#195C33,#0d3d20);
+    color: white; padding: 16px 20px;
+    font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; gap: 10px;
+    flex-shrink: 0;
+  }
+  .turibot-header::before { content:'🤖'; font-size:20px; }
+
+  /* ── Mensajes ───────────────────────────────── */
+  .turibot-messages {
+    flex: 1; overflow-y: auto;
+    padding: 14px; display: flex;
+    flex-direction: column; gap: 10px;
+    background: #f9fafb;
+  }
+  .turibot-messages::-webkit-scrollbar { width: 4px; }
+  .turibot-messages::-webkit-scrollbar-thumb { background:#d1d5db; border-radius:4px; }
+
+  .bot-msg {
+    background: white; color: #1f2937;
+    padding: 12px 15px;
+    border-radius: 16px 16px 16px 4px;
+    font-size: 13.5px; line-height: 1.65;
+    max-width: 90%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #e5e7eb;
+  }
+  .user-msg {
+    background: linear-gradient(135deg,#195C33,#2e7d32);
+    color: white; padding: 12px 15px;
+    border-radius: 16px 16px 4px 16px;
+    font-size: 13.5px; line-height: 1.65;
+    max-width: 80%; align-self: flex-end;
+    box-shadow: 0 2px 8px rgba(25,92,51,0.25);
+  }
+
+  /* ── Loader ─────────────────────────────────── */
+  .loader { display:flex; gap:5px; align-items:center; padding:2px 0; }
+  .loader span {
+    width:8px; height:8px; background:#195C33;
+    border-radius:50%; animation: bounce 1.2s infinite ease-in-out;
+  }
+  .loader span:nth-child(2) { animation-delay:.2s; }
+  .loader span:nth-child(3) { animation-delay:.4s; }
+  @keyframes bounce {
+    0%,80%,100% { transform:scale(0.6); opacity:.4; }
+    40%          { transform:scale(1);   opacity:1;  }
+  }
+
+  /* ── Input ──────────────────────────────────── */
+  .turibot-input {
+    display:flex; padding:11px; gap:8px;
+    background:white; border-top:1px solid #e5e7eb;
+    flex-shrink:0;
+  }
+  .turibot-input input {
+    flex:1; padding:9px 13px;
+    border:1.5px solid #e5e7eb; border-radius:30px;
+    font-size:13.5px; outline:none;
+    font-family:'Inter',sans-serif; transition:border-color .2s;
+    min-width:0;
+  }
+  .turibot-input input:focus { border-color:#195C33; }
+  .turibot-input button {
+    background: linear-gradient(135deg,#195C33,#0d3d20);
+    color:white; border:none;
+    padding:9px 16px; border-radius:30px;
+    font-weight:600; font-size:13px;
+    cursor:pointer; transition:all .3s; white-space:nowrap; flex-shrink:0;
+  }
+  .turibot-input button:hover {
+    background: linear-gradient(135deg,#F4C400,#FFE347);
+    color:#195C33; transform:translateY(-1px);
+  }
+
+  /* ── Botones rápidos ────────────────────────── */
+  .quick-buttons { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .quick-buttons button {
+    background:#f0f9f0; border:1px solid #4caf50;
+    border-radius:16px; padding:5px 11px;
+    font-size:12px; cursor:pointer; color:#2e7d32;
+    transition:
+    background .2s; font-family:'Inter',sans-serif;
+  }
+  .quick-buttons button:hover { background:#4caf50; color:white; }
+
+  /* ── Formulario planificador ────────────────── */
+  .planificador-form { font-size:13px; }
+  .plan-campo { margin:10px 0; }
+  .plan-campo label { display:block; font-weight:600; font-size:12px; margin-bottom:5px; color:#374151; }
+  .plan-campo input[type="number"] {
+    width:100%; padding:7px 10px;
+    border:1px solid #d1d5db; border-radius:8px; font-size:13px;
+    font-family:'Inter',sans-serif; outline:none;
+  }
+  .plan-botones { display:flex; flex-wrap:wrap; gap:5px; }
+  .plan-op {
+    background:#f5f5f5; border:1px solid #ddd; border-radius:20px;
+    padding:5px 11px; font-size:12px; cursor:pointer;
+    transition:all .2s; font-family:'Inter',sans-serif;
+  }
+  .plan-op.selected, .plan-op:hover { background:#4caf50; color:white; border-color:#4caf50; }
+  .plan-generar {
+    margin-top:12px; width:100%; padding:10px;
+    background:linear-gradient(135deg,#195C33,#0d3d20);
+    color:white; border:none; border-radius:20px;
+    font-size:13px; font-weight:600; cursor:pointer;
+    font-family:'Inter',sans-serif; transition:opacity .2s;
+  }
+  .plan-generar:hover { opacity:.88; }
+
+  /* ── Botón copiar itinerario ────────────────── */
+  .itinerario-actions { margin-top:10px; }
+  .itinerario-actions button {
+    background:#fff3e0; border:1px solid #ff9800;
+    border-radius:16px; padding:5px 13px;
+    font-size:12px; cursor:pointer; color:#e65100;
+    font-family:'Inter',sans-serif;
+  }
+
+  /* ── Responsive móvil ───────────────────────── */
+  @media (max-width:480px) {
+    .turibot-container { right:8px; left:8px; width:auto; bottom:88px; height:430px; }
+    .turibot-toggle    { bottom:20px; right:20px; width:52px; height:52px; }
+  }
+</style>
+
+<!-- ==================== TURIBOT HTML ==================== -->
+<div class="turibot-toggle" onclick="toggleTuribot()">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+  <span>Preguntar a TuriBot</span>
+</div>
+
+<div class="turibot-container" id="turibot">
+    <div class="turibot-header">TuriBot • Turismo Gigante Huila</div>
+    <div class="turibot-messages" id="turibotMessages"></div>
+    <div class="turibot-input">
+        <input type="text" id="turibotInput" placeholder="Pregunta o pide un plan...">
+        <button onclick="sendTuribotMessage()">Enviar</button>
+    </div>
+</div>/* ── Botón WhatsApp ─────────────────────────── */
+<style>
+
+.whatsap-btn {
+  position: fixed;
+  bottom: 100px;
+  right: 28px; /* al lado del TuriBot */
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10000;
+  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.45);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.whatsap-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 32px rgba(37, 211, 102, 0.65);
+}
+
+.whatsap-btn svg {
+  width: 30px;
+  height: 30px;
+  fill: white;
+}
+
+/* Tooltip */
+.whatsap-btn::before {
+  content: 'Escríbenos por WhatsApp';
+  position: absolute;
+  right: 70px;
+  background: #1f2937;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.whatsap-btn:hover::before {
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .whatsap-btn {
+    bottom: 20px;
+    right: 82px;
+    width: 52px;
+    height: 52px;
+  }
+}
+</style>
+   <a 
+  class="whatsap-btn" 
+  href="https://wa.me/573203867524?text=Hola!%20Me%20interesa%20conocer%20m%C3%A1s%20sobre%20los%20tours%20de%20Gigante%20Viajero%20%F0%9F%8C%8D" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  title="WhatsApp"
+>
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+</body>
+</html>

@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrativo - Gigante Viajero</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../styles/admin-dashboard.css">
+    <link rel="stylesheet" href="../styles/admin-dashboard-extras.css">
+</head>
+<body>
+
+    <!-- Loader -->
+    <div id="pageLoader">
+        <div style="text-align: center;">
+            <div style="width:60px;height:60px;border:4px solid #f3f4f6;border-top:4px solid #195C33;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px;"></div>
+            <div style="color:#195C33;font-weight:600;font-size:16px;">Cargando Dashboard...</div>
+        </div>
+    </div>
+    <style>@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="../assets/img/logo.png" alt="Logo" class="sidebar-logo">
+            <a href="index.html" class="nav-link"></a>
+            <h1 class="sidebar-title">Gigante Viajero</h1>
+            <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#dashboard"    class="nav-item active" data-section="dashboard">   <i class="fas fa-chart-line"></i>    <span>Dashboard</span></a>
+            <a href="#reservations" class="nav-item"        data-section="reservations"><i class="fas fa-calendar-check"></i> <span>Reservas</span>   <span class="badge" id="pendingReservationsBadge" style="display:none;">0</span></a>
+            <a href="#reviews"      class="nav-item"        data-section="reviews">     <i class="fas fa-star"></i>           <span>Reseñas</span>    <span class="badge" id="pendingReviewsBadge"      style="display:none;">0</span></a>
+            <a href="#destinations" class="nav-item"        data-section="destinations"><i class="fas fa-map-marked-alt"></i> <span>Destinos</span></a>
+            <a href="#users"        class="nav-item"        data-section="users">       <i class="fas fa-users"></i>          <span>Usuarios</span></a>
+            <a href="#analytics"    class="nav-item"        data-section="analytics">   <i class="fas fa-chart-bar"></i>      <span>Análisis</span></a>
+            <a href="#reports"      class="nav-item"        data-section="reports">     <i class="fas fa-file-alt"></i>       <span>Reportes</span></a>
+            <a href="#settings"     class="nav-item"        data-section="settings">    <i class="fas fa-cog"></i>            <span>Configuración</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="admin-profile">
+                <div class="admin-avatar">AD</div>
+                <div class="admin-info">
+                    <div class="admin-name">Admin</div>
+                    <div class="admin-role">Administrador</div>
+                </div>
+            </div>
+            <button id="btnVolverInicio" class="btn-volver-inicio">
+                <i class="fas fa-home"></i><span>Volver al Inicio</span>
+            </button>
+            <button class="btn-logout" id="btnLogout">
+                <i class="fas fa-sign-out-alt"></i><span>Cerrar Sesión</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle"><i class="fas fa-bars"></i></button>
+                <h2 class="page-title">Dashboard</h2>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar reservas, destinos, usuarios...">
+                </div>
+                <button class="notification-btn" id="notificationBtn" style="position:relative;">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" style="display:none;">0</span>
+                </button>
+                <div class="user-menu">
+                    <button class="user-menu-toggle" id="userMenuToggle">
+                        <div class="user-avatar">AD</div>
+                        <span class="user-name">Administrador</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content-wrapper">
+
+            <!-- ═══════════════════════════════════════ DASHBOARD ═══ -->
+            <section id="dashboard-section" class="content-section active">
+
+                <div class="dash-topbar">
+                    <div class="dash-greeting">
+                        <div class="dash-greeting-icon"><i class="fas fa-leaf"></i></div>
+                        <div>
+                            <h3 class="dash-greeting-title">Bienvenido al Panel</h3>
+                            <p class="dash-greeting-sub">Gigante Viajero · <span id="dashTodayDate"></span></p>
+                        </div>
+                    </div>
+                    <div class="dash-period-tabs">
+                        <span class="dash-period-label"><i class="fas fa-clock"></i> Período:</span>
+                        <div class="period-tab-group">
+                            <button class="period-tab active" data-period="week">7 días</button>
+                            <button class="period-tab" data-period="biweekly">14 días</button>
+                            <button class="period-tab" data-period="month">Mes</button>
+                        </div>
+                        <select id="dashboardPeriodSelector" style="display:none;">
+                            <option value="week" selected>Última Semana</option>
+                            <option value="biweekly">Últimas 2 Semanas</option>
+                            <option value="month">Último Mes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card stat-card--blue">
+                        <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="totalReservations">0</div>
+                            <div class="stat-label">Reservas del Período</div>
+                            <div id="modeBreakdown" class="mode-breakdown-badges"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--amber">
+                        <div class="stat-icon"><i class="fas fa-hourglass-half"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="pendingReservations">0</div>
+                            <div class="stat-label">Pendientes de Revisión</div>
+                            <div class="stat-change neutral"><i class="fas fa-exclamation-circle"></i> Requieren atención</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--green">
+                        <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="totalRevenue">$0</div>
+                            <div class="stat-label">Ingresos del Período</div>
+                            <div class="stat-change positive"><i class="fas fa-arrow-trend-up"></i> Reservas confirmadas</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--purple">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="totalUsers">0</div>
+                            <div class="stat-label">Usuarios Registrados</div>
+                            <div class="stat-change positive"><i class="fas fa-user-plus"></i> Total acumulado</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-row">
+                    <div class="chart-card" style="flex:2;">
+                        <div class="chart-header">
+                            <div>
+                                <h3><i class="fas fa-chart-line"></i> Tendencia de Reservas</h3>
+                                <span class="chart-subtitle">Evolución diaria en el período</span>
+                            </div>
+                            <div class="chart-badge"><i class="fas fa-sync-alt"></i> En vivo</div>
+                        </div>
+                        <canvas id="reservationsChart"></canvas>
+                    </div>
+                    <div class="chart-card" style="flex:1;">
+                        <div class="chart-header">
+                            <div>
+                                <h3><i class="fas fa-bed"></i> Tipo de Reserva</h3>
+                                <span class="chart-subtitle">Entradas vs Alojamientos</span>
+                            </div>
+                        </div>
+                        <canvas id="modeBreakdownChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="charts-row">
+                    <div class="chart-card" style="flex:1;">
+                        <div class="chart-header">
+                            <div>
+                                <h3><i class="fas fa-star"></i> Servicios Populares</h3>
+                                <span class="chart-subtitle">Distribución por categoría</span>
+                            </div>
+                        </div>
+                        <canvas id="servicesChart"></canvas>
+                    </div>
+                    <div class="chart-card" style="flex:1.5;">
+                        <div class="chart-header">
+                            <div>
+                                <h3><i class="fas fa-history"></i> Actividad Reciente</h3>
+                                <span class="chart-subtitle">Últimas reservas registradas</span>
+                            </div>
+                            <button class="chart-link-btn" onclick="navigateToSection('reservations')">Ver todas <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                        <div class="activity-list" id="recentActivity">
+                            <div class="activity-skeleton"><div class="sk-line sk-lg"></div><div class="sk-line sk-sm"></div></div>
+                            <div class="activity-skeleton"><div class="sk-line sk-lg"></div><div class="sk-line sk-sm"></div></div>
+                            <div class="activity-skeleton"><div class="sk-line sk-lg"></div><div class="sk-line sk-sm"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- ═══════════════════════════════════════ RESERVAS ════ -->
+            <section id="reservations-section" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-calendar-check"></i> Gestión de Reservas</h2>
+                    <div class="section-actions">
+                        <div class="filter-group">
+                            <select id="filterStatus" class="filter-select">
+                                <option value="all">Todos los Estados</option>
+                                <option value="pending">Pendientes</option>
+                                <option value="confirmed">Confirmadas</option>
+                                <option value="cancelled">Canceladas</option>
+                            </select>
+                            <select id="filterService" class="filter-select">
+                                <option value="all">Todos los Servicios</option>
+                                <option value="parque">Parques</option>
+                                <option value="mirador">Miradores</option>
+                                <option value="glamping">Glamping</option>
+                                <option value="hospedaje">Hospedaje</option>
+                            </select>
+                            <select id="filterMode" class="filter-select">
+                                <option value="all">Entrada + Alojamiento</option>
+                                <option value="entrada">Solo Entradas</option>
+                                <option value="alojamiento">Solo Alojamientos</option>
+                            </select>
+                            <!-- ✅ Filtro de fechas Desde / Hasta -->
+                            <div class="filter-date-group">
+                                <span class="filter-date-label"><i class="fas fa-calendar-alt"></i></span>
+                                <input type="date" id="filterDateFrom" title="Check-in desde">
+                                <span class="filter-date-sep">–</span>
+                                <input type="date" id="filterDateTo" title="Check-in hasta">
+                            </div>
+                            <button class="btn-clear-filters" id="btnClearReservationFilters" title="Limpiar filtros">
+                                <i class="fas fa-times"></i> Limpiar
+                            </button>
+                        </div>
+                        <button class="btn-primary" id="btnExportReservations">
+                            <i class="fas fa-download"></i> Exportar
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Cliente</th>
+                                <th>Destino</th>
+                                <th>Servicio</th>
+                                <th>Modo</th>
+                                <th>Alojamiento</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Personas</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reservationsTableBody">
+                            <tr><td colspan="12" style="text-align:center;padding:40px;color:#6b7280;">
+                                <i class="fas fa-inbox" style="font-size:48px;margin-bottom:16px;display:block;"></i>Cargando reservas...
+                            </td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="reservationsPagination"></div>
+            </section>
+
+            <!-- ═══════════════════════════════════════ RESEÑAS ════ -->
+            <section id="reviews-section" class="content-section">
+                <!-- El módulo admin-reviews.js inyecta todo el contenido aquí -->
+            </section>
+
+            <!-- ═══════════════════════════════════════ DESTINOS ════ -->
+            <section id="destinations-section" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-map-marked-alt"></i> Gestión de Destinos</h2>
+                    <button class="btn-primary" id="btnAddDestination">
+                        <i class="fas fa-plus"></i> Nuevo Destino
+                    </button>
+                </div>
+
+                <div class="dest-toolbar">
+                    <div class="dest-search-wrap">
+                        <i class="fas fa-search dest-search-icon"></i>
+                        <input type="text" id="destSearchInput" placeholder="Buscar por nombre o ubicación..." class="dest-search-input">
+                    </div>
+                    <div class="dest-filter-group">
+                        <button class="dest-filter-btn active" data-type="all"><i class="fas fa-th-large"></i> Todos</button>
+                        <button class="dest-filter-btn" data-type="parque"><i class="fas fa-tree"></i> Parques</button>
+                        <button class="dest-filter-btn" data-type="mirador"><i class="fas fa-mountain"></i> Miradores</button>
+                        <button class="dest-filter-btn" data-type="glamping"><i class="fas fa-campground"></i> Glamping</button>
+                        <button class="dest-filter-btn" data-type="hospedaje"><i class="fas fa-hotel"></i> Hospedaje</button>
+                    </div>
+                    <div class="dest-count-badge">
+                        <i class="fas fa-map-pin"></i> <span id="destCountNum">0</span> destinos
+                    </div>
+                </div>
+
+                <div class="destinations-grid" id="destinationsGrid">
+                    <div style="grid-column:1/-1;text-align:center;padding:60px;color:#6b7280;">
+                        <i class="fas fa-spinner fa-spin" style="font-size:36px;margin-bottom:14px;display:block;color:#195C33;"></i>Cargando destinos...
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════ USUARIOS ════ -->
+            <section id="users-section" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Gestión de Usuarios</h2>
+                    <div class="section-actions">
+                        <input type="text" id="searchUsers" class="search-input"
+                            placeholder="Buscar usuarios...">
+                        <button class="btn-primary" id="btnAddUser">
+                            <i class="fas fa-user-plus"></i> Nuevo Usuario
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th><th>Nombre</th><th>Email</th><th>Teléfono</th>
+                                <th>Rol</th><th>Reservas</th><th>Fecha Registro</th><th>Estado</th><th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr><td colspan="9" style="text-align:center;padding:40px;color:#6b7280;">Cargando usuarios...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════ ANÁLISIS ════ -->
+            <section id="analytics-section" class="content-section">
+
+                <div class="analytics-header">
+                    <div>
+                        <h2 class="analytics-main-title"><i class="fas fa-chart-bar"></i> Análisis y Estadísticas</h2>
+                        <p class="analytics-main-sub">Rendimiento del negocio en el período seleccionado</p>
+                    </div>
+                    <div class="analytics-date-bar">
+                        <div class="analytics-date-field">
+                            <label><i class="fas fa-calendar-day"></i> Desde</label>
+                            <input type="date" id="analyticsStartDate">
+                        </div>
+                        <div class="analytics-date-sep">→</div>
+                        <div class="analytics-date-field">
+                            <label><i class="fas fa-calendar-day"></i> Hasta</label>
+                            <input type="date" id="analyticsEndDate">
+                        </div>
+                        <select id="analyticsQuickSelect" class="analytics-quick-select">
+                            <option value="">Rango rápido</option>
+                            <option value="7">Últimos 7 días</option>
+                            <option value="30" selected>Últimos 30 días</option>
+                            <option value="90">3 meses</option>
+                            <option value="365">1 año</option>
+                        </select>
+                        <button class="btn-primary" id="btnApplyAnalytics" style="padding:9px 20px;">
+                            <i class="fas fa-filter"></i> Aplicar
+                        </button>
+                        <button class="btn-secondary" id="btnResetAnalytics" style="padding:9px 14px;">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-grid" id="analyticsKpis" style="margin-bottom:28px;">
+                    <div class="stat-card stat-card--green">
+                        <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="aKpiRevenue">$0</div>
+                            <div class="stat-label">Ingresos Totales</div>
+                            <div class="stat-change" id="aKpiRevenueChange" style="color:#6b7280;font-size:12px;">Reservas no canceladas</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--blue">
+                        <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="aKpiBookings">0</div>
+                            <div class="stat-label">Reservas Totales</div>
+                            <div class="stat-change" id="aKpiBookingsChange" style="color:#6b7280;font-size:12px;">En el período</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--amber">
+                        <div class="stat-icon"><i class="fas fa-receipt"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="aKpiAvg">$0</div>
+                            <div class="stat-label">Ticket Promedio</div>
+                            <div class="stat-change" style="color:#6b7280;font-size:12px;">Por reserva confirmada</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--purple">
+                        <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="aKpiConversion">0%</div>
+                            <div class="stat-label">Tasa de Confirmación</div>
+                            <div class="stat-change" style="color:#6b7280;font-size:12px;">Confirmadas / Total</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-row" style="margin-bottom:24px;">
+                    <div class="chart-card" style="flex:1.5;">
+                        <div class="chart-header">
+                            <div><h3><i class="fas fa-trophy"></i> Destinos Más Reservados</h3><span class="chart-subtitle">Top 6 por número de reservas</span></div>
+                        </div>
+                        <canvas id="topDestinationsChart" style="max-height:280px;"></canvas>
+                    </div>
+                    <div class="chart-card" style="flex:1;">
+                        <div class="chart-header">
+                            <div><h3><i class="fas fa-money-bill-wave"></i> Ingresos por Servicio</h3><span class="chart-subtitle">COP — período seleccionado</span></div>
+                        </div>
+                        <canvas id="revenueByServiceChart" style="max-height:280px;"></canvas>
+                    </div>
+                </div>
+
+                <div class="charts-row" style="margin-bottom:24px;">
+                    <div class="chart-card" style="flex:1;">
+                        <div class="chart-header">
+                            <div><h3><i class="fas fa-calendar-alt"></i> Reservas por Mes</h3><span class="chart-subtitle">Últimos 12 meses</span></div>
+                        </div>
+                        <canvas id="occupancyChart" style="max-height:260px;"></canvas>
+                    </div>
+                    <div class="chart-card" style="flex:1;">
+                        <div class="chart-header">
+                            <div><h3><i class="fas fa-chart-line"></i> Ingresos por Mes</h3><span class="chart-subtitle">Últimos 12 meses — COP</span></div>
+                        </div>
+                        <canvas id="revenueMonthlyChart" style="max-height:260px;"></canvas>
+                    </div>
+                </div>
+
+                <div class="charts-row" style="margin-bottom:24px;">
+                    <div class="chart-card" style="flex:1;">
+                        <div class="chart-header">
+                            <div><h3><i class="fas fa-bed"></i> Entradas vs Alojamientos</h3><span class="chart-subtitle">Por modo de reserva</span></div>
+                        </div>
+                        <canvas id="modeAnalyticsChart" style="max-height:260px;"></canvas>
+                    </div>
+                    <div class="chart-card" style="flex:1;">
+                        <div class="chart-header">
+                            <div><h3><i class="fas fa-tasks"></i> Estado de Reservas</h3><span class="chart-subtitle">Distribución en el período</span></div>
+                        </div>
+                        <canvas id="statusChart" style="max-height:260px;"></canvas>
+                    </div>
+                </div>
+
+                <div class="charts-row">
+                    <div class="chart-card" style="flex:1;">
+                        <div class="chart-header">
+                            <div><h3><i class="fas fa-crown"></i> Top Clientes</h3><span class="chart-subtitle">Por número de reservas en el período</span></div>
+                        </div>
+                        <div id="topClientsTable" style="margin-top:8px;"></div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- ═══════════════════════════════════════ REPORTES ════ -->
+            <section id="reports-section" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-file-alt"></i> Reportes</h2>
+                    <span style="font-size:13px;color:#6b7280;">Genera y exporta reportes detallados de tu operación</span>
+                </div>
+                <div class="chart-card" style="margin-bottom:24px;">
+                    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;">
+                        <div><label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;"><i class="fas fa-calendar-alt" style="color:#195C33;"></i> Desde</label><input type="date" id="reportStartDate" style="padding:9px 14px;border:2px solid #e5e7eb;border-radius:8px;font-size:14px;outline:none;"></div>
+                        <div><label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;"><i class="fas fa-calendar-alt" style="color:#195C33;"></i> Hasta</label><input type="date" id="reportEndDate" style="padding:9px 14px;border:2px solid #e5e7eb;border-radius:8px;font-size:14px;outline:none;"></div>
+                        <div><label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;"><i class="fas fa-filter" style="color:#195C33;"></i> Período rápido</label><select id="reportQuickPeriod" style="padding:9px 14px;border:2px solid #e5e7eb;border-radius:8px;font-size:14px;min-width:160px;outline:none;"><option value="7">Últimos 7 días</option><option value="30" selected>Últimos 30 días</option><option value="90">Últimos 3 meses</option><option value="180">Últimos 6 meses</option><option value="365">Último año</option><option value="0">Personalizado</option></select></div>
+                        <button class="btn-primary" id="btnGenerateReports" style="padding:9px 24px;height:40px;"><i class="fas fa-sync-alt"></i> Generar</button>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:28px;">
+                    <div class="report-type-card" id="reportCard-reservations" onclick="selectReportType('reservations')" style="cursor:pointer;"><div class="report-card-icon" style="background:linear-gradient(135deg,#3b82f6,#2563eb);"><i class="fas fa-calendar-check"></i></div><div class="report-card-body"><h4>Reporte de Reservas</h4><p>Incluye modo (entrada/alojamiento), cabaña, fechas y totales</p><div class="report-card-count" id="reportCount-reservations">— registros</div></div><div class="report-card-check"><i class="fas fa-check-circle"></i></div></div>
+                    <div class="report-type-card" id="reportCard-revenue" onclick="selectReportType('revenue')" style="cursor:pointer;"><div class="report-card-icon" style="background:linear-gradient(135deg,#10b981,#059669);"><i class="fas fa-dollar-sign"></i></div><div class="report-card-body"><h4>Reporte de Ingresos</h4><p>Ingresos diarios y acumulados por servicio</p><div class="report-card-count" id="reportCount-revenue">— registros</div></div><div class="report-card-check"><i class="fas fa-check-circle"></i></div></div>
+                    <div class="report-type-card" id="reportCard-destinations" onclick="selectReportType('destinations')" style="cursor:pointer;"><div class="report-card-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);"><i class="fas fa-map-marked-alt"></i></div><div class="report-card-body"><h4>Reporte de Destinos</h4><p>Entradas vs alojamientos por destino, ingresos y visitantes</p><div class="report-card-count" id="reportCount-destinations">— registros</div></div><div class="report-card-check"><i class="fas fa-check-circle"></i></div></div>
+                    <div class="report-type-card" id="reportCard-clients" onclick="selectReportType('clients')" style="cursor:pointer;"><div class="report-card-icon" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);"><i class="fas fa-users"></i></div><div class="report-card-body"><h4>Reporte de Clientes</h4><p>Clientes activos, frecuencia e ingresos por cliente</p><div class="report-card-count" id="reportCount-clients">— registros</div></div><div class="report-card-check"><i class="fas fa-check-circle"></i></div></div>
+                </div>
+                <div class="chart-card" id="reportPreviewArea" style="display:none;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+                        <div><h3 id="reportPreviewTitle" style="margin:0;font-size:18px;font-weight:700;color:#111827;"></h3><p id="reportPreviewSubtitle" style="margin:4px 0 0;font-size:13px;color:#6b7280;"></p></div>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                            <button class="btn-secondary" id="btnExportCSV" onclick="exportReportCSV()" style="gap:8px;display:flex;align-items:center;"><i class="fas fa-file-csv" style="color:#10b981;"></i> Exportar CSV</button>
+                            <button class="btn-secondary" id="btnExportPDF" onclick="exportReportPDF()" style="gap:8px;display:flex;align-items:center;"><i class="fas fa-file-pdf" style="color:#ef4444;"></i> Exportar PDF</button>
+                            <button class="btn-primary" onclick="printReport()" style="gap:8px;display:flex;align-items:center;"><i class="fas fa-print"></i> Imprimir</button>
+                        </div>
+                    </div>
+                    <div id="reportKpis" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;"></div>
+                    <div style="overflow-x:auto;"><table id="reportPreviewTable" style="width:100%;border-collapse:collapse;font-size:13px;"><thead id="reportPreviewHead"></thead><tbody id="reportPreviewBody"></tbody></table></div>
+                    <div id="reportTableFooter" style="text-align:center;margin-top:16px;font-size:12px;color:#9ca3af;"></div>
+                </div>
+                <div id="reportEmptyState" style="text-align:center;padding:60px 20px;color:#9ca3af;">
+                    <i class="fas fa-file-alt" style="font-size:64px;margin-bottom:20px;display:block;opacity:.2;"></i>
+                    <h3 style="font-size:18px;margin:0 0 8px;color:#6b7280;">Selecciona un tipo de reporte</h3>
+                    <p style="margin:0;">Elige una de las opciones de arriba y haz clic en <strong>Generar</strong></p>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════ CONFIGURACIÓN -->
+            <section id="settings-section" class="content-section"></section>
+
+        </div>
+    </main>
+
+    <!-- ===================================================== -->
+    <!-- MODALES                                               -->
+    <!-- ===================================================== -->
+
+    <!-- Modal: Detalles de Reserva -->
+    <div class="modal" id="reservationDetailsModal">
+        <div class="modal-overlay" onclick="closeModal('reservationDetailsModal')"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar-check"></i> Detalles de Reserva</h2>
+                <button class="modal-close" onclick="closeModal('reservationDetailsModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="reservationDetailsContent"></div>
+        </div>
+    </div>
+
+    <!-- Modal: Editar/Agregar Destino -->
+    <div class="modal" id="destinationModal">
+        <div class="modal-overlay" onclick="closeModal('destinationModal')"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-map-marker-alt"></i> <span id="destinationModalTitle">Nuevo Destino</span></h2>
+                <button class="modal-close" onclick="closeModal('destinationModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="destinationForm">
+
+                    <div class="form-section-title"><i class="fas fa-info-circle"></i> Información Básica</div>
+                    <div class="form-group"><label>Nombre del Destino <span class="required">*</span></label><input type="text" id="destName" required placeholder="Ej. Parque Xhimanut"></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Tipo de Servicio <span class="required">*</span></label><select id="destType" required><option value="">Seleccione...</option><option value="parque">Parque</option><option value="mirador">Mirador</option><option value="glamping">Glamping</option><option value="hospedaje">Hospedaje</option></select></div>
+                        <div class="form-group"><label>Precio Base Reserva (COP)</label><input type="number" id="destPrice" min="0" placeholder="0"></div>
+                    </div>
+                    <div class="form-group"><label>Descripción <span class="required">*</span></label><textarea id="destDescription" rows="3" required placeholder="Descripción general del destino..."></textarea></div>
+                    <div class="form-group"><label>URL de Imagen Principal</label><input type="url" id="destImage" placeholder="https://..."></div>
+
+                    <div class="form-section-title" style="margin-top:24px;"><i class="fas fa-map-marked-alt"></i> Ubicación</div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Municipio <span class="required">*</span></label><input type="text" id="destMunicipio" required placeholder="Gigante"></div>
+                        <div class="form-group"><label>Departamento</label><input type="text" id="destDepartamento" placeholder="Huila"></div>
+                    </div>
+                    <div class="form-group"><label>Referencia / Dirección</label><input type="text" id="destLocation" placeholder="Km 3 vía Gigante - Hobo"></div>
+                    <div class="form-row">
+                        <div class="form-group"><label><i class="fas fa-crosshairs" style="color:#195C33;"></i> Latitud</label><input type="number" id="destLat" step="any" placeholder="2.3883"></div>
+                        <div class="form-group"><label><i class="fas fa-crosshairs" style="color:#195C33;"></i> Longitud</label><input type="number" id="destLng" step="any" placeholder="-75.5406"></div>
+                    </div>
+
+                    <div class="form-section-title" style="margin-top:24px;"><i class="fas fa-ticket-alt"></i> Entrada</div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Precio de Entrada (COP)</label><input type="number" id="destEntradaPrecio" min="0" placeholder="0"></div>
+                        <div class="form-group" style="display:flex;align-items:flex-end;padding-bottom:4px;"><label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:500;"><input type="checkbox" id="destIncluyeAlmuerzo" style="width:18px;height:18px;accent-color:#195C33;"> Incluye Almuerzo</label></div>
+                    </div>
+                    <div class="form-group"><label>Notas de Entrada</label><input type="text" id="destEntradaNotas" placeholder="Ej. Niños menores de 5 años gratis"></div>
+
+                    <div class="form-section-title" style="margin-top:24px;"><i class="fas fa-clock"></i> Detalles Operativos</div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Horario de Atención</label><input type="text" id="destHorario" placeholder="Lun - Dom: 8:00am - 5:00pm"></div>
+                        <div class="form-group" style="display:flex;align-items:flex-end;padding-bottom:4px;"><label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:500;"><input type="checkbox" id="destPetFriendly" style="width:18px;height:18px;accent-color:#195C33;"> 🐾 Pet Friendly</label></div>
+                    </div>
+                    <div class="form-group"><label>Servicios <small style="color:#6b7280;">(separados por coma)</small></label><input type="text" id="destServicios" placeholder="Piscina, Restaurante, Parqueadero, WiFi"></div>
+                    <div class="form-group"><label>Atracciones <small style="color:#6b7280;">(separadas por coma)</small></label><input type="text" id="destAtracciones" placeholder="Toboganes, Senderos, Tirolesa"></div>
+
+                    <div class="form-section-title" style="margin-top:24px;"><i class="fas fa-phone-alt"></i> Contacto</div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Teléfono</label><input type="tel" id="destTelefono" placeholder="3201234567"></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="destEmail" placeholder="contacto@destino.com"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label><i class="fab fa-instagram" style="color:#e1306c;"></i> Instagram</label><input type="text" id="destInstagram" placeholder="@usuario"></div>
+                        <div class="form-group"><label><i class="fab fa-facebook" style="color:#1877f2;"></i> Facebook</label><input type="text" id="destFacebook" placeholder="facebook.com/pagina"></div>
+                    </div>
+
+                    <div class="form-section-title" style="margin-top:24px;"><i class="fas fa-map"></i> Configuración del Mapa</div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Categoría en el Mapa</label><select id="destMapCategoria"><option value="">Ninguna</option><option value="miradores">Miradores</option><option value="naturaleza">Naturaleza</option><option value="aventura">Aventura</option><option value="gastronomia">Gastronomía</option></select></div>
+                        <div class="form-group"><label>Tipo (badge en el mapa)</label><input type="text" id="destMapTipo" placeholder="Mirador, Parque, Hotel..."></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Ícono del marcador (emoji)</label><input type="text" id="destMapIcono" placeholder="📍" maxlength="4"></div>
+                        <div class="form-group"><label>Página de Detalle (HTML)</label><input type="text" id="destPaginaDetalle" placeholder="parque-xhimanut.html"></div>
+                    </div>
+
+
+                    <div class="modal-footer" style="margin-top:28px;">
+                        <button type="button" class="btn-secondary" onclick="closeModal('destinationModal')">Cancelar</button>
+                        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Nuevo Usuario -->
+    <div class="modal" id="newUserModal">
+        <div class="modal-overlay" onclick="closeModal('newUserModal')"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-plus"></i> Nuevo Usuario</h2>
+                <button class="modal-close" onclick="closeModal('newUserModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="newUserForm">
+                    <div class="form-row">
+                        <div class="form-group"><label>Nombre <span class="required">*</span></label><input type="text" id="newUserFirstName" required placeholder="Santiago"></div>
+                        <div class="form-group"><label>Apellido <span class="required">*</span></label><input type="text" id="newUserLastName" required placeholder="Velasco"></div>
+                    </div>
+                    <div class="form-group"><label>Email <span class="required">*</span></label><input type="email" id="newUserEmail" required placeholder="correo@ejemplo.com"></div>
+                    <div class="form-group"><label>Teléfono</label><input type="tel" id="newUserPhone" placeholder="3203867524" maxlength="10"></div>
+                    <div class="form-group"><label>Contraseña <span class="required">*</span></label><input type="password" id="newUserPassword" required placeholder="Mínimo 8 caracteres" minlength="8"></div>
+                    <div class="form-group"><label>Rol <span class="required">*</span></label><select id="newUserRole" required><option value="customer">Cliente</option><option value="admin">Administrador</option></select></div>
+                    <div id="newUserError" style="display:none;background:#fee2e2;color:#991b1b;padding:12px;border-radius:8px;margin-bottom:12px;font-size:14px;"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeModal('newUserModal')">Cancelar</button>
+                        <button type="submit" class="btn-primary" id="newUserSubmitBtn"><i class="fas fa-save"></i> Crear Usuario</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Ver Detalles de Usuario -->
+    <div class="modal" id="userDetailsModal">
+        <div class="modal-overlay" onclick="closeModal('userDetailsModal')"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user"></i> Detalles del Usuario</h2>
+                <button class="modal-close" onclick="closeModal('userDetailsModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="userDetailsContent"></div>
+        </div>
+    </div>
+
+
+    <style>
+        /* ══ Dashboard topbar ══ */
+        .dash-topbar { display:flex;justify-content:space-between;align-items:center;background:white;padding:16px 24px;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:24px;gap:16px;flex-wrap:wrap; }
+        .dash-greeting { display:flex;align-items:center;gap:14px; }
+        .dash-greeting-icon { width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#195C33,#2d9b57);display:flex;align-items:center;justify-content:center;color:white;font-size:20px;flex-shrink:0; }
+        .dash-greeting-title { margin:0;font-size:17px;font-weight:800;color:#111827; }
+        .dash-greeting-sub   { margin:3px 0 0;font-size:13px;color:#6b7280; }
+        .dash-period-tabs  { display:flex;align-items:center;gap:12px; }
+        .dash-period-label { font-size:13px;font-weight:600;color:#374151;white-space:nowrap; }
+        .period-tab-group  { display:flex;background:#f3f4f6;border-radius:10px;padding:3px;gap:2px; }
+        .period-tab { padding:7px 16px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:600;color:#6b7280;cursor:pointer;transition:all .2s; }
+        .period-tab.active,.period-tab:hover { background:white;color:#195C33;box-shadow:0 1px 4px rgba(0,0,0,.12); }
+
+        /* ══ Stat cards ══ */
+        .stat-card--blue   .stat-icon { background:linear-gradient(135deg,#3b82f6,#2563eb); }
+        .stat-card--amber  .stat-icon { background:linear-gradient(135deg,#f59e0b,#d97706); }
+        .stat-card--green  .stat-icon { background:linear-gradient(135deg,#10b981,#059669); }
+        .stat-card--purple .stat-icon { background:linear-gradient(135deg,#8b5cf6,#7c3aed); }
+        .mode-breakdown-badges { margin-top:6px;display:flex;flex-wrap:wrap;gap:4px; }
+
+        /* ══ Chart helpers ══ */
+        .chart-subtitle { font-size:12px;color:#6b7280;font-weight:500; }
+        .chart-badge { font-size:11px;font-weight:700;color:#059669;background:#d1fae5;padding:4px 10px;border-radius:20px; }
+        .chart-link-btn { font-size:12px;font-weight:600;color:#195C33;background:#f0fdf4;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:background .2s; }
+        .chart-link-btn:hover { background:#dcfce7; }
+
+        /* ══ Activity skeletons ══ */
+        .activity-skeleton { display:flex;flex-direction:column;gap:6px;padding:12px 0;border-bottom:1px solid #f3f4f6; }
+        .sk-line { background:#f3f4f6;border-radius:6px;animation:skeleton-pulse 1.5s infinite; }
+        .sk-lg { height:14px;width:70%; }
+        .sk-sm { height:11px;width:45%; }
+        @keyframes skeleton-pulse { 0%,100%{opacity:.5}50%{opacity:1} }
+
+        /* ══ Destinos toolbar ══ */
+        .dest-toolbar { display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:white;padding:14px 20px;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:24px; }
+        .dest-search-wrap { display:flex;align-items:center;gap:10px;background:#f9fafb;border:2px solid #e5e7eb;border-radius:10px;padding:9px 14px;flex:1;min-width:200px;transition:border .2s; }
+        .dest-search-wrap:focus-within { border-color:#195C33; }
+        .dest-search-icon { color:#9ca3af;font-size:14px; }
+        .dest-search-input { border:none;background:transparent;outline:none;font-size:14px;color:#111827;width:100%; }
+        .dest-filter-group { display:flex;gap:6px;flex-wrap:wrap; }
+        .dest-filter-btn { display:flex;align-items:center;gap:6px;padding:8px 14px;border:2px solid #e5e7eb;border-radius:10px;background:white;color:#6b7280;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap; }
+        .dest-filter-btn:hover { border-color:#195C33;color:#195C33; }
+        .dest-filter-btn.active { background:#195C33;color:white;border-color:#195C33; }
+        .dest-count-badge { font-size:13px;font-weight:700;color:#195C33;background:#f0fdf4;padding:8px 14px;border-radius:10px;white-space:nowrap;border:1px solid #bbf7d0; }
+
+        /* ══ Analytics header ══ */
+        .analytics-header { display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:24px; }
+        .analytics-main-title { margin:0;font-size:22px;font-weight:800;color:#111827; }
+        .analytics-main-sub   { margin:4px 0 0;font-size:13px;color:#6b7280; }
+        .analytics-date-bar { display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;background:white;padding:14px 18px;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.08); }
+        .analytics-date-field { display:flex;flex-direction:column;gap:4px; }
+        .analytics-date-field label { font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.5px; }
+        .analytics-date-field input { padding:8px 12px;border:2px solid #e5e7eb;border-radius:8px;font-size:13px;outline:none;transition:border .2s; }
+        .analytics-date-field input:focus { border-color:#195C33; }
+        .analytics-date-sep { color:#9ca3af;font-size:16px;padding-bottom:8px; }
+        .analytics-quick-select { padding:8px 12px;border:2px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;color:#374151;outline:none;cursor:pointer;background:white;align-self:flex-end; }
+
+        /* ══ Shared ══ */
+        .form-section-title { font-size:14px;font-weight:700;color:#195C33;background:#f0fdf4;border-left:4px solid #195C33;padding:8px 14px;border-radius:0 8px 8px 0;margin-bottom:16px;display:flex;align-items:center;gap:8px; }
+        .report-type-card { background:#fff;border:2px solid #e5e7eb;border-radius:14px;padding:20px;display:flex;align-items:flex-start;gap:14px;transition:all .2s;position:relative;overflow:hidden; }
+        .report-type-card:hover { border-color:#195C33;box-shadow:0 4px 16px rgba(25,92,51,.12);transform:translateY(-2px); }
+        .report-type-card.active { border-color:#195C33;background:#f0fdf4; }
+        .report-type-card.active .report-card-check { opacity:1; }
+        .report-card-icon { width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;flex-shrink:0; }
+        .report-card-body h4 { margin:0 0 4px;font-size:14px;font-weight:700;color:#111827; }
+        .report-card-body p  { margin:0 0 8px;font-size:12px;color:#6b7280;line-height:1.4; }
+        .report-card-count   { font-size:12px;font-weight:700;color:#195C33; }
+        .report-card-check   { position:absolute;top:12px;right:12px;color:#195C33;font-size:18px;opacity:0;transition:opacity .2s; }
+        #reportPreviewTable thead tr { background:linear-gradient(135deg,#195C33,#0d3d20);color:white; }
+        #reportPreviewTable thead th { padding:12px 14px;text-align:left;font-size:12px;font-weight:600;white-space:nowrap; }
+        #reportPreviewTable tbody tr { border-bottom:1px solid #f3f4f6;transition:background .15s; }
+        #reportPreviewTable tbody tr:hover { background:#f9fafb; }
+        #reportPreviewTable tbody td { padding:11px 14px;font-size:13px;color:#374151; }
+        .report-kpi-mini { background:#f9fafb;border-radius:10px;padding:14px;text-align:center; }
+        .report-kpi-mini .rk-value { font-size:20px;font-weight:800;color:#111827; }
+        .report-kpi-mini .rk-label { font-size:11px;color:#6b7280;margin-top:4px;font-weight:600; }
+        .btn-volver-inicio { display:flex;align-items:center;gap:10px;width:100%;padding:11px 16px;background:linear-gradient(135deg,#facc15,#eab308);color:#1f2937;border:none;border-radius:10px;font-weight:600;font-size:13px;cursor:pointer;transition:all .3s;margin-bottom:6px;box-sizing:border-box; }
+        .btn-volver-inicio:hover { transform:translateY(-2px);box-shadow:0 6px 16px rgba(234,179,8,.4); }
+        .btn-logout { display:flex!important;align-items:center;gap:10px;width:100%;padding:11px 16px;background:rgba(255,255,255,0.08);color:#e5e7eb;border:1px solid rgba(255,255,255,0.15);border-radius:10px;font-weight:600;font-size:13px;cursor:pointer;transition:all .3s;box-sizing:border-box; }
+        .btn-logout:hover { background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#fca5a5; }
+        #reservationsTableBody td:nth-child(5),
+        #reservationsTableBody td:nth-child(6) { white-space:nowrap; }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../scripts/admin_dashboard.js"></script>
+    <script src="../scripts/admin-reviews.js"></script>
+    <script>
+        /* ── Botón Volver ── */
+        document.getElementById('btnVolverInicio').addEventListener('click', function () {
+            window.location.href = 'index.html';
+        });
+
+        /* ── Fecha de hoy en greeting ── */
+        (function() {
+            const el = document.getElementById('dashTodayDate');
+            if (el) {
+                const d = new Date();
+                el.textContent = d.toLocaleDateString('es-CO', { weekday:'long', day:'numeric', month:'long' });
+            }
+        })();
+
+        /* ── Tabs de período del dashboard ── */
+        document.querySelectorAll('.period-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const sel = document.getElementById('dashboardPeriodSelector');
+                if (sel) { sel.value = this.dataset.period; sel.dispatchEvent(new Event('change')); }
+            });
+        });
+
+        /* ── Quick select de Analytics ── */
+        const analyticsQuick = document.getElementById('analyticsQuickSelect');
+        if (analyticsQuick) {
+            analyticsQuick.addEventListener('change', function() {
+                const days = parseInt(this.value);
+                if (!days) return;
+                const end = new Date(); const start = new Date();
+                start.setDate(start.getDate() - days);
+                const fmt = d => d.toISOString().split('T')[0];
+                const s = document.getElementById('analyticsStartDate');
+                const e = document.getElementById('analyticsEndDate');
+                if (s) s.value = fmt(start);
+                if (e) e.value = fmt(end);
+            });
+        }
+
+        /* ── Botón limpiar filtros de reservas ── */
+        document.getElementById('btnClearReservationFilters')?.addEventListener('click', function () {
+            ['filterStatus','filterService','filterMode'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = 'all';
+            });
+            ['filterDateFrom','filterDateTo'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            if (typeof loadReservations === 'function') loadReservations();
+        });
+
+        /* ── Filtros de Destinos ── */
+        (function() {
+            let _activeType  = 'all';
+            let _searchQuery = '';
+
+            function applyDestFilters() {
+                const grid  = document.getElementById('destinationsGrid');
+                const cards = grid ? grid.querySelectorAll('.destination-card') : [];
+                let visible = 0;
+                cards.forEach(card => {
+                    const type = card.dataset.type || '';
+                    const name = (card.querySelector('.destination-name')?.textContent || '').toLowerCase();
+                    const loc  = (card.querySelector('.destination-location')?.textContent || '').toLowerCase();
+                    const matchType   = _activeType === 'all' || type === _activeType;
+                    const matchSearch = !_searchQuery || name.includes(_searchQuery) || loc.includes(_searchQuery);
+                    card.style.display = (matchType && matchSearch) ? '' : 'none';
+                    if (matchType && matchSearch) visible++;
+                });
+                const countEl = document.getElementById('destCountNum');
+                if (countEl) countEl.textContent = visible;
+            }
+
+            document.querySelectorAll('.dest-filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.dest-filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    _activeType = this.dataset.type;
+                    applyDestFilters();
+                });
+            });
+
+            const searchInput = document.getElementById('destSearchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    _searchQuery = this.value.trim().toLowerCase();
+                    applyDestFilters();
+                });
+            }
+
+            const grid = document.getElementById('destinationsGrid');
+            if (grid) {
+                new MutationObserver(() => {
+                    setTimeout(() => {
+                        grid.querySelectorAll('.destination-card').forEach(card => {
+                            if (!card.dataset.type) {
+                                const typeEl = card.querySelector('.destination-type');
+                                if (typeEl) {
+                                    const txt = typeEl.textContent.toLowerCase();
+                                    if (txt.includes('parque'))         card.dataset.type = 'parque';
+                                    else if (txt.includes('mirador'))   card.dataset.type = 'mirador';
+                                    else if (txt.includes('glamping'))  card.dataset.type = 'glamping';
+                                    else if (txt.includes('hospedaje')) card.dataset.type = 'hospedaje';
+                                }
+                            }
+                        });
+                        applyDestFilters();
+                    }, 50);
+                }).observe(grid, { childList: true });
+            }
+        })();
+    </script>
+    <script src="../scripts/photo-sync.js"></script>
+    <script src="../scripts/admin-photo.js"></script>
+</body>
+</html>

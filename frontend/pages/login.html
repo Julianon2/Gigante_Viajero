@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Gigante Viagero</title>
+    <meta name="description" content="Inicia sesión en Gigante Viajero para acceder a tu cuenta">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="data:,">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f9fafb; }
+
+        /* ==================== HEADER ==================== */
+        header {
+            background: linear-gradient(135deg, #195C33 0%, #0d3d20 100%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .header-container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        .header-content { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; gap: 32px; }
+        .logo-section { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .logo-img { width: 56px; height: 56px; object-fit: contain; }
+        .logo-text { color: white; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+        .nav-menu { display: flex; align-items: center; gap: 32px; list-style: none; }
+        .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 16px; padding: 8px 0; position: relative; transition: color 0.3s ease; }
+        .nav-link:hover { color: #FFDD00; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #FFDD00; transition: width 0.3s ease; }
+        .nav-link:hover::after { width: 100%; }
+        .dropdown { position: relative; }
+        .dropdown-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .dropdown-menu { position: absolute; top: calc(100% + 12px); left: 0; background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); min-width: 220px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; overflow: hidden; }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-menu a { display: block; padding: 14px 20px; color: #195C33; text-decoration: none; font-weight: 500; transition: all 0.2s ease; border-left: 3px solid transparent; }
+        .dropdown-menu a:hover { background: #f3f4f6; color: #FFDD00; border-left-color: #FFDD00; padding-left: 24px; }
+        .auth-section { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+        .btn { padding: 10px 28px; border-radius: 30px; font-weight: 600; font-size: 15px; text-decoration: none; transition: all 0.3s ease; cursor: pointer; border: none; display: inline-block; }
+        .btn-login { background: transparent; color: white; border: 2px solid white; }
+        .btn-login:hover { background: white; color: #195C33; transform: translateY(-2px); }
+        .btn-register { background: linear-gradient(135deg, #F4C400 0%, #FFE347 100%); color: #195C33; box-shadow: 0 4px 15px rgba(244,196,0,0.3); }
+        .btn-register:hover { background: linear-gradient(135deg, #FFE347 0%, #F4C400 100%); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244,196,0,0.5); }
+
+        /* ==================== MENÚ DE USUARIO ==================== */
+        #user-menu-container { display: none; position: relative; }
+        #user-menu-button { display: flex; align-items: center; gap: 10px; padding: 8px 16px; background: rgba(255,255,255,0.1); border-radius: 50px; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; }
+        #user-menu-button:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); }
+        #user-initials { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #F4C400 0%, #FFE347 100%); display: flex; align-items: center; justify-content: center; color: #195C33; font-weight: 700; font-size: 16px; }
+        #user-name { color: white; font-weight: 600; font-size: 15px; }
+        .user-chevron { color: white; font-size: 12px; }
+        #user-dropdown { position: absolute; top: calc(100% + 12px); right: 0; width: 280px; background: white; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); border: 1px solid rgba(0,0,0,0.1); z-index: 9999; opacity: 1; visibility: visible; transform: translateY(0); transition: all 0.3s ease; }
+        #user-dropdown.hidden { opacity: 0; visibility: hidden; transform: translateY(-10px); pointer-events: none; }
+        .user-dropdown-header { padding: 20px; background: linear-gradient(135deg, #195C33 0%, #0d3d20 100%); border-radius: 16px 16px 0 0; }
+        #dropdown-user-name { color: white; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        #dropdown-user-email { color: rgba(255,255,255,0.8); font-size: 13px; }
+        #dropdown-user-role { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+        .user-dropdown-item { display: flex; align-items: center; padding: 14px 20px; color: #1f2937; text-decoration: none; transition: all 0.2s ease; font-size: 14px; font-weight: 500; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
+        .user-dropdown-item:hover { background: #f3f4f6; color: #195C33; }
+        .user-dropdown-item i { width: 20px; margin-right: 12px; color: #6b7280; }
+        .user-dropdown-item:hover i { color: #195C33; }
+        .user-dropdown-divider { height: 1px; background: #e5e7eb; margin: 8px 0; }
+        .user-dropdown-item.logout { color: #dc2626; }
+        .user-dropdown-item.logout:hover { background: #fee2e2; }
+        .user-dropdown-item.logout i { color: #dc2626; }
+
+        /* Mobile Toggle */
+        .mobile-toggle { display: none; flex-direction: column; gap: 6px; cursor: pointer; padding: 8px; }
+        .mobile-toggle span { width: 28px; height: 3px; background: white; border-radius: 3px; }
+
+        /* ==================== BOTÓN GOOGLE ==================== */
+        .btn-google-signin { width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 13px 20px; background: #fff; color: #3c4043; font-size: 15px; font-weight: 600; border: 1.5px solid #dadce0; border-radius: 10px; cursor: pointer; transition: box-shadow 0.2s, background 0.2s; font-family: inherit; }
+        .btn-google-signin:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.15); background: #f8f9fa; }
+        .btn-google-signin:active { background: #f1f3f4; }
+        .btn-google-signin:disabled { opacity: 0.65; cursor: not-allowed; }
+        .btn-google-signin svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner { width: 18px; height: 18px; border: 2.5px solid #dadce0; border-top-color: #4285F4; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+
+        /* ==================== TOAST ==================== */
+        #auth-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: #1c5b30; color: white; padding: 12px 24px; border-radius: 30px; font-size: 14px; opacity: 0; transition: opacity 0.3s, transform 0.3s; pointer-events: none; z-index: 9999; white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+        #auth-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        #auth-toast.error { background: #dc2626; }
+
+        /* ==================== FOOTER ==================== */
+        footer { background: linear-gradient(135deg, #195C33 0%, #0d3d20 100%); color: white; padding: 3rem 1.5rem 1rem; position: relative; overflow: hidden; }
+        footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #F4C400 0%, #ffd700 50%, #F4C400 100%); }
+        .footer-container { max-width: 1200px; margin: 0 auto; }
+        .footer-main { text-align: center; margin-bottom: 2rem; }
+        .footer-main h2 { color: #F4C400; font-size: 32px; font-weight: 700; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .footer-main p { color: #e5e7eb; font-size: 16px; line-height: 1.7; max-width: 600px; margin: 0 auto 2rem; }
+        .social-icons { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.5rem; }
+        .social-icons a { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.4s ease; font-size: 24px; border: 3px solid rgba(255,255,255,0.2); text-decoration: none; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .social-icons a:hover { transform: translateY(-8px) scale(1.1); border-color: #F4C400; box-shadow: 0 8px 25px rgba(244,196,0,0.4); }
+        .social-facebook { background: linear-gradient(135deg, #1877F2 0%, #0d5dbf 100%); }
+        .social-instagram { background: linear-gradient(135deg, #E1306C 0%, #C13584 50%, #833AB4 100%); }
+        .social-tiktok { background: linear-gradient(135deg, #000 0%, #333 100%); }
+        .social-x { background: linear-gradient(135deg, #000 0%, #1a1a1a 100%); }
+        .footer-divider { height: 2px; margin: 2.5rem 0; background: linear-gradient(90deg, transparent, rgba(244,196,0,0.8), transparent); }
+        .footer-info { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 2rem; }
+        .info-item { display: flex; align-items: center; gap: 0.75rem; color: #e5e7eb; font-size: 15px; transition: all 0.3s ease; }
+        .info-item:hover { color: #F4C400; transform: translateX(5px); }
+        .info-item i { color: #F4C400; font-size: 20px; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1.5rem; text-align: center; }
+        .footer-bottom p { color: #d1d5db; font-size: 14px; margin: 0; }
+
+        @media (max-width: 968px) {
+            .mobile-toggle { display: flex; }
+            .nav-menu { position: absolute; top: 100%; left: 0; right: 0; background: linear-gradient(135deg, #195C33 0%, #0d3d20 100%); flex-direction: column; gap: 0; padding: 20px 24px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+            .nav-menu.active { max-height: 600px; }
+            .nav-menu li { width: 100%; }
+            .nav-link { display: block; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            #user-name { display: none; }
+            .footer-info { flex-direction: column; gap: 1rem; align-items: center; }
+            .social-icons { gap: 1rem; }
+            .social-icons a { width: 50px; height: 50px; font-size: 20px; }
+        }
+        @media (max-width: 480px) {
+            .logo-text { font-size: 18px; }
+            .logo-img { width: 44px; height: 44px; }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+
+<!-- ========== HEADER ========== -->
+<header>
+    <div class="header-container">
+        <div class="header-content">
+            <div class="logo-section">
+                <img src="../assets/img/logo.png" alt="Logo Gigante Viajero" class="logo-img">
+                <h1 class="logo-text">Gigante Viagero</h1>
+            </div>
+
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" class="nav-link">Inicio</a></li>
+                    <li><a href="sitio.html" class="nav-link">Explora</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">Descubre ▾</a>
+                        <div class="dropdown-menu">
+                            <a href="naturaleza.html">Naturaleza</a>
+                            <a href="historia.html">Historia</a>
+                            <a href="gastronomia.html">Gastronomía</a>
+                            <a href="turismo religioso.html">Turismo Religioso</a>
+                        </div>
+                    </li>
+                    <li><a href="mapa.html" class="nav-link">Mapa</a></li>
+                    <li><a href="contactos.html" class="nav-link">Contacto</a></li>
+                </ul>
+            </nav>
+
+            <div class="auth-section">
+                <!-- Menú de usuario (post-login) -->
+                <div id="user-menu-container">
+                    <button id="user-menu-button">
+                        <div id="user-initials">U</div>
+                        <span id="user-name">Usuario</span>
+                        <i class="fas fa-chevron-down user-chevron"></i>
+                    </button>
+                    <div id="user-dropdown" class="hidden">
+                        <div class="user-dropdown-header">
+                            <div id="dropdown-user-name">Nombre Usuario</div>
+                            <div id="dropdown-user-email">email@ejemplo.com</div>
+                            <span id="dropdown-user-role">👤 Cliente</span>
+                        </div>
+                        <div id="admin-options" style="display:none;">
+                            <a href="admin_dashboard.html" class="user-dropdown-item">
+                                <i class="fas fa-chart-line"></i> Dashboard
+                            </a>
+                            <div class="user-dropdown-divider"></div>
+                        </div>
+                        <a href="perfil.html" class="user-dropdown-item"><i class="fas fa-user"></i> Mi Perfil</a>
+                        <a href="mis_reservas.html" class="user-dropdown-item"><i class="fas fa-shopping-bag"></i> Mis reservas</a>
+                        <div class="user-dropdown-divider"></div>
+                        <button id="logout-button" class="user-dropdown-item logout">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Botones sin sesión -->
+                <div id="authButtons">
+                    <a href="login.html" class="btn btn-login">Iniciar Sesión</a>
+                    <a href="register.html" class="btn btn-register">Registrarse</a>
+                </div>
+
+                <div class="mobile-toggle" id="mobileToggle">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ========== MAIN ========== -->
+<main class="flex-1 flex items-center justify-center px-4 py-12 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div class="w-full max-w-md">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
+
+            <!-- Título -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-green-800 rounded-full mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">¡Inicia Sesión!</h1>
+                <p class="text-gray-600">Accede a tu cuenta de Gigante Viagero</p>
+            </div>
+
+            <!-- Formulario -->
+            <form id="login-form" class="space-y-5">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Correo electrónico</label>
+                    <input type="email" id="email" name="email" required placeholder="tu@email.com"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition text-gray-900">
+                    <p id="email-error" class="text-red-500 text-sm mt-1 hidden"></p>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+                    <div class="relative">
+                        <input type="password" id="password" name="password" required placeholder="••••••••"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition pr-12 text-gray-900">
+                        <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                            <svg id="eye-open" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            <svg id="eye-closed" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <p id="password-error" class="text-red-500 text-sm mt-1 hidden"></p>
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center cursor-pointer">
+                        <input type="checkbox" id="remember-me" class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
+                        <span class="ml-2 text-sm text-gray-700">Recordarme</span>
+                    </label>
+                    <a href="recupera.html" class="text-sm text-blue-600 hover:text-blue-700 font-medium transition">¿Olvidaste tu contraseña?</a>
+                </div>
+                <div id="login-error" class="hidden bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-sm">
+                    <span id="login-error-message"></span>
+                </div>
+                <button type="submit" id="login-btn"
+                    class="w-full bg-green-800 hover:bg-green-900 text-white py-3 px-6 rounded-lg font-semibold transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-lg">
+                    Iniciar Sesión
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
+                <div class="relative flex justify-center text-sm"><span class="px-4 bg-white text-gray-500">O continúa con</span></div>
+            </div>
+
+            <!-- Botón Google -->
+            <button id="btn-google-login" class="btn-google-signin" onclick="handleGoogleLogin()">
+                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                Continuar con Google
+            </button>
+
+            <div class="mt-6 text-center">
+                <p class="text-gray-600 text-sm">¿No tienes cuenta?
+                    <a href="register.html" class="text-blue-600 hover:text-blue-700 font-semibold transition">Regístrate aquí</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="mt-5 text-center text-sm text-gray-500">
+            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            Tus datos están protegidos con encriptación de nivel empresarial
+        </div>
+    </div>
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-main">
+            <h2>Gigante Viagero</h2>
+            <p>Tu compañero ideal para descubrir nuevos destinos, vivir experiencias únicas y viajar con confianza.</p>
+            <div class="social-icons">
+                <a href="https://facebook.com/santiagovelasco" target="_blank" class="social-facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://tiktok.com" target="_blank" class="social-tiktok"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://instagram.com" target="_blank" class="social-instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://x.com" target="_blank" class="social-x"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-info">
+            <div class="info-item"><i class="fas fa-envelope"></i><span>info@giganteviajero.com</span></div>
+            <div class="info-item"><i class="fas fa-phone"></i><span>+57 123 456 7890</span></div>
+            <div class="info-item"><i class="fas fa-map-marker-alt"></i><span>Bogotá, Colombia</span></div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2025 Gigante Viagero — Todos los derechos reservados</p>
+    </div>
+</footer>
+
+<!-- Toast -->
+<div id="auth-toast"></div>
+
+<!-- ========== SCRIPTS ========== -->
+
+<!-- 1. Firebase -->
+<script type="module">
+    import { initializeApp }                                    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup,
+             signOut, onAuthStateChanged }                      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey:            "AIzaSyDsVWDgEJVw72CYjGcsXYTC_GuJfJ62Ch4",
+        authDomain:        "gigante-viajero-55fef.firebaseapp.com",
+        projectId:         "gigante-viajero-55fef",
+        storageBucket:     "gigante-viajero-55fef.firebasestorage.app",
+        messagingSenderId: "254006563702",
+        appId:             "1:254006563702:web:fc769a78e4ee576ef4e057"
+    };
+
+    const app      = initializeApp(firebaseConfig);
+    const auth     = getAuth(app);
+    auth.languageCode = 'es';
+    const provider = new GoogleAuthProvider();
+
+    function toast(msg, isError = false) {
+        const el = document.getElementById('auth-toast');
+        el.textContent = msg;
+        el.className = 'show' + (isError ? ' error' : '');
+        setTimeout(() => el.className = '', 3500);
+    }
+
+    // ✨ FUNCIÓN ACTUALIZADA: ahora guarda el usuario en MongoDB
+    window.handleGoogleLogin = async function () {
+        const btn = document.getElementById('btn-google-login');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Conectando con Google...';
+
+        try {
+            // PASO 1: Autenticar con Firebase (popup de Google)
+            const result    = await signInWithPopup(auth, provider);
+            const fireUser  = result.user;
+
+            btn.innerHTML = '<span class="spinner"></span> Guardando en base de datos...';
+
+            // PASO 2: Obtener el idToken de Firebase
+            const idToken = await fireUser.getIdToken();
+
+            // PASO 3: Enviar al backend → verifica token y guarda en MongoDB
+            const backendResult = await authAPI.googleLogin(idToken);
+
+            if (!backendResult.success) {
+                // Si el backend falla, igual guardamos sesión de Firebase como respaldo
+                console.warn('⚠️ Backend no disponible, usando solo Firebase:', backendResult.error);
+
+                const nameParts = (fireUser.displayName || 'Usuario').split(' ');
+                const fallbackUser = {
+                    id:        fireUser.uid,
+                    firstName: nameParts[0] || 'Usuario',
+                    lastName:  nameParts.slice(1).join(' ') || '',
+                    email:     fireUser.email,
+                    phone:     fireUser.phoneNumber || '',
+                    role:      'customer',
+                    photoURL:  fireUser.photoURL,
+                    provider:  'google',
+                    token:     idToken
+                };
+                localStorage.setItem('gigante_user',  JSON.stringify(fallbackUser));
+                localStorage.setItem('gigante_token', idToken);
+                localStorage.setItem('gigante_auth',  'true');
+                toast(`¡Bienvenido, ${fallbackUser.firstName}! 🎉`);
+            } else {
+                // ✅ Backend respondió OK → usuario guardado en MongoDB
+                console.log('✅ Usuario guardado en MongoDB:', backendResult.user.email);
+
+                // Guardar también en gigante_* para compatibilidad con el resto del sitio
+                const userData = {
+                    ...backendResult.user,
+                    provider: 'google',
+                    token:    backendResult.token
+                };
+                localStorage.setItem('gigante_user',  JSON.stringify(userData));
+                localStorage.setItem('gigante_token', backendResult.token);
+                localStorage.setItem('gigante_auth',  'true');
+
+                toast(`¡Bienvenido, ${backendResult.user.firstName}! 🎉`);
+            }
+
+            // PASO 4: Redirigir
+            setTimeout(() => {
+                const redirect = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
+                window.location.href = redirect;
+            }, 1200);
+
+        } catch (error) {
+            const msgs = {
+                'auth/popup-closed-by-user':  'Cerraste la ventana. Inténtalo de nuevo.',
+                'auth/popup-blocked':         'Popup bloqueado. Permite ventanas emergentes.',
+                'auth/network-request-failed':'Sin conexión a internet.',
+                'auth/unauthorized-domain':   'Dominio no autorizado en Firebase Console.'
+            };
+            toast(msgs[error.code] || 'Error al iniciar sesión con Google.', true);
+            btn.disabled = false;
+            btn.innerHTML = `<svg viewBox="0 0 48 48" style="width:20px;height:20px" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg> Continuar con Google`;
+        }
+    };
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const freshToken = await user.getIdToken(true);
+            localStorage.setItem('gigante_token', freshToken);
+        }
+    });
+
+    window.firebaseLogout = async () => {
+        await signOut(auth);
+        localStorage.removeItem('gigante_user');
+        localStorage.removeItem('gigante_token');
+        localStorage.removeItem('gigante_auth');
+    };
+</script>
+
+<!-- 2. Scripts existentes -->
+<script src="../scripts/auth-api.js"></script>
+<script src="../scripts/session.js"></script>
+<script src="../scripts/carrito.js"></script>
+
+
+<!-- 3. Lógica de la página -->
+<script>
+    // Redirigir si ya está logueado
+    if (typeof authAPI !== 'undefined' && authAPI.isAuthenticated()) {
+        window.location.href = 'index.html';
+    }
+
+    // Toggle contraseña
+    document.getElementById('toggle-password').addEventListener('click', () => {
+        const pwd = document.getElementById('password');
+        const open = document.getElementById('eye-open');
+        const closed = document.getElementById('eye-closed');
+        if (pwd.type === 'password') { pwd.type = 'text'; open.classList.add('hidden'); closed.classList.remove('hidden'); }
+        else { pwd.type = 'password'; open.classList.remove('hidden'); closed.classList.add('hidden'); }
+    });
+
+    function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+    function showFieldError(field, msg) {
+        const el = document.getElementById(field);
+        const err = document.getElementById(field + '-error');
+        if (el) { el.classList.add('border-red-500'); el.classList.remove('border-gray-300'); }
+        if (err) { err.textContent = msg; err.classList.remove('hidden'); }
+    }
+    function hideFieldError(field) {
+        const el = document.getElementById(field);
+        const err = document.getElementById(field + '-error');
+        if (el) { el.classList.remove('border-red-500'); el.classList.add('border-gray-300'); }
+        if (err) { err.classList.add('hidden'); }
+    }
+    function showGeneralError(msg) {
+        const box = document.getElementById('login-error');
+        document.getElementById('login-error-message').textContent = msg;
+        box.classList.remove('hidden');
+        setTimeout(() => box.classList.add('hidden'), 5000);
+    }
+
+    document.getElementById('email').addEventListener('blur', function() {
+        if (!this.value.trim()) showFieldError('email', 'El correo es obligatorio');
+        else if (!isValidEmail(this.value.trim())) showFieldError('email', 'Correo no válido');
+        else hideFieldError('email');
+    });
+    document.getElementById('password').addEventListener('blur', function() {
+        if (!this.value) showFieldError('password', 'La contraseña es obligatoria');
+        else if (this.value.length < 6) showFieldError('password', 'Mínimo 6 caracteres');
+        else hideFieldError('password');
+    });
+
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        hideFieldError('email'); hideFieldError('password');
+        document.getElementById('login-error').classList.add('hidden');
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        let hasErrors = false;
+        if (!email || !isValidEmail(email)) { showFieldError('email', 'Correo no válido'); hasErrors = true; }
+        if (!password || password.length < 6) { showFieldError('password', 'Mínimo 6 caracteres'); hasErrors = true; }
+        if (hasErrors) return;
+        const btn = document.getElementById('login-btn');
+        const original = btn.innerHTML;
+        btn.disabled = true; btn.textContent = 'Iniciando sesión...';
+        try {
+            const result = await authAPI.login(email, password);
+            if (result.success) {
+    setTimeout(() => {
+        if (result.user && result.user.role === 'admin') {
+            window.location.href = 'admin_dashboard.html';
+        } else {
+            const redirect = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
+            window.location.href = redirect;
+        }
+    }, 1200);
+            } else {
+                showGeneralError(result.error || 'Credenciales incorrectas.');
+                btn.disabled = false; btn.innerHTML = original;
+            }
+        } catch (err) {
+            showGeneralError('Error de conexión. Verifica tu internet.');
+            btn.disabled = false; btn.innerHTML = original;
+        }
+    });
+
+    // Mobile toggle
+    document.getElementById('mobileToggle').addEventListener('click', () => {
+        document.getElementById('navMenu').classList.toggle('active');
+    });
+
+    // Header dinámico
+    function getActiveUser() {
+        if (typeof authAPI !== 'undefined' && authAPI.isAuthenticated()) {
+            const user = authAPI.getUser();
+            if (user) return user;
+        }
+        try {
+            const googleAuth = localStorage.getItem("gigante_auth");
+            const googleUser = localStorage.getItem("gigante_user");
+            if (googleAuth === "true" && googleUser) {
+                const user = JSON.parse(googleUser);
+                if (user && user.email) return user;
+            }
+        } catch (e) {}
+        return null;
+    }
+
+    function updateHeader() {
+        const user = getActiveUser();
+        const userMenuContainer = document.getElementById('user-menu-container');
+        const authButtons = document.getElementById('authButtons');
+        if (user) {
+            if (authButtons) authButtons.style.display = 'none';
+            if (userMenuContainer) userMenuContainer.style.display = 'block';
+            const firstName = user.firstName || 'Usuario';
+            const lastName = user.lastName || '';
+            const initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+            const initialsEl = document.getElementById('user-initials');
+            if (initialsEl) {
+                if (user.photoURL) {
+                    initialsEl.style.overflow = 'hidden';
+                    initialsEl.innerHTML = `<img src="${user.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.parentElement.innerHTML='${initials}';">`;
+                } else {
+                    initialsEl.textContent = initials;
+                }
+            }
+            const nameEl = document.getElementById('user-name');
+            if (nameEl) nameEl.textContent = firstName;
+            const dNameEl = document.getElementById('dropdown-user-name');
+            if (dNameEl) dNameEl.textContent = (firstName + ' ' + lastName).trim();
+            const dEmailEl = document.getElementById('dropdown-user-email');
+            if (dEmailEl) dEmailEl.textContent = user.email || '';
+            const roleEl = document.getElementById('dropdown-user-role');
+            const adminOptions = document.getElementById('admin-options');
+            if (roleEl) {
+                if (user.role === 'admin') {
+                    roleEl.textContent = '🔧 Administrador';
+                    roleEl.style.background = 'rgba(244,196,0,0.3)'; roleEl.style.color = '#F4C400';
+                    if (adminOptions) adminOptions.style.display = 'block';
+                } else {
+                    roleEl.textContent = user.provider === 'google' ? '🔥 Google' : '👤 Cliente';
+                    roleEl.style.background = 'rgba(59,130,246,0.2)'; roleEl.style.color = '#3B82F6';
+                    if (adminOptions) adminOptions.style.display = 'none';
+                }
+            }
+        } else {
+            if (userMenuContainer) userMenuContainer.style.display = 'none';
+            if (authButtons) authButtons.style.display = 'flex';
+        }
+    }
+
+    const userMenuButton = document.getElementById('user-menu-button');
+    const userDropdown = document.getElementById('user-dropdown');
+    const userMenuContainer = document.getElementById('user-menu-container');
+    if (userMenuButton && userDropdown) {
+        userMenuButton.addEventListener('click', e => { e.stopPropagation(); userDropdown.classList.toggle('hidden'); });
+        document.addEventListener('click', e => { if (userMenuContainer && !userMenuContainer.contains(e.target)) userDropdown.classList.add('hidden'); });
+    }
+
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async function(e) {
+            e.preventDefault();
+            if (typeof window.firebaseLogout === 'function') await window.firebaseLogout();
+            if (typeof authAPI !== 'undefined') authAPI.logout();
+            ["gigante_user","gigante_token","gigante_auth","token","authToken","user","currentUser","userData"].forEach(k => localStorage.removeItem(k));
+            window.location.href = 'index.html';
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => setTimeout(updateHeader, 150));
+    window.addEventListener('storage', e => { if (['authData','gigante_auth','gigante_user'].includes(e.key)) updateHeader(); });
+</script>
+<script src="../scripts/photo-sync.js"></script>
+<!-- BOTÓN VOLVER -->
+<style>
+  .btn-volver {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #195C33, #2e7d32);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border: none;
+    z-index: 9999;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .btn-volver:hover {
+    transform: scale(1.1) translateX(-3px);
+    box-shadow: 0 6px 20px rgba(25, 92, 51, 0.4);
+    background: linear-gradient(135deg, #0d3d20, #195C33);
+  }
+
+  .btn-volver svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: white;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+</style>
+
+<a class="btn-volver" onclick="history.back()" href="#">
+  <svg viewBox="0 0 24 24">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+</a>
+
+</body>
+</html>

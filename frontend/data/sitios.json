@@ -1,0 +1,634 @@
+[
+  {
+    "nombre": "Brisas de Mirthayú",
+    "slug": "brisas-de-mirthayu",
+    "whatsapp": "573204378210",
+    "categorias": ["parque", "hospedaje"],
+    "resumen": "Finca agroturística donde la leyenda de la Diosa Mirthayú cobra vida entre jardines, piscinas y miradores.",
+    "descripcion": "Brisas de Mirthayú es uno de los sitios turísticos más emblemáticos de la zona centro del departamento del Huila. Ubicado a 7 kilómetros del municipio de Gigante, vía Zuluaga, este destino combina naturaleza, historia, cultura y gastronomía en un ambiente tranquilo y acogedor. Su principal atractivo es la hermosa escultura en honor a la Diosa Mirthayú, princesa que cautivó al gigante Matambo con su belleza y sabiduría.",
+    "historia": "Mirthayú era hija de una diosa, entregada a los Taironas para su protección. Con el tiempo se convirtió en la adoración y única reina de los Michúes por su belleza y el amor que manifestaba hacia su tribu. Un día llegó Matambo, un gigante que sembraba el terror en la región. Sin embargo, al ver a Mirthayú, quedó hipnotizado por su belleza. Este encuentro dio origen al amor prohibido más emblemático del municipio de Gigante.",
+    "ubicacion": {
+      "referencia": "Vía Zuluaga, 7 km del municipio de Gigante, Huila",
+      "distanciaKm": 7,
+      "tiempoAuto": "15 minutos desde Gigante"
+    },
+    "entrada": {
+      "precio": 5000,
+      "notas": "Piscina adicional $7.000 | Hidropedales $8.000 | Cabalgata $10.000"
+    },
+    "horario": "9:00 AM – 6:00 PM todos los días",
+    "petFriendly": true,
+    "imagen": "../assets/img/brisa_marthayu.jpg",
+    "tags": ["mirador", "romántico", "familiar", "piscina", "leyenda", "fotografía"],
+    "destacado": true,
+    "atracciones": [
+      { "nombre": "Escultura de la Diosa Mirthayú", "descripcion": "Impresionante escultura de la princesa que da nombre al lugar, punto fotográfico icónico.", "icono": "👸" },
+      { "nombre": "Pie de Gigante Matambo", "descripcion": "Representación de la huella del gigante Matambo, enamorado de la bella Mirthayú.", "icono": "👣" },
+      { "nombre": "Puente Panorámico", "descripcion": "Puente con vistas espectaculares al majestuoso cerro de Matambo y el paisaje circundante.", "icono": "🌉" },
+      { "nombre": "Arcoíris de Brisas", "descripcion": "Estructura fotográfica icónica que transforma tu día con energía positiva.", "icono": "🌈" },
+      { "nombre": "Duo de Corazones", "descripcion": "Espacio romántico perfecto para parejas con vistas a la naturaleza.", "icono": "❤️" },
+      { "nombre": "Piscina al Aire Libre", "descripcion": "Piscina con vistas panorámicas. Costo adicional: $7.000.", "icono": "🏊" },
+      { "nombre": "Hidropedales", "descripcion": "Navegación en aguas serenas. Costo adicional: $8.000.", "icono": "🚣" },
+      { "nombre": "Cabalgatas Guiadas", "descripcion": "Recorridos a caballo por paisajes espectaculares. Costo: $10.000.", "icono": "🐴" },
+      { "nombre": "Senderismo Natural", "descripcion": "Senderos entre flora y fauna local, ideales para los amantes de la naturaleza.", "icono": "🥾" },
+      { "nombre": "Zonas Fotográficas", "descripcion": "Múltiples espacios diseñados para capturar los mejores recuerdos.", "icono": "📸" },
+      { "nombre": "Mirador Panorámico", "descripcion": "Vista espectacular al municipio de Gigante y la Represa del Quimbo.", "icono": "🏞️" },
+      { "nombre": "Restaurante Típico", "descripcion": "Platos típicos huilenses en ambiente acogedor con excelente vista.", "icono": "🍽️" }
+    ],
+    "servicios": [
+      { "icono": "fas fa-ticket-alt", "nombre": "Entrada: $5.000" },
+      { "icono": "fas fa-swimmer", "nombre": "Piscina: $7.000" },
+      { "icono": "fas fa-water", "nombre": "Hidropedales: $8.000" },
+      { "icono": "fas fa-horse", "nombre": "Cabalgata: $10.000" },
+      { "icono": "fas fa-utensils", "nombre": "Restaurante típico" },
+      { "icono": "fas fa-cocktail", "nombre": "Bar y bebidas" },
+      { "icono": "fas fa-bed", "nombre": "Hospedaje disponible" },
+      { "icono": "fas fa-parking", "nombre": "Parqueadero gratis" },
+      { "icono": "fas fa-dog", "nombre": "Pet Friendly" },
+      { "icono": "fas fa-wifi", "nombre": "WiFi disponible" }
+    ],
+    "alojamientos": [
+      {
+        "nombre": "Cabaña Familiar",
+        "tipo": "cabaña",
+        "capacidadMax": 4,
+        "descripcion": "Cabaña acogedora para grupos o familias, rodeada de naturaleza.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Piscina", "WiFi", "Hidropedales", "Senderismo", "Juegos familiares"],
+        "precios": [{ "descripcion": "Por noche (hasta 4 personas)", "precio": 80000 }]
+      },
+      {
+        "nombre": "Cabaña Romántica Pareja",
+        "tipo": "cabaña",
+        "capacidadMax": 2,
+        "descripcion": "Cabaña íntima con ambiente romántico, perfecta para escapadas en pareja.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Piscina", "WiFi", "Hidropedales", "Senderismo"],
+        "precios": [{ "descripcion": "Por noche (2 personas)", "precio": 200000 }]
+      }
+    ],
+    "precioBaseReserva": 80000
+  },
+  {
+    "nombre": "Xhimanut - Parque de los Sueños",
+    "slug": "xhimanut",
+    "whatsapp": "573182423306",
+    "categorias": ["parque", "hospedaje"],
+    "resumen": "El primer parque temático del Huila con +30 atracciones, cine acuático y la sinfonía de los 4 elementos.",
+    "descripcion": "Xhimanut, conocido como el \"Parque de los Sueños\", es el destino turístico que está transformando el turismo en el centro del Huila. Ubicado a solo 10 minutos del municipio de Gigante en el sector La Pampa, este parque temático ofrece una experiencia única combinando aventura, naturaleza, entretenimiento y relajación para toda la familia. Con más de 30 atracciones, incluyendo el primer cine acuático de Colombia.",
+    "historia": "Fundado en 2023, Xhimanut fue concebido como un espacio que integra los cuatro elementos naturales —Agua, Fuego, Tierra y Aire— en cada rincón del parque. Su concepto de \"Sinfonía de los 4 Elementos\" convierte la visita en una experiencia sensorial y educativa única en la región.",
+    "ubicacion": {
+      "referencia": "Vía a Garzón, sector La Pampa, Gigante, Huila",
+      "distanciaKm": 10,
+      "tiempoAuto": "10 minutos desde Gigante"
+    },
+    "entrada": {
+      "precio": 12000,
+      "notas": "Algunas atracciones tienen costo adicional. Consultar en taquilla."
+    },
+    "horario": "Todos los días (horario sujeto a temporada)",
+    "petFriendly": false,
+    "imagen": "../assets/img/parque_xhimnaut_123.jpg",
+    "tags": ["parque temático", "familiar", "aventura", "piscina", "cine acuático"],
+    "destacado": true,
+    "elementos": [
+      { "icono": "💧", "nombre": "Agua", "descripcion": "Piscinas cristalinas, cine acuático y actividades refrescantes" },
+      { "icono": "🔥", "nombre": "Fuego", "descripcion": "Emoción y adrenalina en cada atracción del parque" },
+      { "icono": "🌿", "nombre": "Tierra", "descripcion": "Senderos ecológicos y granja interactiva" },
+      { "icono": "🌬️", "nombre": "Aire", "descripcion": "Vistas panorámicas y experiencias de altura" }
+    ],
+    "atracciones": [
+      { "nombre": "Cine sobre el Agua", "descripcion": "El primer cine acuático de Colombia. Una experiencia cinematográfica única flotando sobre el agua.", "icono": "🎬" },
+      { "nombre": "Restaurante Panorámico 360°", "descripcion": "Disfruta de deliciosa gastronomía con vistas espectaculares de 360 grados del paisaje huilense.", "icono": "🍽️" },
+      { "nombre": "Sendero Ecológico", "descripcion": "Explora la naturaleza a través de senderos cuidadosamente diseñados entre la flora local.", "icono": "🥾" },
+      { "nombre": "Zona de Camping", "descripcion": "Vive la experiencia de acampar bajo las estrellas en un entorno natural privilegiado.", "icono": "⛺" },
+      { "nombre": "Cabañas de Lujo (CATACOA)", "descripcion": "Hospedaje confortable con todas las comodidades y vistas impresionantes.", "icono": "🏡" },
+      { "nombre": "Pista de Motos", "descripcion": "Adrenalina pura en nuestra pista diseñada para los amantes de las motos y la velocidad.", "icono": "🏍️" },
+      { "nombre": "Zona Infantil", "descripcion": "Espacios especialmente diseñados para que los más pequeños jueguen con seguridad.", "icono": "🎨" },
+      { "nombre": "Granja Interactiva", "descripcion": "Los niños pueden interactuar con animales de granja y aprender sobre la vida rural.", "icono": "🐄" },
+      { "nombre": "Zonas de Piscinas", "descripcion": "Piscinas de lujo con áreas de relax para disfrutar bajo el cálido sol del Huila.", "icono": "🏊" },
+      { "nombre": "Paintball & Airsoft", "descripcion": "Estrategia y acción en nuestras zonas especialmente diseñadas para juegos de equipo.", "icono": "🎯" },
+      { "nombre": "Actividades Especiales", "descripcion": "Eventos, festivales y actividades temáticas durante todo el año.", "icono": "🎪" },
+      { "nombre": "Miradores Fotográficos", "descripcion": "Puntos estratégicos con vistas panorámicas perfectas para capturar momentos inolvidables.", "icono": "📸" }
+    ],
+    "servicios": [
+      { "icono": "fas fa-utensils", "nombre": "Gastronomía variada" },
+      { "icono": "fas fa-bed", "nombre": "Hospedaje premium" },
+      { "icono": "fas fa-parking", "nombre": "Parqueadero amplio" },
+      { "icono": "fas fa-wifi", "nombre": "Zonas WiFi" },
+      { "icono": "fas fa-shield-alt", "nombre": "Seguridad 24/7" },
+      { "icono": "fas fa-baby", "nombre": "Área de lactancia" },
+      { "icono": "fas fa-wheelchair", "nombre": "Accesibilidad" },
+      { "icono": "fas fa-first-aid", "nombre": "Primeros auxilios" }
+    ],
+    "alojamientos": [
+      {
+        "nombre": "Cabaña CATACOA",
+        "tipo": "cabaña",
+        "capacidadMax": 4,
+        "descripcion": "Cabaña emblemática con vistas panorámicas, perfectamente equipada para desconectarse de la rutina. Acceso a todas las instalaciones del parque.",
+        "incluyeDesayuno": false,
+        "amenidades": ["Vistas panorámicas", "WiFi", "Acceso al parque", "Privacidad", "Ambiente romántico"],
+        "precios": [{ "descripcion": "Por noche (hasta 4 personas)", "precio": 420000 }]
+      },
+      {
+        "nombre": "Cabaña B",
+        "tipo": "cabaña",
+        "capacidadMax": 4,
+        "descripcion": "Cabaña confortable con todas las comodidades y acceso a las instalaciones del parque.",
+        "incluyeDesayuno": false,
+        "amenidades": ["WiFi", "Acceso al parque", "Privacidad"],
+        "precios": [{ "descripcion": "Por noche (hasta 4 personas)", "precio": 390000 }]
+      }
+    ],
+    "precioBaseReserva": 35000
+  },
+  {
+    "nombre": "Los Pinos - Parque Agroecoturístico",
+    "slug": "los-pinos",
+    "whatsapp": "573217536667",
+    "categorias": ["parque", "glamping", "hospedaje"],
+    "resumen": "Eco hotel sustentable en un bosque de pinos entre Hobo y Gigante. La entrada incluye almuerzo.",
+    "descripcion": "Los Pinos es un eco hotel sustentable enclavado en un frondoso bosque de pinos en la ruta Hobo–Gigante. Su propuesta agroecológica invita a reconectarse con la naturaleza a través de glamping de lujo, múltiples tipos de cabañas, gastronomía local y actividades al aire libre. Cada huésped contribuye activamente a la preservación del ecosistema local.",
+    "historia": "Nacido de la visión de preservar el ecosistema de pinos nativos de la región, Los Pinos se consolidó como referente de turismo sostenible en el Huila. Su modelo de operación combina hospedaje de calidad con prácticas ambientales responsables, educación ecológica y apoyo a las comunidades rurales locales.",
+    "ubicacion": {
+      "referencia": "Vía Hobo – Gigante, Huila",
+      "distanciaKm": 12,
+      "tiempoAuto": "20 minutos desde Gigante"
+    },
+    "entrada": {
+      "precio": 48000,
+      "incluyeAlmuerzo": true,
+      "notas": "Incluye almuerzo típico huilense"
+    },
+    "horario": "Viernes a domingo y festivos (reservas entre semana disponibles)",
+    "petFriendly": false,
+    "imagen": "../assets/img/los_pinos.jpg",
+    "tags": ["ecoturismo", "bosque", "glamping", "familiar", "grupos", "sostenible"],
+    "destacado": true,
+    "atracciones": [
+      { "nombre": "Senderos en Bosque de Pinos", "descripcion": "Caminatas guiadas entre pinos nativos con interpretación ambiental.", "icono": "🌲" },
+      { "nombre": "Avistamiento de Aves", "descripcion": "Más de 40 especies de aves registradas en el área del parque.", "icono": "🦜" },
+      { "nombre": "Zona de Fogata", "descripcion": "Espacio para reuniones nocturnas alrededor del fuego bajo las estrellas.", "icono": "🔥" },
+      { "nombre": "Huerto Orgánico", "descripcion": "Visita guiada al huerto donde se producen ingredientes para la cocina del parque.", "icono": "🌱" },
+      { "nombre": "Piscina Natural", "descripcion": "Zona de agua natural integrada al paisaje boscoso.", "icono": "🏊" },
+      { "nombre": "Zona de Hamacas", "descripcion": "Área de descanso entre los pinos para relajarse al aire libre.", "icono": "🌿" },
+      { "nombre": "Restaurante Ecológico", "descripcion": "Gastronomía local con ingredientes orgánicos de la finca. Almuerzo incluido en la entrada.", "icono": "🍽️" },
+      { "nombre": "Talleres de Naturaleza", "descripcion": "Actividades de educación ambiental para niños y adultos.", "icono": "📚" }
+    ],
+    "servicios": [
+      { "icono": "fas fa-utensils", "nombre": "Almuerzo incluido en entrada" },
+      { "icono": "fas fa-tree", "nombre": "Restaurante ecológico" },
+      { "icono": "fas fa-wifi", "nombre": "WiFi en zonas comunes" },
+      { "icono": "fas fa-parking", "nombre": "Parqueadero" },
+      { "icono": "fas fa-binoculars", "nombre": "Guías especializados" },
+      { "icono": "fas fa-shopping-basket", "nombre": "Tienda de productos orgánicos" }
+    ],
+    "alojamientos": [
+      {
+        "nombre": "Glamping VIP",
+        "tipo": "glamping",
+        "capacidadMax": 2,
+        "descripcion": "Glamping de lujo con acabados premium, vista al bosque de pinos y máxima comodidad.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Cama king", "Baño privado", "Terraza privada", "WiFi"],
+        "precios": [
+          { "descripcion": "1 persona", "precio": 540000 },
+          { "descripcion": "2 personas", "precio": 675000 }
+        ]
+      },
+      {
+        "nombre": "Alpino Confort",
+        "tipo": "cabaña",
+        "capacidadMax": 2,
+        "descripcion": "Cabaña alpina con diseño rústico moderno, integrada al bosque de pinos.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Chimenea", "Baño privado", "Vista al bosque", "WiFi"],
+        "precios": [
+          { "descripcion": "1 persona", "precio": 424000 },
+          { "descripcion": "2 personas", "precio": 530000 }
+        ]
+      },
+      {
+        "nombre": "Alpino Esencial",
+        "tipo": "cabaña",
+        "capacidadMax": 2,
+        "descripcion": "Cabaña acogedora con lo esencial para disfrutar del entorno natural.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Baño privado", "Vista al bosque", "WiFi"],
+        "precios": [
+          { "descripcion": "1 persona", "precio": 264000 },
+          { "descripcion": "2 personas", "precio": 330000 }
+        ]
+      },
+      {
+        "nombre": "Alpino Prime",
+        "tipo": "cabaña",
+        "capacidadMax": 6,
+        "descripcion": "Cabaña espaciosa para grupos de hasta 6 personas con todas las comodidades.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Sala de estar", "Cocina básica", "Baños", "Terraza", "WiFi"],
+        "precios": [
+          { "descripcion": "1-3 personas", "precio": 510000 },
+          { "descripcion": "4 personas", "precio": 680000 },
+          { "descripcion": "5 personas", "precio": 850000 },
+          { "descripcion": "6 personas", "precio": 1020000 }
+        ]
+      },
+      {
+        "nombre": "Cabaña El Aprisco",
+        "tipo": "cabaña",
+        "capacidadMax": 12,
+        "descripcion": "La opción ideal para grupos grandes o eventos familiares. Capacidad máxima 12 personas.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Sala amplia", "Múltiples baños", "Cocina equipada", "Zona BBQ", "WiFi"],
+        "precios": [
+          { "descripcion": "1-6 personas", "precio": 870000 },
+          { "descripcion": "7 personas", "precio": 1015000 },
+          { "descripcion": "8 personas", "precio": 1160000 },
+          { "descripcion": "12 personas", "precio": 1740000 }
+        ]
+      },
+      {
+        "nombre": "Alpino Plus",
+        "tipo": "cabaña",
+        "capacidadMax": 6,
+        "descripcion": "Cabaña premium con amenidades adicionales para una estancia confortable en el bosque.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Sala de estar", "Baño premium", "Terraza con vista", "WiFi", "Zona BBQ"],
+        "precios": [
+          { "descripcion": "1-3 personas", "precio": 510000 },
+          { "descripcion": "4 personas", "precio": 680000 },
+          { "descripcion": "6 personas", "precio": 1020000 }
+        ]
+      }
+    ],
+    "precioBaseReserva": 180000
+  },
+  {
+    "nombre": "La Mano del Gigante",
+    "slug": "mano-del-gigante",
+    "whatsapp": "573212675301",
+    "categorias": ["mirador", "hospedaje"],
+    "resumen": "El mirador más icónico del Huila con deslizador de 210m, columpio sobre el barranco y cabañas con nombres de aves.",
+    "descripcion": "La Mano del Gigante es el mirador más reconocido y fotografiado del departamento del Huila. Ubicado en la vereda El Rodeo, ofrece una escultura en forma de mano gigante que asoma sobre el barranco, con vistas espectaculares al Valle del Magdalena y la Represa del Quimbo. Sus atracciones principales incluyen un deslizador de 210 metros y un columpio extremo sobre el precipicio.",
+    "historia": "La Mano del Gigante surge como homenaje a la leyenda del gigante Matambo, figura mítica que da nombre al municipio de Gigante. La escultura representa la mano del gigante emergiendo de la montaña, como símbolo de la fuerza y grandeza del territorio huilense.",
+    "ubicacion": {
+      "referencia": "Vereda El Rodeo, Gigante, Huila",
+      "distanciaKm": 8,
+      "tiempoAuto": "15 minutos desde Gigante"
+    },
+    "entrada": {
+      "precio": 15000,
+      "notas": "Deslizador y columpio tienen costo adicional. Consultar en taquilla."
+    },
+    "horario": "8:00 AM – 5:00 PM todos los días",
+    "petFriendly": false,
+    "imagen": "../assets/img/la_mano_gigante_fondo.jpg",
+    "tags": ["mirador", "aventura", "adrenalina", "fotografía", "familia", "deslizador"],
+    "destacado": true,
+    "atracciones": [
+      { "nombre": "Escultura La Mano del Gigante", "descripcion": "La icónica mano de concreto asomando sobre el precipicio. El punto fotográfico más famoso del Huila.", "icono": "✋" },
+      { "nombre": "Deslizador de 210 metros", "descripcion": "Emocionante tobogán de 210m de altura para los más aventureros.", "icono": "🎢" },
+      { "nombre": "Columpio Extremo", "descripcion": "Columpio sobre el barranco con vistas a más de 200m de altura.", "icono": "🌀" },
+      { "nombre": "Mirador Principal", "descripcion": "Vista panorámica al Valle del Magdalena, Represa del Quimbo y cordillera.", "icono": "🏞️" },
+      { "nombre": "Senderos de Montaña", "descripcion": "Recorridos entre vegetación nativa con paradas en miradores secundarios.", "icono": "🥾" },
+      { "nombre": "Zona de Fotografía", "descripcion": "Múltiples ángulos y escenarios para capturar la majestuosidad del paisaje.", "icono": "📸" },
+      { "nombre": "Restaurante con Vista", "descripcion": "Gastronomía típica huilense con vistas directas al valle.", "icono": "🍽️" }
+    ],
+    "servicios": [
+      { "icono": "fas fa-utensils", "nombre": "Restaurante con vista panorámica" },
+      { "icono": "fas fa-parking", "nombre": "Parqueadero" },
+      { "icono": "fas fa-user-friends", "nombre": "Guías locales" },
+      { "icono": "fas fa-store", "nombre": "Tienda de recuerdos" },
+      { "icono": "fas fa-restroom", "nombre": "Baños" }
+    ],
+    "alojamientos": [
+      {
+        "nombre": "Cabaña Celeste Pareja",
+        "tipo": "cabaña",
+        "capacidadMax": 2,
+        "descripcion": "Íntima cabaña para dos con vista privilegiada al valle. Ambiente romántico entre la naturaleza.",
+        "incluyeDesayuno": false,
+        "amenidades": ["Vista panorámica", "Baño privado", "Terraza", "WiFi"],
+        "precios": [{ "descripcion": "Por noche (2 personas)", "precio": 280000 }]
+      },
+      {
+        "nombre": "Cabaña Celeste Familiar 3",
+        "tipo": "cabaña",
+        "capacidadMax": 3,
+        "descripcion": "Cabaña familiar para 3 personas con vistas y acceso a miradores.",
+        "incluyeDesayuno": false,
+        "amenidades": ["Vista panorámica", "Baño privado", "WiFi"],
+        "precios": [{ "descripcion": "3 personas", "precio": 380000 }]
+      },
+      {
+        "nombre": "Cabaña Celeste Familiar 4",
+        "tipo": "cabaña",
+        "capacidadMax": 4,
+        "descripcion": "Cabaña familiar para 4 personas, perfecta para grupos pequeños.",
+        "incluyeDesayuno": false,
+        "amenidades": ["Vista panorámica", "Baño privado", "WiFi"],
+        "precios": [{ "descripcion": "4 personas", "precio": 480000 }]
+      },
+      {
+        "nombre": "Cabaña Azulejo",
+        "tipo": "cabaña",
+        "capacidadMax": 6,
+        "descripcion": "Cabaña con nombre del ave azulejo, espaciosa y con vistas al entorno natural.",
+        "incluyeDesayuno": false,
+        "amenidades": ["Vista al valle", "Sala de estar", "Baño privado", "WiFi"],
+        "precios": [
+          { "descripcion": "Lunes a jueves", "precio": 580000 },
+          { "descripcion": "Viernes y festivos", "precio": 780000 }
+        ]
+      },
+      {
+        "nombre": "Cabaña Cardenal",
+        "tipo": "cabaña",
+        "capacidadMax": 6,
+        "descripcion": "Nombrada por el ave Cardenal, confort y naturaleza en perfecta armonía.",
+        "incluyeDesayuno": false,
+        "amenidades": ["Vista al valle", "Sala de estar", "Baño privado", "WiFi"],
+        "precios": [
+          { "descripcion": "Lunes a jueves", "precio": 580000 },
+          { "descripcion": "Viernes y festivos", "precio": 780000 }
+        ]
+      },
+      {
+        "nombre": "Cabaña Turpial",
+        "tipo": "cabaña",
+        "capacidadMax": 6,
+        "descripcion": "Inspirada en el ave Turpial, con diseño colorido y vistas privilegiadas.",
+        "incluyeDesayuno": false,
+        "amenidades": ["Vista panorámica", "Sala de estar", "Baño premium", "WiFi"],
+        "precios": [
+          { "descripcion": "Lunes a jueves", "precio": 658000 },
+          { "descripcion": "Viernes y festivos", "precio": 780000 }
+        ]
+      },
+      {
+        "nombre": "Cabaña Colibrí",
+        "tipo": "cabaña",
+        "capacidadMax": 8,
+        "descripcion": "La cabaña más grande, ideal para grupos o familias numerosas. Nombrada por el ágil colibrí.",
+        "incluyeDesayuno": false,
+        "amenidades": ["Vista panorámica", "Sala amplia", "Múltiples baños", "Zona BBQ", "WiFi"],
+        "precios": [
+          { "descripcion": "Lunes a jueves", "precio": 1300000 },
+          { "descripcion": "Viernes y festivos", "precio": 1500000 }
+        ]
+      }
+    ],
+    "precioBaseReserva": 21000
+  },
+  {
+    "nombre": "La Loma de la Cruz",
+    "slug": "loma-de-la-cruz",
+    "categorias": ["mirador"],
+    "resumen": "Mirador natural con vista 360° al Valle del Magdalena. Entrada gratuita y acceso fácil.",
+    "descripcion": "La Loma de la Cruz es el mirador más accesible y tradicional de Gigante, Huila. Ubicada a pocos minutos del casco urbano, ofrece una vista panorámica de 360° sobre el Valle del Magdalena, la Represa del Quimbo y las cordilleras que rodean el municipio. Es el punto de encuentro de los habitantes locales al atardecer y un lugar cargado de historia y devoción religiosa.",
+    "historia": "La cruz que corona la loma ha acompañado al municipio de Gigante por décadas, siendo testigo de procesiones, festividades religiosas y la vida cotidiana del pueblo. En Semana Santa se convierte en el punto central de las peregrinaciones locales. Su nombre y su cruz son símbolos identitarios del municipio.",
+    "ubicacion": {
+      "referencia": "Zona urbana de Gigante, Huila",
+      "distanciaKm": 1,
+      "tiempoAuto": "5 minutos desde el parque central"
+    },
+    "entrada": {
+      "precio": 0,
+      "notas": "Acceso completamente gratuito. Abierto todos los días."
+    },
+    "horario": "5:00 AM – 8:00 PM (mejor horario: amanecer y atardecer)",
+    "petFriendly": true,
+    "imagen": "../assets/img/loma_cruz_gigante.jpg",
+    "tags": ["gratuito", "mirador", "atardecer", "religioso", "familiar", "urbano"],
+    "destacado": false,
+    "atracciones": [
+      { "nombre": "Cruz Emblemática", "descripcion": "La cruz que da nombre al mirador, símbolo religioso y cultural del municipio.", "icono": "✝️" },
+      { "nombre": "Mirador 360°", "descripcion": "Vista panorámica completa al Valle del Magdalena y las cordilleras.", "icono": "🏞️" },
+      { "nombre": "Punto de Atardecer", "descripcion": "El mejor lugar del municipio para contemplar las puestas de sol sobre el valle.", "icono": "🌅" },
+      { "nombre": "Sendero de Acceso", "descripcion": "Corto sendero empedrado que conecta el centro urbano con la cima de la loma.", "icono": "🥾" },
+      { "nombre": "Zona de Descanso", "descripcion": "Bancas y zonas de sombra para descansar mientras se disfruta el paisaje.", "icono": "🌳" }
+    ],
+    "servicios": [
+      { "icono": "fas fa-ticket-alt", "nombre": "Acceso gratuito" },
+      { "icono": "fas fa-map-signs", "nombre": "Sendero señalizado" },
+      { "icono": "fas fa-chair", "nombre": "Zona de descanso" },
+      { "icono": "fas fa-dog", "nombre": "Pet Friendly" }
+    ],
+    "alojamientos": [],
+    "precioBaseReserva": 0
+  },
+  {
+    "nombre": "La Morra - Mirador 360°",
+    "slug": "la-morra",
+    "whatsapp": "573213123861",
+    "categorias": ["mirador", "glamping"],
+    "resumen": "El mirador de alta montaña más impresionante de Gigante con vistas al Nevado del Huila y glamping romántico con jacuzzi.",
+    "descripcion": "La Morra es el mirador de alta montaña más impresionante de Gigante. Ubicada en la Cordillera Oriental, desde su cima es posible avistar el Nevado del Huila, el volcán Puracé, la Represa del Quimbo, el embalse de Betania y los valles del Magdalena y el Suaza. En días despejados, la vista abarca cientos de kilómetros de paisaje colombiano.",
+    "historia": "La Morra ha sido históricamente un punto de referencia geográfico para los habitantes de Gigante, utilizado como mirador natural desde tiempos prehispánicos. Su nombre proviene de la topografía de cumbre redondeada característica de esta elevación de la cordillera. En los últimos años se ha desarrollado como destino ecoturístico de altura.",
+    "ubicacion": {
+      "referencia": "Cordillera Oriental, Gigante, Huila",
+      "distanciaKm": 18,
+      "tiempoAuto": "35 minutos desde Gigante (requiere vehículo 4x4)"
+    },
+    "entrada": {
+      "precio": 10000,
+      "notas": "Se recomienda llevar ropa de abrigo. Temperatura entre 10°C y 18°C."
+    },
+    "horario": "7:00 AM – 4:00 PM (se recomienda llegar antes de las 10 AM para mejor visibilidad)",
+    "petFriendly": false,
+    "imagen": "../assets/img/la_morra.jpg",
+    "tags": ["mirador", "romántico", "glamping", "naturaleza", "nevado", "alta montaña", "jacuzzi"],
+    "destacado": true,
+    "atracciones": [
+      { "nombre": "Mirador al Nevado del Huila", "descripcion": "Vista directa al Nevado del Huila y volcán Puracé en días despejados.", "icono": "🏔️" },
+      { "nombre": "Panorámica a las Represas", "descripcion": "Vista simultánea a la Represa del Quimbo y el Embalse de Betania.", "icono": "💧" },
+      { "nombre": "Punto Astronómico Nocturno", "descripcion": "Zona ideal para observación de estrellas y cielos sin contaminación lumínica.", "icono": "⭐" },
+      { "nombre": "Senderos de Alta Montaña", "descripcion": "Rutas de senderismo entre páramo y bosque andino.", "icono": "🥾" },
+      { "nombre": "Fotografía de Paisaje", "descripcion": "El mejor punto del departamento para fotografía de paisaje en gran angular.", "icono": "📸" }
+    ],
+    "servicios": [
+      { "icono": "fas fa-user-friends", "nombre": "Guía local disponible" },
+      { "icono": "fas fa-parking", "nombre": "Zona de parqueo" },
+      { "icono": "fas fa-mug-hot", "nombre": "Bebidas calientes" },
+      { "icono": "fas fa-fire", "nombre": "Zona de fogata nocturna" }
+    ],
+    "alojamientos": [
+      {
+        "nombre": "Glamping Romántico con Jacuzzi",
+        "tipo": "glamping",
+        "capacidadMax": 2,
+        "descripcion": "Glamping de alta montaña para parejas con jacuzzi, cielos estrellados y vistas al amanecer sobre los nevados. La experiencia más romántica del Huila.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Jacuzzi", "Cama king", "Vista a nevados", "Desayuno incluido", "Fogata privada", "Ropa de cama térmica"],
+        "precios": [{ "descripcion": "Por noche (2 personas)", "precio": 250000 }]
+      }
+    ],
+    "precioBaseReserva": 15000
+  },
+  {
+    "nombre": "La Casa del Árbol",
+    "slug": "la-casita-del-arbol",
+    "whatsapp": "573202865097",
+    "categorias": ["mirador"],
+    "resumen": "Mirador en las copas de los árboles con cascada natural, canoa y senderismo ecológico.",
+    "descripcion": "La Casa del Árbol es un destino ecoturístico mágico donde la arquitectura se funde con la naturaleza. Una construcción elevada entre los árboles ofrece vistas únicas sobre el dosel forestal y los paisajes montañosos de Gigante. El sitio cuenta con una hermosa cascada natural, actividades en canoa y senderos ecológicos que permiten explorar la biodiversidad local.",
+    "historia": "Inspirado en las casas en los árboles tradicionales de las comunidades rurales del Huila, este mirador fue construido respetando la estructura y vida de los árboles que lo sostienen. Su creación respondió al deseo de ofrecer a los visitantes una perspectiva diferente de la naturaleza: no desde abajo mirando hacia arriba, sino desde dentro del dosel mirando al horizonte.",
+    "ubicacion": {
+      "referencia": "Zona rural de Gigante, Huila",
+      "distanciaKm": 6,
+      "tiempoAuto": "12 minutos desde Gigante"
+    },
+    "entrada": {
+      "precio": 8000,
+      "notas": "Solo visitas diurnas. Llevar ropa cómoda y calzado adecuado para senderos."
+    },
+    "horario": "8:00 AM – 5:00 PM todos los días",
+    "petFriendly": false,
+    "imagen": "../assets/img/la_casa_arbol.jpg",
+    "tags": ["ecoturismo", "naturaleza", "cascada", "aves", "familiar", "senderismo"],
+    "destacado": false,
+    "atracciones": [
+      { "nombre": "Casa en el Árbol", "descripcion": "Estructura elevada entre los árboles con vistas panorámicas al dosel forestal.", "icono": "🏡" },
+      { "nombre": "Cascada Natural", "descripcion": "Hermosa caída de agua integrada al paisaje boscoso del sitio.", "icono": "💦" },
+      { "nombre": "Paseo en Canoa", "descripcion": "Navegación tranquila por el cuerpo de agua del área. Actividad para toda la familia.", "icono": "🚣" },
+      { "nombre": "Sendero Ecológico", "descripcion": "Recorrido guiado por senderos que muestran la flora y fauna local.", "icono": "🥾" },
+      { "nombre": "Zona de Observación de Aves", "descripcion": "Plataforma de madera elevada para avistar aves y animales silvestres.", "icono": "🦜" },
+      { "nombre": "Zona Fotográfica", "descripcion": "Escenarios únicos entre árboles y cascada para fotografías memorables.", "icono": "📸" }
+    ],
+    "servicios": [
+      { "icono": "fas fa-binoculars", "nombre": "Guía ecológico" },
+      { "icono": "fas fa-life-ring", "nombre": "Chalecos salvavidas para canoa" },
+      { "icono": "fas fa-chair", "nombre": "Zona de descanso" },
+      { "icono": "fas fa-restroom", "nombre": "Baños" },
+      { "icono": "fas fa-utensils", "nombre": "Área de picnic" }
+    ],
+    "alojamientos": [],
+    "precioBaseReserva": 10000
+  },
+  {
+    "nombre": "La Perla Finca Hotel",
+    "slug": "la-perla",
+    "whatsapp": "573182269472",
+    "categorias": ["hospedaje"],
+    "resumen": "Hotel boutique en la Ruta del Café con cabañas de lujo entre cafetales. Cada alojamiento lleva nombre de piedra preciosa.",
+    "descripcion": "La Perla Finca Hotel es el destino de hospedaje más exclusivo de Gigante. Ubicado en la vereda Bajo Corozal sobre la Ruta del Café, este hotel boutique ofrece cabañas de lujo con nombres de piedras preciosas. Rodeado de cafetales en plena producción, los huéspedes pueden disfrutar de recorridos cafeteros, cata de café de origen, glamping premium y todos los servicios de un hotel de alta categoría en plena naturaleza huilense.",
+    "historia": "La Perla nació del sueño de una familia cafetera de Gigante que decidió convertir su finca productora en un destino turístico de lujo. Cada cabaña fue diseñada por arquitectos locales integrando materiales de la región y nombrada como una piedra preciosa para representar el valor único de cada experiencia.",
+    "ubicacion": {
+      "referencia": "Vereda Bajo Corozal, Ruta del Café, Gigante, Huila",
+      "distanciaKm": 5,
+      "tiempoAuto": "10 minutos desde Gigante"
+    },
+    "entrada": {
+      "precio": 6000,
+      "notas": "Recorrido cafetero incluido en la visita. Cata de café opcional."
+    },
+    "horario": "Check-in: 3:00 PM | Check-out: 12:00 PM | Visitas: 9:00 AM – 5:00 PM",
+    "petFriendly": false,
+    "imagen": "../assets/img/perla_finca_gigante.jpg",
+    "tags": ["lujo", "café", "romántico", "boutique", "glamping", "gastronomía"],
+    "destacado": true,
+    "atracciones": [
+      { "nombre": "Recorrido Cafetero", "descripcion": "Tour por los cafetales: siembra, cosecha, beneficio y tostión del café.", "icono": "☕" },
+      { "nombre": "Cata de Café de Origen", "descripcion": "Sesión de cata guiada de cafés especiales producidos en la finca.", "icono": "🫖" },
+      { "nombre": "Mirador Entre Cafetales", "descripcion": "Vista panorámica al municipio de Gigante y al Valle del Magdalena desde los cafetales.", "icono": "🏞️" },
+      { "nombre": "Jardines Tropicales", "descripcion": "Jardines diseñados con flora tropical y ornamental de la región.", "icono": "🌺" },
+      { "nombre": "Zona de Piscina", "descripcion": "Piscina entre la vegetación para huéspedes.", "icono": "🏊" },
+      { "nombre": "Restaurante La Perla", "descripcion": "Gastronomía de autor con ingredientes locales y maridaje con cafés especiales.", "icono": "🍽️" }
+    ],
+    "servicios": [
+      { "icono": "fas fa-coffee", "nombre": "Recorrido cafetero incluido" },
+      { "icono": "fas fa-utensils", "nombre": "Restaurante gourmet" },
+      { "icono": "fas fa-swimming-pool", "nombre": "Piscina" },
+      { "icono": "fas fa-wifi", "nombre": "WiFi de alta velocidad" },
+      { "icono": "fas fa-parking", "nombre": "Parqueadero privado" },
+      { "icono": "fas fa-concierge-bell", "nombre": "Servicio de habitación" },
+      { "icono": "fas fa-mug-hot", "nombre": "Cata de café (opcional)" }
+    ],
+    "alojamientos": [
+      {
+        "nombre": "Cabaña ZAFIRO",
+        "tipo": "cabaña",
+        "capacidadMax": 2,
+        "descripcion": "La cabaña más lujosa de La Perla. Diseño premium con todos los acabados de alta gama entre los cafetales.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Jacuzzi", "Cama king", "Vista panorámica", "Minibar", "WiFi"],
+        "precios": [{ "descripcion": "Por noche (hasta 2 personas)", "precio": 1750000 }]
+      },
+      {
+        "nombre": "Cabaña JASPE",
+        "tipo": "cabaña",
+        "capacidadMax": 2,
+        "descripcion": "Cabaña elegante con diseño inspirado en la piedra Jaspe. Confort y exclusividad en los cafetales.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Cama queen", "Terraza privada", "Vista al cafetal", "WiFi"],
+        "precios": [{ "descripcion": "Por noche (hasta 2 personas)", "precio": 990000 }]
+      },
+      {
+        "nombre": "Glamping CRISOLITO",
+        "tipo": "glamping",
+        "capacidadMax": 2,
+        "descripcion": "Glamping de lujo entre los cafetales con diseño moderno y conexión plena con la naturaleza.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Cama queen", "Baño privado", "Terraza", "Vista al cafetal", "WiFi"],
+        "precios": [{ "descripcion": "Por noche (hasta 2 personas)", "precio": 1100000 }]
+      },
+      {
+        "nombre": "Cabaña AGATA",
+        "tipo": "cabaña",
+        "capacidadMax": 2,
+        "descripcion": "Cabaña de diseño artesanal inspirada en la piedra Ágata, con tonos cálidos y ambiente acogedor.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Cama queen", "Baño privado", "Hamaca exterior", "WiFi"],
+        "precios": [{ "descripcion": "Por noche (hasta 2 personas)", "precio": 1100000 }]
+      },
+      {
+        "nombre": "Glamping CORNALINA",
+        "tipo": "glamping",
+        "capacidadMax": 2,
+        "descripcion": "Glamping romántico entre cafetales con tonos anaranjados de la Cornalina como inspiración.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Cama king", "Bañera", "Vista al cafetal", "WiFi", "Botella de vino bienvenida"],
+        "precios": [{ "descripcion": "Por noche (hasta 2 personas)", "precio": 1100000 }]
+      },
+      {
+        "nombre": "Cabaña Familiar JACINTO",
+        "tipo": "cabaña",
+        "capacidadMax": 4,
+        "descripcion": "Cabaña familiar espaciosa, ideal para familias con niños. Diseño cálido y funcional.",
+        "incluyeDesayuno": true,
+        "amenidades": ["2 habitaciones", "Sala", "Baño privado", "Patio", "WiFi"],
+        "precios": [{ "descripcion": "Por noche (hasta 4 personas)", "precio": 1150000 }]
+      },
+      {
+        "nombre": "Cabaña Familiar AMATISTA",
+        "tipo": "cabaña",
+        "capacidadMax": 4,
+        "descripcion": "Cabaña familiar con tonos violetas inspirados en la Amatista. Espacio y confort premium.",
+        "incluyeDesayuno": true,
+        "amenidades": ["2 habitaciones", "Sala", "Baño premium", "Terraza familiar", "WiFi"],
+        "precios": [{ "descripcion": "Por noche (hasta 4 personas)", "precio": 1200000 }]
+      },
+      {
+        "nombre": "Cabaña ESMERALDA",
+        "tipo": "cabaña",
+        "capacidadMax": 2,
+        "descripcion": "La joya verde de La Perla. Rodeada completamente por vegetación de cafetales con máxima privacidad.",
+        "incluyeDesayuno": true,
+        "amenidades": ["Cama king", "Jacuzzi exterior", "Vista verde total", "WiFi"],
+        "precios": [{ "descripcion": "Por noche (hasta 2 personas)", "precio": 1200000 }]
+      },
+      {
+        "nombre": "Cabaña Familiar CRISTAL",
+        "tipo": "cabaña",
+        "capacidadMax": 4,
+        "descripcion": "Cabaña luminosa en su diseño, permitiendo que la luz natural entre en cada rincón.",
+        "incluyeDesayuno": true,
+        "amenidades": ["2 habitaciones", "Ventanales panorámicos", "Baño privado", "Terraza", "WiFi"],
+        "precios": [{ "descripcion": "Por noche (hasta 4 personas)", "precio": 1100000 }]
+      }
+    ],
+    "precioBaseReserva": 280000
+  }
+]
